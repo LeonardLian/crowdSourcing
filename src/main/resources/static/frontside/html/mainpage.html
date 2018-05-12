@@ -45,7 +45,6 @@
 
                 <li class="am-dropdown" >
                     <a href="selfpage.html" class="am-dropdown-toggle" id="user">
-                        <span class="am-icon-users" ></span>
                         用户{{username}}
                     </a>
                 </li>
@@ -127,7 +126,7 @@
         window.location.href='task_joined.html?'+window.location.href;
     }
     function checkTasksIBuild() {
-        window.location.href='task_builded.html?'+window.location.href;
+        window.location.href='task_builded.html?'+username;
     }
     function releaseTask(){
         window.location.href='releaseTask.html?'+window.location.href;
