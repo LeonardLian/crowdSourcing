@@ -12,6 +12,12 @@ public class User {
     private String username; //id
     private String password;  //密码
     private String point;  //积分
+    private String name;
+    private String email;
+    private String phone;
+    private String qq;
+    private String description;
+    private String picture;
     private String taskAddress; //任务地址
 
     public User(){}

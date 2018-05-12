@@ -10,5 +10,7 @@ public class LabelApplication {
 
 		SpringApplication.run(LabelApplication.class, args);
 
+
+
 	}
 }
