@@ -3,49 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <title>众包标注工作区</title>
-    <link rel="icon" type="image/png" href="/assets/i/favicon.png">
+    <link rel="icon" type="image/png" href="assets/i/favicon.png">
     <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
     <link rel="stylesheet" href="assets/css/amazeui.min.css"/>
     <link rel="stylesheet" href="assets/css/admin.css">
     <style>
         .select_method a {
-            padding: 8px 8px 8px 32px;
+            padding: 8px;
             text-decoration: none;
-            font-size: 25px;
+            font-size: 30px;
             color: #818181;
             display: block;
             transition: 0.3s;
-
         }
+
         .overlay {
             height: 0%;
-            width: 20%;
+            width: 22%;
             position: fixed;
             z-index: 1;
             top: 0;
             left: 0;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0, 0.9);
+            background-color: #ACD6FF;
             overflow-y: hidden;
             transition: 0.5s;
         }
 
         .overlay-content {
             position: relative;
-            top: 10px;
-            width: 20%;
-            text-align: center;
+            top: 40px;
+            width: 80%;
+            text-align: left;
             margin-top: 30px;
+            margin-left: 6px;
         }
 
-        .overlay a {
+        .overlay p {
             padding: 8px;
             text-decoration: none;
-            font-size: 36px;
+            font-size: 20px;
             color: #818181;
             display: block;
             transition: 0.3s;
         }
+
+        .overlay .closebtn {
+            position: absolute;
+            top: 30px;
+            right: 15px;
+            font-size: 40px;
+            color: #818181;
+        }
+
+        .picture {
+            margin-top: 40px;
+            margin-left: 50px;
+            width: 50%;
+            height: 50%;
+            border-color: #0c79b1;
+            background: transparent;
+        }
+
+
     </style>
 
 </head>
@@ -90,11 +109,11 @@
 <div class = "am-align-left">
 
     <div id="myNav" class="overlay">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="javascript:void(0)" class = "closebtn" onclick="closeNav()"> &times;</span></a>
         <div class="overlay-content">
-            <a href="#">About method: </a>
-            <a href="#">About method: </a>
-            <a href="#">About task: </a>
+            <p class = "task-content">
+                整体方框区域标注？任务描述：要求，积分，and so on...
+            </p>
         </div>
     </div>
 
@@ -102,20 +121,18 @@
     <ul class="am-list admin-sidebar-list">
         <li><a href="mainpage.html"><span class="am-icon-home"></span> 首页</a></li>
         <li class="admin-parent">
-            <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 关于任务
-                <span class="am-icon-angle-right am-fr am-margin-right" onclick = "openNav()"></span></a>
+            <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 关于任务 <span class="am-icon-angle-right am-fr am-margin-right" onclick = "openNav()"></span></a>
         </li>
     </ul>
 
     <div id="myChoice" class="select_method">
-        <a href="javascript:void(0)"> </a>
-        <a href="#">整体标注</a>
-        <a href="#">方框标注</a>
-        <a href="#">区域标注</a>
+        <a href="#" >整体标注</a>
+        <a href="#" >方框标注</a>
+        <a href="#" >区域标注</a>
     </div>
 
-
-
+</div>
+<div class = "picture">
 </div>
 
 <script src="../lib/vue.js"></script>
@@ -135,7 +152,7 @@
 </script>
 <script>
     function openNav() {
-        document.getElementById("myNav").style.height = "80%";
+        document.getElementById("myNav").style.height = "66%";
     }
 
     function closeNav() {
