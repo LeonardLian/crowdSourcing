@@ -7,6 +7,47 @@
     <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
     <link rel="stylesheet" href="assets/css/amazeui.min.css"/>
     <link rel="stylesheet" href="assets/css/admin.css">
+    <style>
+        .select_method a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+
+        }
+        .overlay {
+            height: 0%;
+            width: 20%;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0, 0.9);
+            overflow-y: hidden;
+            transition: 0.5s;
+        }
+
+        .overlay-content {
+            position: relative;
+            top: 10px;
+            width: 20%;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .overlay a {
+            padding: 8px;
+            text-decoration: none;
+            font-size: 36px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+    </style>
+
 </head>
 <body>
 <header class="am-topbar am-topbar-inverse admin-header">
@@ -46,6 +87,37 @@
     </div>
 </header>
 
+<div class = "am-align-left">
+
+    <div id="myNav" class="overlay">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <div class="overlay-content">
+            <a href="#">About method: </a>
+            <a href="#">About method: </a>
+            <a href="#">About task: </a>
+        </div>
+    </div>
+
+
+    <ul class="am-list admin-sidebar-list">
+        <li><a href="mainpage.html"><span class="am-icon-home"></span> 首页</a></li>
+        <li class="admin-parent">
+            <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 关于任务
+                <span class="am-icon-angle-right am-fr am-margin-right" onclick = "openNav()"></span></a>
+        </li>
+    </ul>
+
+    <div id="myChoice" class="select_method">
+        <a href="javascript:void(0)"> </a>
+        <a href="#">整体标注</a>
+        <a href="#">方框标注</a>
+        <a href="#">区域标注</a>
+    </div>
+
+
+
+</div>
+
 <script src="../lib/vue.js"></script>
 <script src="../lib/jquery.js"></script>
 <script src="../js/loadAllTasks.js"></script>
@@ -59,6 +131,15 @@
     }
     function releaseTask(){
         window.location.href='releaseTask.html?'+window.location.href;
+    }
+</script>
+<script>
+    function openNav() {
+        document.getElementById("myNav").style.height = "80%";
+    }
+
+    function closeNav() {
+        document.getElementById("myNav").style.height = "0%";
     }
 </script>
 
