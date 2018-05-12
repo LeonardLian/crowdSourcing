@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <title>图片处理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <style>
+        .box {
+            background: transparent;
+            width: 0px;
+            height: 0px;
+            position: absolute;
+            border: 3px solid black;
+        }
+        *{margin:0;padding:0;}
+        .fa{width:740px;margin:0 auto;}
+        /*.top{margin:20px 0;position: absolute;top: 30px;left: 300px;display: none}*/
+        .top input{width:25px;height:25px;border:1px solid #fff;border-radius:4px;background:#ddd;}
+        /*.top .i1{background:#000000;}*/
+        /*.top .i2{background:#FF0000;}*/
+        /*.top .i3{background:#80FF00;}*/
+        /*.top .i4{background:#00FFFF;}*/
+        /*.top .i5{background:#808080;}*/
+        /*.top .i6{background:#FF8000;}*/
+        /*.top .i7{background:#408080;}*/
+        /*.top .i8{background:#8000FF;}*/
+        /*.top .i9{background:#CCCC00;}*/
+        #canvas{background: transparent;cursor:default;}
+        .font input{font-size:14px;}
+        /*.top .grea{background:#aaa;}*/
+
+        .btn1 {width: 100px;font-size: 30px;top: 20px;left: 200px;position: absolute}
+        .btn2 {width: 100px;font-size: 30px;top: 20px;left: 300px;position: absolute}
+        .btn3 {width: 100px;font-size: 30px;top: 20px;left: 400px;position: absolute}
+    </style>
+</head>
+<body>
+<input type="file" id="file" />
+<input class="btn1" id="Allbtn"  type="button" value="整体标注" onclick="allLabel()"/>
+<input class="btn2" id="squarebtn" type="button" value="方框标注" onclick="squarelabel()" />
+<input class="btn3" id="curvebtn" type="button" value="区域标注" onclick="curveLabel()" />
+<div class="fa">
+    <!--<div id="top" class="top">-->
+        <!--<div id="color">-->
+            <!--颜色：-->
+            <!--<input class="i1" type="button" value="" />-->
+            <!--<input class="i2" type="button" value="" />-->
+            <!--<input class="i3" type="button" value="" />-->
+            <!--<input class="i4" type="button" value="" />-->
+            <!--<input class="i5" type="button" value="" />-->
+            <!--<input class="i6" type="button" value="" />-->
+            <!--<input class="i7" type="button" value="" />-->
+            <!--<input class="i8" type="button" value="" />-->
+            <!--<input class="i9" type="button" value="" />-->
+        <!--</div>-->
+        <!--<div class="font" id="font">-->
+            <!--标记宽度：-->
+            <!--<input type="button" value="细" />-->
+            <!--<input type="button" value="中" class="grea"/>-->
+            <!--<input type="button" value="粗" />-->
+        <!--</div>-->
+        <!--<div>-->
+            <!--<span id="error">清除所有标记</span>-->
+            <!--&lt;!&ndash;<input id="eraser" style="width:60px;font-size:14px;"type="button" value="橡皮擦" />&ndash;&gt;-->
+        <!--</div>-->
+        <!--<input id="clear" type="button" value="清除标记" style="width:80px;"/>-->
+        <!--<input id="revocation" type="button" value="撤销" style="width:80px; display: none"/>-->
+        <!--&lt;!&ndash;<input id="imgurl" type="button" value="导出图片路径" style="width:80px;"/>&ndash;&gt;-->
+        <!--<input id="save" type="button" value="保存" style="width: 80px;" >-->
+    <!--</div>-->
+
+    <img id="exampleImg" src="" width="740" height="420" style="left: 200px;top: 200px;position: absolute;">
+    <canvas id="canvas" width="740" height="420" style="left: 200px;top: 200px;position: absolute">您的浏览器不支持 canvas 标签</canvas>
+    <input type="button" id="changebtn" style="display: none">
+    <input type="button" id="cbtn" style="display: none">
+
+    <div id="comment" style="display: none;left: 700px;top: 130px;position: absolute">
+        <input id="all" type="button" style="background: transparent;border: transparent">
+    </div>
+    <div id="alllabeldiv" style="display: none;left: 700px;top: 160px;position: absolute" >
+        <input id="allLabeltxt" type="text" value="填写整体标注" style="width: 300px;height: 30px"/>
+        <input id="alllabelBtn" type="button" value="确定" onclick="allLabelConfirm()">
+    </div>
+</div>
+<div id="html">
+</div>
+
+<script src="../js/allLabel.js"></script>
+<script src="../lib/jquery.js"></script>
+<script src="../js/squareLabel.js"></script>
+<script src="../lib/vue.js"></script>
+<!--<script src="../js/curveLabel.js"></script>-->
+<script src="../js/easyCurveLabel.js"></script>
+<script src="../js/pushpic.js"></script>
+<script src="../lib/Jcanvas.js"></script>
+
+</body>
+</html>
