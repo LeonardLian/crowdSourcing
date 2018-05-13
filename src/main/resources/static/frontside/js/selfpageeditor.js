@@ -10,7 +10,7 @@ function saveImage() {
     /*formData.append("classDescribe",username);*/
 
     $.ajax({
-        url:"/json/saveUserImg.json",
+        url:"http://127.0.0.1:8080/saveUserImg",
         type:'POST',
         data:formData,
         async:false,

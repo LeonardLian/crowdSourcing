@@ -16,7 +16,6 @@ public class User {
     private String email;
     private String phone;
     private String description;
-    private String picture;
     private String taskAddress; //任务地址
 
     public User(){}
@@ -46,7 +45,6 @@ public class User {
                 String email,
                 String phone,
                 String description,
-                String picture,
                 String taskAddress){
         this.username=username;
         this.password=password;
@@ -55,7 +53,6 @@ public class User {
         this.email=email;
         this.phone=phone;
         this.description=description;
-        this.picture=picture;
         this.taskAddress=taskAddress;
     }
 
@@ -83,10 +80,6 @@ public class User {
         return phone;
     }
 
-    public String getPicture() {
-        return picture;
-    }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -94,11 +87,6 @@ public class User {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
-
 
     public String getPassword() {
         return password;

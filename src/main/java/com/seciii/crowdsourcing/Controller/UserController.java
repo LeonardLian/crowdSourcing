@@ -2,6 +2,7 @@ package com.seciii.crowdsourcing.Controller;
 
 import com.seciii.crowdsourcing.Dao.User;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -16,6 +17,25 @@ import java.util.ArrayList;
 public class UserController {
 
 
+    //保存个人信息
+    @RequestMapping(value="/json/saveUserInformation.json",method = RequestMethod.POST)
+    public String saveUserInformation(@RequestBody User user) throws IOException{
+
+        return null;
+    }
+
+    //保存个人头像
+    @RequestMapping(value="/saveUserImg",method = RequestMethod.POST)
+    @ResponseBody
+    public String saveUserImg(@RequestParam("classIcon") MultipartFile file) throws IOException{
+        File newfile=new File("/Users/Leonarda/Desktop/Img/a.jpeg");
+        if(!newfile.exists()){
+            newfile.createNewFile();
+        }
+
+        file.transferTo(newfile);
+        return "success";
+    }
 
     //显示个人信息
     @RequestMapping(value="/showUserInformation",method = RequestMethod.POST)
