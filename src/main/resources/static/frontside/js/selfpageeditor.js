@@ -20,9 +20,10 @@ $(function () {
         url:'http://127.0.0.1:8080/showUserInformation',
         success:function (data) {
             if(data=='no'){
-
+                alert("no info");
+                return;
             }else {
-                var infoList=data.split('^');
+                var infoList=data.split(' ');
                 $('#name').val(infoList[1]);
                 $('#telephone').val(infoList[2]);
                 $('#email').val(infoList[3]);
@@ -42,6 +43,7 @@ $(function () {
         url:'http://127.0.0.1:8080/showUserImg',
         success:function (data) {
             if(data=='no') {
+                alert("no image");
                 return;
             }else{
                 $('#newImage').attr('src',data);
@@ -57,6 +59,9 @@ function save() {
     saveImageOfUser();
     saveInfoOfUser();
 }
+
+
+
 
 function saveImageOfUser() {
     //var form=document.getElementById("imageForm")
@@ -89,6 +94,7 @@ function saveImageOfUser() {
         }
     });
 }
+
 
 $('#image').on('change',function () {
     src = window.URL.createObjectURL(this.files[0]);

@@ -23,11 +23,13 @@ $(function() {
             if(data=='no'){
                 return;
             }else{
-                var infoList=data.split('^');
-                $('#name').innerHTML=infoList[1];
-                $('#telephone').innerHTML=infoList[2];
-                $('#email').innerHTML=infoList[3];
-                $('#description').innerHTML=infoList[4];
+                //alert(data);
+                var infoList=data.split(' ');
+                //alert(infoList[0]);
+                $('#name').html(infoList[1]);
+                $('#telephone').html(infoList[2]);
+                $('#email').html(infoList[3]);
+                $('#description').html(infoList[4]);
             }
         },
         error:function(e){
@@ -45,7 +47,8 @@ $(function() {
            if(data=='no') {
                return;
            }else{
-               $('#image').attr('src',data);
+               $('#image').attr('src',"/Users/Leonarda/Desktop/Img/1234.jpeg");
+               //$('#image').attr('src',data);
            }
         },
         error:function(e){
