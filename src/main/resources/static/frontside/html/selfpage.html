@@ -18,24 +18,44 @@
 
 <body>
 <header class="am-topbar am-topbar-inverse admin-header">
- <div class="am-u-md-8 am-u-md-push-2">
-  <div class="am-topbar-brand">
-   <a href="mainpage.html">
-    <strong>Crowdsourcing</strong> <small>众包标注平台</small>
-    </a>
-  </div>
+  <div class="am-u-md-8 am-u-md-push-2">
+    <div class="am-topbar-brand">
+      <a href="mainpage.html">
+        <strong>Crowdsourcing</strong>
+        <small>
+          众包标注平台
+        </small>
+      </a>
+    </div>
 
-  <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
-    <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
-      <li><a href="javascript:;"><span class="am-icon-envelope-o"></span> 我发布的任务 <span class="am-badge am-badge-warning">5</span></a></li>
-      <li class="am-hide-sm-only"><a href="javascript:;"><span class="am-icon-arrows-alt"></span> <span class="admin-fullText"> 我参与的任务 </span></a></li>
-      <li class="am-dropdown" >
-        <a href="selfpage.html" class="am-dropdown-toggle">
-          <span class="am-icon-users" onmouseover="over()"></span> username <span class="am-icon-caret-down"></span>
-        </a>
-      </li>
-    </ul>
-  </div>
+    <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+      <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
+        <li class="am-hide-sm-only">
+          <a href="javascript:checkTasksIBuild();">
+            我发布的任务
+            <span class="am-badge am-badge-warning">5</span>
+          </a>
+        </li>
+        <li class="am-hide-sm-only">
+          <a href="javascript:checkTasksIJoin();">
+            我参与的任务
+            <span class="am-badge am-badge-warning">5</span>
+          </a>
+        </li>
+
+        <li class="am-dropdown" >
+          <a href="selfpage.html" class="am-dropdown-toggle" id="username">
+            用户{{username}}
+          </a>
+        </li>
+        <li>
+          <a href = "login.html">
+            退出
+            <span class="am-icon-sign-out"></span>
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 </header>
 
@@ -45,81 +65,56 @@
     <div class="admin-content-body am-u-md-8 am-u-md-push-2 am-panel am-panel-default">
       <div class="am-cf am-padding am-padding-bottom-0">
         <strong class="am-text-primary am-text-lg">个人资料</strong> / <small>Personal information</small>
-        <a href="selfpageeditor.html">编辑个人资料</a>
+        <a href="javascript:editClick();">编辑个人资料</a>
       </div>
       <hr>
       <div class="am-u-md-4 am-u-md-push-8">
-        <div class="am-panel am-panel-default">
+        <div class="am-panel am-panel-default" v-html="image">
           <img class="am-img-circle am-img-thumbnail" src="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/200/h/200/q/80" alt="" width="1000"/>
         </div>
-        <div class="am-panel am-panel-default">
-            <div class="am-panel-bd">
-              <div class="user-info">
-                <p>等级信息</p>
-                <div class="am-progress am-progress-sm">
-                  <div class="am-progress-bar" style="width: 60%"></div>
-                </div>
-                <p class="user-info-order">当前等级：<strong>LV8</strong> 活跃天数：<strong>587</strong> 距离下一级别：<strong>160</strong></p>
-              </div>
-              <div class="user-info">
-                <p>信用信息</p>
-                <div class="am-progress am-progress-sm">
-                  <div class="am-progress-bar am-progress-bar-success" style="width: 80%"></div>
-                </div>
-                <p class="user-info-order">信用等级：正常当前 信用积分：<strong>80</strong></p>
-              </div>
-            </div>
-          </div>
-        </div>
+      </div>
 
-        <div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4">
+        <div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4" id="info">
           <form class="am-form am-form-horizontal">
             <div class="am-form-group">
              <label class="am-u-sm-4 am-form-label">姓名 / Name</label>
               <div class="am-u-sm-8">
-                <p id="name">一座大桥</p>
+                <p id="name">{{name}}</p>
               </div>
             </div>
 
             <div class="am-form-group">
               <label class="am-u-sm-4 am-form-label">电子邮件 / Email</label>
               <div class="am-u-sm-8">
-                <p id="email">zxx412385348@163.com</p>
+                <p id="email">{{email}}</p>
               </div>
             </div>
 
             <div class="am-form-group">
               <label class="am-u-sm-4 am-form-label">电话 / Telephone</label>
               <div class="am-u-sm-8">
-                <p id="telephone">13996357960</p>
-              </div>
-            </div>
-
-            <div class="am-form-group">
-              <label class="am-u-sm-4 am-form-label">QQ</label>
-              <div class="am-u-sm-8">
-                <p id="qq">412385348</p>
+                <p id="telephone">{{telephone}}</p>
               </div>
             </div>
 
             <div class="am-form-group">
               <label class="am-u-sm-4 am-form-label">积分 / points</label>
               <div class="am-u-sm-8">
-                <p id="points">100</p>
+                <p id="points">{{points}}</p>
               </div>
             </div>
 
             <div class="am-form-group">
               <label class="am-u-sm-4 am-form-label">简介 / Intro</label>
               <div class="am-u-sm-8">
-                <p id="intro">机智的王梓桥大人</p>
+                <p id="intro">{{intro}}</p>
               </div>
             </div>
 
           </form>
         </div>
       </div>
-
+  </div>
 </div>
 
 <footer>
@@ -141,5 +136,9 @@
 <script src="assets/js/amazeui.min.js"></script>
 
 <script src="assets/js/app.js"></script>
+
+<script src="../lib/jquery.js"></script>
+<script src="../lib/vue.js"></script>
+<script src="../js/selfpage.js"></script>
 </body>
 </html>
