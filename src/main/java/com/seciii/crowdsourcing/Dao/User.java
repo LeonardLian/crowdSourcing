@@ -15,7 +15,6 @@ public class User {
     private String name;
     private String email;
     private String phone;
-    private String qq;
     private String description;
     private String picture;
     private String taskAddress; //任务地址
@@ -40,12 +39,66 @@ public class User {
 
     }
 
-    public User(String username,String password,String point,String taskAddress){
+    public User(String username,
+                String password,
+                String point,
+                String name,
+                String email,
+                String phone,
+                String description,
+                String picture,
+                String taskAddress){
         this.username=username;
         this.password=password;
         this.point=point;
+        this.name=name;
+        this.email=email;
+        this.phone=phone;
+        this.description=description;
+        this.picture=picture;
         this.taskAddress=taskAddress;
     }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
 
     public String getPassword() {
         return password;

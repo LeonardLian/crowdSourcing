@@ -2,7 +2,7 @@ package com.seciii.crowdsourcing.Controller;
 
 import com.seciii.crowdsourcing.Dao.*;
 import com.seciii.crowdsourcing.Dao.User;
-import org.apache.tomcat.jni.*;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
@@ -29,8 +29,9 @@ public class TaskController {
         String numofNeeded=task.getNumOfNeeded();
         String tasktag=task.getTasktag();
         String point=task.getPoint();
+        String kindOfLabel=task.getKindOfLabel();
 
-        Task task1=new Task(requestor,tasktag,description,img,numofNeeded,point);
+        Task task1=new Task(requestor,tasktag,description,img,numofNeeded,point,kindOfLabel);
 
         String taskname=task1.getTaskname();
         String foldername="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskname;

@@ -15,6 +15,14 @@ import java.util.ArrayList;
 @RestController
 public class UserController {
 
+
+
+    //显示个人信息
+    @RequestMapping(value="/showUserInformation",method = RequestMethod.POST)
+    public String showUserInformation(@RequestBody User user) throws IOException{
+        return null;
+    }
+
     //将注册的新用户保存
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(@RequestBody User user) throws IOException{

@@ -16,11 +16,12 @@ public class Task {
     private String img; //地址
     private String numOfNeeded;
     private String numOfPart;
+    private String kindOfLabel;
     private String point;
 
     public Task(){}
 
-    public Task(String taskname,String requestor,String tasktag,String description,String img,String numOfNeeded,String numOfPart,String point){
+    public Task(String taskname,String requestor,String tasktag,String description,String img,String numOfNeeded,String numOfPart,String kindOfLabel,String point){
         this.taskname=taskname;
         this.requestor=requestor;
         this.tasktag=tasktag;
@@ -28,10 +29,11 @@ public class Task {
         this.img=img;
         this.numOfNeeded=numOfNeeded;
         this.numOfPart=numOfPart;
+        this.kindOfLabel=kindOfLabel;
         this.point=point;
     }
 
-    public Task(String requestor,String tasktag,String description,String img,String numOfNeeded,String point){
+    public Task(String requestor,String tasktag,String description,String img,String numOfNeeded,String point,String kindOfLabel){
         String taskname="";
         try {
             String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskId/TaskId.txt";
@@ -58,6 +60,15 @@ public class Task {
         this.requestor=requestor;
         this.numOfNeeded=numOfNeeded;
         this.numOfPart="0";
+        this.kindOfLabel=kindOfLabel;
+    }
+
+    public String getKindOfLabel() {
+        return kindOfLabel;
+    }
+
+    public void setKindOfLabel(String kindOfLabel) {
+        this.kindOfLabel = kindOfLabel;
     }
 
     public String getPoint() {
