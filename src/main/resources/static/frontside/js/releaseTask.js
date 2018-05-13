@@ -46,6 +46,17 @@ function release() {
         }
     }
 }*/
+$(function () {
+    var url=decodeURI(window.location.href);
+    var username=url.split("?")[1];
+
+    new Vue({
+        el:'#username',
+        data:{
+            username:username
+        }
+    });
+})
 
 //即时显示上传的图片
 $('#image').on('change',function () {

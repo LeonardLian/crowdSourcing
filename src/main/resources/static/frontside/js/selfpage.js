@@ -10,39 +10,57 @@ $(function() {
         }
     });
 
-    /*$.ajax({
+    var user=new User(username,'aaa',0,'aaa','aaa','aaa','aaa','aaa');
+    var userJson=JSON.stringify(user);
+
+    $.ajax({
         type:'POST',
-        data:username,
+        data:userJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/getSelfinfo',
-        success:function (info) {
-            var arr=data.split("###");
-
-            var name=arr[0];
-            var email=arr[1];
-            var telephone=arr[2];
-            var points=arr[3];
-            var intro=arr[4];
-            var image=arr[5];
-
-            new Vue({
-                el:'#info',
-                data:{
-                    name:name,
-                    email:email,
-                    telephone:telephone,
-                    points:points,
-                    intro:intro,
-                    image:'<img class="am-img-circle am-img-thumbnail" src=image alt="" width="1000"/>'
-                }
-            });
+        url:'http://127.0.0.1:8080/showUserInformation',
+        success:function (data) {
+            if(data=='no'){
+                return;
+            }else{
+                var infoList=data.split('^');
+                $('#name').innerHTML=infoList[1];
+                $('#telephone').innerHTML=infoList[2];
+                $('#email').innerHTML=infoList[3];
+                $('#description').innerHTML=infoList[4];
+            }
         },
         error:function(e){
             alert("error");
         }
     });
 
-    function User(username,password,point,taskAddress,name,email,telephone,intro) {
-    }*/
-})
+    $.ajax({
+        type:'POST',
+        data:userJson,
+        contentType:'application/json',
+        dataType:'text',
+        url:'http://127.0.0.1:8080/showUserImg',
+        success:function (data) {
+           if(data=='no') {
+               return;
+           }else{
+               $('#image').attr('src',data);
+           }
+        },
+        error:function(e){
+            alert("error");
+        }
+    });
+});
+
+function User(username,password,point,name,email,phone,description,taskAddress) {
+    this.username=username;
+    this.password=password;
+    this.point=point;
+    this.name=name;
+    this.email=email;
+    this.phone=phone;
+    this.description=description;
+    this.taskAddress=taskAddress;
+}

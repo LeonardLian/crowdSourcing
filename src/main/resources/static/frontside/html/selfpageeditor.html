@@ -115,7 +115,7 @@
           </div>
           <div class="am-form-group">
             <div class="am-u-sm-8 am-u-sm-push-5">
-              <button type="button" class="am-btn am-btn-primary" onclick="saveImage()">保存修改</button>
+              <button type="button" class="am-btn am-btn-primary" onclick="save()">保存修改</button>
             </div>
           </div>
         </form>
@@ -149,7 +149,7 @@
     }
     function selfpageClick() {
         var url=decodeURI(window.location.href);
-        var selfpage=url.split("?")[1];
+        var username=url.split("?")[1];
         var selfpage='selfpage.html'+'?'+username;
         window.location.href=selfpage;
     }
