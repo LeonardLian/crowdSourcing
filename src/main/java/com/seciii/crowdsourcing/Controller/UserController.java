@@ -18,16 +18,22 @@ public class UserController {
 
 
     //保存个人信息
-    @RequestMapping(value="/json/saveUserInformation.json",method = RequestMethod.POST)
+    @RequestMapping(value="/saveUserInfo",method = RequestMethod.POST)
     public String saveUserInformation(@RequestBody User user) throws IOException{
+        String userId=user.getUsername();
+        String username=user.getName();
+        String userphone=user.getPhone();
+        String useremail=user.getEmail();
+        String userdis=user.getDescription();
+        String info=userId+"^"+username+"^"+userphone+"^"+useremail+"^"+userdis+"\n";
 
         return null;
     }
 
+
     //保存个人头像
     @RequestMapping(value="/saveUserImg",method = RequestMethod.POST)
-    @ResponseBody
-    public String saveUserImg(@RequestParam("classIcon") MultipartFile file) throws IOException{
+    @ResponseBody public String saveUserImg(@RequestParam("classIcon") MultipartFile file) throws IOException{
         File newfile=new File("/Users/Leonarda/Desktop/Img/a.jpeg");
         if(!newfile.exists()){
             newfile.createNewFile();
@@ -37,11 +43,20 @@ public class UserController {
         return "success";
     }
 
+
+    //显示个人头像
+    @RequestMapping(value="/showUserImg",method=RequestMethod.POST)
+    public String showUserImg(@RequestBody User user) throws IOException{
+
+        return null;
+    }
+
     //显示个人信息
     @RequestMapping(value="/showUserInformation",method = RequestMethod.POST)
     public String showUserInformation(@RequestBody User user) throws IOException{
         return null;
     }
+
 
     //将注册的新用户保存
     @RequestMapping(value = "/register", method = RequestMethod.POST)
