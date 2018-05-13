@@ -1,7 +1,7 @@
 function saveImage() {
     //var form=document.getElementById("imageForm")
     //var formData=new formData(form);
-    var formData=new formData();
+    var formData=new FormData();
     var img_file=document.getElementById("image");
     var fileObj=img_file.files[0];
     var url=decodeURI(window.location.href);
