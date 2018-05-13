@@ -134,6 +134,25 @@
 <script src="../lib/jquery.js"></script>
 <script src="../lib/vue.js"></script>
 <script src="../js/selfpageeditor.js"></script>
+<script>
+    function mainpageClick() {
+        var url=decodeURI(window.location.href);
+        var username=url.split("?")[1];
+        var mainpage='mainpage.html'+'?'+username;
+        window.location.href=mainpage;
+    }
+    function checkTasksIBuild(){
 
+    }
+    function checkTasksIJoin(){
+
+    }
+    function selfpageClick() {
+        var url=decodeURI(window.location.href);
+        var selfpage=url.split("?")[1];
+        var selfpage='selfpage.html'+'?'+username;
+        window.location.href=selfpage;
+    }
+</script>
 </body>
 </html>

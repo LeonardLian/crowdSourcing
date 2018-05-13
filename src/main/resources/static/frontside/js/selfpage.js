@@ -46,13 +46,3 @@ $(function() {
     function User(username,password,point,taskAddress,name,email,telephone,intro) {
     }*/
 })
-
-
-
-function editClick() {
-    var url=decodeURI(window.location.href);
-    var username=url.split("?")[1];
-    var editor='selfpageeditor.html'+'?'+username;
-    window.location.href=editor;
-}
-

@@ -19,36 +19,38 @@
 <header class="am-topbar am-topbar-inverse admin-header">
     <div class="am-u-md-8 am-u-md-push-2">
         <div class="am-topbar-brand">
-            <a href="mainpage.html">
-                <strong>Crowdsourcing</strong> <small>众包标注平台</small>
+            <a href="javascript:mainpageClick();">
+                <strong>Crowdsourcing</strong>
+                <small>
+                    众包标注平台
+                </small>
             </a>
         </div>
 
         <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
             <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
-                <!--<li>-->
-                    <!--<a href="javascript:;">-->
-                        <!--<span class="am-icon-envelope-o">-->
-                        <!--</span> -->
-                        <!--我发布的任务-->
-                        <!--<span class="am-badge am-badge-warning">-->
-                            <!--5-->
-                        <!--</span>-->
-                    <!--</a>-->
-                <!--</li>-->
-                <!--<li class="am-hide-sm-only">-->
-                    <!--<a href="javascript:;">-->
-                        <!--<span class="am-icon-arrows-alt">-->
-                        <!--</span>-->
-                        <!--<span class="admin-fullText">-->
-                            <!--我参与的任务 -->
-                        <!--</span>-->
-                    <!--</a>-->
-                <!--</li>-->
+                <li class="am-hide-sm-only">
+                    <a href="javascript:checkTasksIBuild();">
+                        我发布的任务
+                        <span class="am-badge am-badge-warning">5</span>
+                    </a>
+                </li>
+                <li class="am-hide-sm-only">
+                    <a href="javascript:checkTasksIJoin();">
+                        我参与的任务
+                        <span class="am-badge am-badge-warning">5</span>
+                    </a>
+                </li>
+
                 <li class="am-dropdown" >
-                    <a href="selfpage.html" class="am-dropdown-toggle" id="user">
-                        <span class="am-icon-users" onmouseover="">
-                        </span>用户{{username}}<span class="am-icon-caret-down"></span>
+                    <a href="javascript:selfpageClick();" class="am-dropdown-toggle" id="user">
+                        用户{{username}}
+                    </a>
+                </li>
+                <li>
+                    <a href = "login.html">
+                        退出
+                        <span class="am-icon-sign-out"></span>
                     </a>
                 </li>
             </ul>
@@ -126,15 +128,28 @@
     </div>
 </footer>
 
-<!--<script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>-->
-<!--<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>-->
-<!--<script src="assets/js/amazeui.ie8polyfill.min.js"></script>-->
-<!--<script src="assets/js/jquery.min.js"></script>-->
-<!--<script src="assets/js/amazeui.min.js"></script>-->
-<!--<script src="assets/js/app.js"></script>-->
 <script src="../lib/vue.js"></script>
 <script src="../lib/jquery.js"></script>
 <script src="../js/releaseTask.js"></script>
+<script>
+    function mainpageClick() {
+        var url=decodeURI(window.location.href);
+        var username=url.split("?")[1];
+        var mainpage='mainpage.html'+'?'+username;
+        window.location.href=mainpage;
+    }
+    function checkTasksIBuild(){
 
+    }
+    function checkTasksIJoin(){
+
+    }
+    function selfpageClick() {
+        var url=decodeURI(window.location.href);
+        var username=url.split("?")[1];
+        var selfpage='selfpage.html'+'?'+username;
+        window.location.href=selfpage;
+    }
+</script>
 </body>
 </html>

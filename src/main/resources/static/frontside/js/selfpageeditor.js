@@ -7,7 +7,7 @@ function saveImage() {
     var url=decodeURI(window.location.href);
     var username=url.split("?")[1];
     formData.append("classIcon",fileObj);
-    /*formData.append("classDescribe",username);*/
+    //formData.append("classDescribe",username);
 
     $.ajax({
         url:"http://127.0.0.1:8080/saveUserImg",
@@ -20,7 +20,7 @@ function saveImage() {
             alert("success");
         },
         error:function (e) {
-            alert("error")
+            alert("error");
         }
     });
 }
@@ -29,3 +29,7 @@ $('#image').on('change',function () {
     src = window.URL.createObjectURL(this.files[0]);
     $('#newImage').attr('src',src);
 })
+
+function saveInfo() {
+
+}
