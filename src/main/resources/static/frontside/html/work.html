@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>众包标注工作区</title>
+    <link rel="icon" type="image/png" href="assets/i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+    <link rel="stylesheet" href="assets/css/amazeui.min.css"/>
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <style>
+        .select_method a {
+            padding: 8px;
+            text-decoration: none;
+            font-size: 30px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .overlay {
+            height: 0%;
+            width: 22%;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #ACD6FF;
+            overflow-y: hidden;
+            transition: 0.5s;
+        }
+
+        .overlay-content {
+            position: relative;
+            top: 40px;
+            width: 80%;
+            text-align: left;
+            margin-top: 30px;
+            margin-left: 6px;
+        }
+
+        .overlay p {
+            padding: 8px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .overlay .closebtn {
+            position: absolute;
+            top: 30px;
+            right: 15px;
+            font-size: 40px;
+            color: #818181;
+        }
+
+        .picture {
+            margin-top: 40px;
+            margin-left: 50px;
+            width: 50%;
+            height: 50%;
+            border-color: #0c79b1;
+            background: transparent;
+        }
+
+
+    </style>
+
+</head>
+<body>
+<header class="am-topbar am-topbar-inverse admin-header">
+    <div class="am-u-md-8 am-u-md-push-2">
+        <div class="am-topbar-brand">
+            <a href="mainpage.html">
+                <strong>Crowdsourcing</strong>
+                <small>
+                    众包标注平台
+                </small>
+            </a>
+        </div>
+
+        <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+            <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
+                <li class="am-hide-sm-only">
+                    <a href="javascript:checkTasksIBuild();">
+                        我发布的任务
+                        <span class="am-badge am-badge-warning">5</span>
+                    </a>
+                </li>
+                <li class="am-hide-sm-only">
+                    <a href="javascript:checkTasksIJoin();">
+                        我参与的任务
+                        <span class="am-badge am-badge-warning">5</span>
+                    </a>
+                </li>
+
+                <li class="am-dropdown" >
+                    <a href="selfpage.html" class="am-dropdown-toggle" id="user">
+                        用户{{username}}
+                    </a>
+                </li>
+                <li class = "logout"><a href = "login.html"> 退出<span class="am-icon-sign-out"></span></a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+<div class = "am-align-left">
+
+    <div id="myNav" class="overlay">
+        <a href="javascript:void(0)" class = "closebtn" onclick="closeNav()"> &times;</span></a>
+        <div class="overlay-content">
+            <p class = "task-content">
+                整体方框区域标注？任务描述：要求，积分，and so on...
+            </p>
+        </div>
+    </div>
+
+
+    <ul class="am-list admin-sidebar-list">
+        <li><a href="mainpage.html"><span class="am-icon-home"></span> 首页</a></li>
+        <li class="admin-parent">
+            <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 关于任务 <span class="am-icon-angle-right am-fr am-margin-right" onclick = "openNav()"></span></a>
+        </li>
+    </ul>
+
+    <div id="myChoice" class="select_method">
+        <a href="#" >整体标注</a>
+        <a href="#" >方框标注</a>
+        <a href="#" >区域标注</a>
+    </div>
+
+</div>
+<div class = "picture">
+</div>
+
+<script src="../lib/vue.js"></script>
+<script src="../lib/jquery.js"></script>
+<script src="../js/loadAllTasks.js"></script>
+<script src="../js/checkUserInformation.js"></script>
+<script>
+    function checkTasksIJoin(){
+        window.location.href='mytask_joined.html?'+window.location.href;
+    }
+    function checkTasksIBuild() {
+        window.location.href='mytask_buildt.html?'+window.location.href;
+    }
+    function releaseTask(){
+        window.location.href='releaseTask.html?'+window.location.href;
+    }
+</script>
+<script>
+    function openNav() {
+        document.getElementById("myNav").style.height = "66%";
+    }
+
+    function closeNav() {
+        document.getElementById("myNav").style.height = "0%";
+    }
+</script>
+
+</body>
+</html>

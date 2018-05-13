@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>编辑个人资料</title>
+    <title>发布任务</title>
     <meta name="description" content="这是一个 user 页面">
     <meta name="keywords" content="user">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -66,63 +66,51 @@
                 </div>
             </div>
             <hr>
-            <div class="am-u-md-4 am-u-md-push-8">
-                <div class="am-panel am-panel-default">
-                    <div class="am-panel-bd">
-                        <div class="am-g">
-                            <div id="picdiv" class="am-u-md-8">
-                                <img id="img1" src="" width="100" height="100" alt=""/>
-                            </div>
-                            <div class="am-u-md-pull-0">
-                                <div class="am-form-group">
-                                    <label class="ui_button ui_button_primary" for="file">上传文件</label>
-                                    <form>
-                                        <input type="file" id="file" style="position:absolute;clip:rect(0 0 0 0);"></form>
-                                    <!--<input type="file" id="file" />-->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--<div class="am-panel am-panel-default">-->
-                    <!--<div class="am-panel-bd">-->
-                        <!--<div class="user-info">-->
-                            <!--<p>等级信息</p>-->
-                            <!--<div class="am-progress am-progress-sm"><div class="am-progress-bar" style="width: 60%"></div></div>-->
-                            <!--<p class="user-info-order">当前等级：<strong>LV8</strong> 活跃天数：<strong>587</strong> 距离下一级别：<strong>160</strong></p>-->
-                        <!--</div>-->
-                        <!--<div class="user-info">-->
-                            <!--<p>信用信息</p>-->
-                            <!--<div class="am-progress am-progress-sm"><div class="am-progress-bar am-progress-bar-success" style="width: 80%"></div></div>-->
-                            <!--<p class="user-info-order">信用等级：正常当前 信用积分：<strong>80</strong></p>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            </div>
-            <div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4">
+            <div class="am-u-sm-12 am-u-md-8">
                 <form class="am-form am-form-horizontal">
                     <div class="am-form-group">
-                        <label for="taskname" class="am-u-sm-4 am-form-label">需要人数</label>
+                        <label for="taskname" class="am-u-sm-4 am-form-label">任务名称</label>
+                        <div class="am-u-sm-8">
+                            <input type="text" id="taskname" placeholder="不超过20字">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="mode" class="am-u-sm-4 am-form-label">标注方式</label>
+                        <div class="am-u-sm-8">
+                        <select id="mode">
+                            <option>整体标注</option>
+                            <option>方框标注</option>
+                            <option>局部标注</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="numofneed" class="am-u-sm-4 am-form-label">需要人数</label>
                         <div class="am-u-sm-8">
                             <input type="number" id="numofneed" min="1" max="50" placeholder="不超过50人">
                         </div>
                     </div>
                     <div class="am-form-group">
-                        <label for="taskname" class="am-u-sm-4 am-form-label">新任务</label>
+                        <label for="points" class="am-u-sm-4 am-form-label">积分奖励</label>
                         <div class="am-u-sm-8">
-                            <input type="text" id="taskname" placeholder="任务简介(不超过20字)">
+                            <input type="number" id="points" min="0" placeholder="完成任务可获得的积分数量">
                         </div>
                     </div>
                     <div class="am-form-group">
-                        <label for="taskDescription" class="am-u-sm-4 am-form-label"></label>
+                        <label for="description" class="am-u-sm-4 am-form-label">任务详情</label>
                         <div class="am-u-sm-8">
-                            <textarea class="" rows="5" id="taskDescription" placeholder="详细描述"></textarea>
+                            <textarea class="" rows="5" id="description" placeholder="详细描述"></textarea>
+                        </div>
+                    </div>
+                    <div class="am-form-group" id="picdiv">
+                        <label for="file" class="am-u-sm-4 am-form-label">上传文件</label>
+                        <div class="am-u-sm-8 am-panel am-panel-default">
+                            <form><input type="file" id="file" style="position:absolute;clip:rect(0 0 0 0);"></form>
                         </div>
                     </div>
                     <div class="am-form-group">
-                        <div class="am-u-sm-8 am-u-sm-push-5">
-                            <a href="selfpage.html">
-                                <button type="button" class="am-btn am-btn-primary" onclick="release()">发布</button></a>
+                        <div class="am-u-sm-6 am-u-sm-push-5">
+                            <button type="button" class="am-btn am-btn-primary" onclick="release()">发布任务</button>
                         </div>
                     </div>
                 </form>
