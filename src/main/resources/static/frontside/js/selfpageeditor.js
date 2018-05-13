@@ -1,10 +1,14 @@
 function saveImage() {
-    var formData=new formData();
+    //var form=document.getElementById("imageForm")
+    //var formData=new formData(form);
+    var formData=new FormData();
     var img_file=document.getElementById("image");
     var fileObj=img_file.files[0];
     var url=decodeURI(window.location.href);
     var username=url.split("?")[1];
     formData.append("classIcon",fileObj);
+
+
     /*formData.append("classDescribe",username);*/
 
     $.ajax({
