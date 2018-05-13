@@ -7,8 +7,6 @@ function saveImage() {
     var url=decodeURI(window.location.href);
     var username=url.split("?")[1];
     formData.append("classIcon",fileObj);
-
-
     /*formData.append("classDescribe",username);*/
 
     $.ajax({
@@ -26,3 +24,8 @@ function saveImage() {
         }
     });
 }
+
+$('#image').on('change',function () {
+    src = window.URL.createObjectURL(this.files[0]);
+    $('#newImage').attr('src',src);
+})
