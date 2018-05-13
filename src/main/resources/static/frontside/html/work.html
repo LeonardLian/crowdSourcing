@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>众包标注工作区</title>
-    <link rel="icon" type="image/png" href="assets/i/favicon.png">
-    <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
     <link rel="stylesheet" href="assets/css/amazeui.min.css"/>
     <link rel="stylesheet" href="assets/css/admin.css">
     <style>
@@ -64,6 +62,24 @@
             background: transparent;
         }
 
+        .upload {
+            left: 1000px;
+            top: 100px;
+            position: fixed;
+            width: 60px;
+            height: 40px;
+            background-color: #4fa4f8;
+            color: #3b3e47;
+            border-radius: 10px;
+
+        }
+        #myCanvas{
+            left: 400px;
+            top: 160px;
+            position: absolute;
+            background: transparent;
+        }
+
 
     </style>
 
@@ -107,17 +123,6 @@
 </header>
 
 <div class = "am-align-left">
-
-    <div id="myNav" class="overlay">
-        <a href="javascript:void(0)" class = "closebtn" onclick="closeNav()"> &times;</span></a>
-        <div class="overlay-content">
-            <p class = "task-content">
-                整体方框区域标注？任务描述：要求，积分，and so on...
-            </p>
-        </div>
-    </div>
-
-
     <ul class="am-list admin-sidebar-list">
         <li><a href="mainpage.html"><span class="am-icon-home"></span> 首页</a></li>
         <li class="admin-parent">
@@ -125,31 +130,38 @@
         </li>
     </ul>
 
+    <div id="myNav" class="overlay">
+        <a href="javascript:void(0)" class = "closebtn" onclick="closeNav()"> &times;</span></a>
+        <div class="overlay-content">
+            <p class = "task-content">
+                {{task_content}}整体方框区域标注？任务描述：要求，积分，and so on...
+            </p>
+        </div>
+    </div>
+
+    <!--
     <div id="myChoice" class="select_method">
         <a href="#" >整体标注</a>
         <a href="#" >方框标注</a>
         <a href="#" >区域标注</a>
     </div>
+    <-->
 
 </div>
+
+
 <div class = "picture">
+    <button type = "button" class = "upload">提交</button>
+    <canvas id="myCanvas" width="750" height="550" style="border:1px solid #c3c3c3;">
+        您的浏览器不支持 HTML5 canvas 标签。
+    </canvas>
 </div>
+
 
 <script src="../lib/vue.js"></script>
 <script src="../lib/jquery.js"></script>
-<script src="../js/loadAllTasks.js"></script>
-<script src="../js/checkUserInformation.js"></script>
-<script>
-    function checkTasksIJoin(){
-        window.location.href='mytask_joined.html?'+window.location.href;
-    }
-    function checkTasksIBuild() {
-        window.location.href='mytask_buildt.html?'+window.location.href;
-    }
-    function releaseTask(){
-        window.location.href='releaseTask.html?'+window.location.href;
-    }
-</script>
+<script src="../lib/Jcanvas.js"></script>
+
 <script>
     function openNav() {
         document.getElementById("myNav").style.height = "66%";
@@ -158,6 +170,7 @@
     function closeNav() {
         document.getElementById("myNav").style.height = "0%";
     }
+
 </script>
 
 </body>
