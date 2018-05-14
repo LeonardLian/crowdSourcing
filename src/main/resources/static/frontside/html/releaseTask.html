@@ -64,7 +64,7 @@
         <div class="admin-content-body am-u-md-8 am-u-md-push-2 am-panel am-panel-default">
             <div class="am-cf am-padding am-padding-bottom-0">
                 <div class="am-fl am-cf">
-                    <strong class="am-text-primary am-text-lg">个人资料</strong> / <small>Personal information</small>
+                    <strong class="am-text-primary am-text-lg">发布任务</strong> / <small>Release Task</small>
                 </div>
             </div>
             <hr>
@@ -89,19 +89,19 @@
                     <div class="am-form-group">
                         <label for="numofneed" class="am-u-sm-4 am-form-label">需要人数</label>
                         <div class="am-u-sm-8">
-                            <input type="number" id="numofneed" min="1" max="50" placeholder="不超过50人">
+                            <input type="number" id="numofneed" min="1" max="50" step="1" placeholder="不超过50人">
                         </div>
                     </div>
                     <div class="am-form-group">
-                        <label for="points" class="am-u-sm-4 am-form-label">积分奖励</label>
+                        <label for="point" class="am-u-sm-4 am-form-label">积分奖励</label>
                         <div class="am-u-sm-8">
-                            <input type="number" id="points" min="0" placeholder="完成任务可获得的积分数量">
+                            <input type="number" id="point" min="0" placeholder="完成任务可获得的积分数量">
                         </div>
                     </div>
                     <div class="am-form-group">
-                        <label for="date" class="am-u-sm-4 am-form-label">截止日期</label>
+                        <label for="deadline" class="am-u-sm-4 am-form-label">截止日期</label>
                         <div class="am-u-sm-8">
-                            <input type="date" id="date">
+                            <input type="date" id="deadline">
                         </div>
                     </div>
                     <div class="am-form-group">
@@ -114,7 +114,7 @@
                 <div class="am-u-sm-12 am-u-md-8">
                     <div class="am-form-group am-u-sm-push-8">
                     <form id="imageForm" name="imageForm" enctype="multipart/form-data">
-                        <input type="file" name="file" accept=".jpg" multiple="multiple" id="image">
+                        <input type="file" name="file" multiple accept=".jpg" id="image">
                     </form>
                     <small>请上传jpg格式的图片</small>
                     </div>
