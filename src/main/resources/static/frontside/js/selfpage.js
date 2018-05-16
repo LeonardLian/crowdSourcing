@@ -47,7 +47,7 @@ $(function() {
            if(data=='no') {
                return;
            }else{
-               $('#image').attr('src',"/Users/Leonarda/Desktop/Img/1234.jpeg");
+               $('#image').attr('src','data:image/jpeg;base64,'+data);
                //$('#image').attr('src',data);
            }
         },

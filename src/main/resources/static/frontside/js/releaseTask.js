@@ -3,6 +3,7 @@
  */
 /*
 TODO 删除上传的图片
+TODO html界面调整
  */
 
 $(function () {
