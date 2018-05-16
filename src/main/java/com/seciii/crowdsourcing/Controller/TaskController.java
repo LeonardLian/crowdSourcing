@@ -4,6 +4,7 @@ import com.seciii.crowdsourcing.Dao.*;
 import com.seciii.crowdsourcing.Dao.User;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.io.File;
@@ -20,18 +21,18 @@ import java.util.ArrayList;
 public class TaskController {
 
 
-    //发布任务
-    @RequestMapping(value = "/releaseTask",method = RequestMethod.POST)
+    //发布任务的基本信息
+    @RequestMapping(value = "/releaseTaskInfo",method = RequestMethod.POST)
     public String releaseTask(@RequestBody Task task) throws IOException{
         String requestor=task.getRequestor();
-        String description=task.getDescription();
-        String img=task.getImg();
-        String numofNeeded=task.getNumOfNeeded();
         String tasktag=task.getTasktag();
+        String description=task.getDescription();
+        String mode=task.getMode();
+        String numofNeeded=task.getNumOfNeeded();
         String point=task.getPoint();
-        String kindOfLabel=task.getKindOfLabel();
+        String deadline=task.getDeadline();
 
-        Task task1=new Task(requestor,tasktag,description,img,numofNeeded,point,kindOfLabel);
+        Task task1=new Task(requestor,tasktag,description,mode,numofNeeded,point,deadline);
 
         String taskname=task1.getTaskname();
         String foldername="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskname;
@@ -45,37 +46,69 @@ public class TaskController {
 
         String alltaskInfo="src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt";
 
-        String desStr="{"+
-                "\"taskname\":"+"\""+task.getTaskname()+"\""+","+
-                "\"requestor\""+"\""+task.getRequestor()+"\""+","+
-                "\"description\""+"\""+task.getDescription()+"\""+","+
-                "\"img\""+"\""+task.getImg()+"\""+","+
-                "\"numOfNeeded\""+"\""+task.getNumOfNeeded()+"\""+","+
-                "\"numOfPart\""+"\""+task.getNumOfPart()+"\""+
-                "}";
+        String desStr=
+                task1.getTaskname()+"#"+
+                task1.getRequestor()+"#"+
+                task1.getTasktag()+"#"+
+                task1.getDescription()+"#"+
+                task1.getMode()+"#"+
+                task1.getNumOfNeeded()+"#"+
+                task1.getNumOfPart()+"#"+
+                task1.getPoint()+"#"+
+                task1.getDeadline()+"\n";
+
 
         File file=new File(taskInformationFile);
         if(!file.exists()){
             file.createNewFile();
         }
+
         FileWriter writer=new FileWriter(taskInformationFile,false);
         BufferedWriter bw=new BufferedWriter(writer);
         bw.write(desStr);
         bw.close();
 
-        String str=task.getTaskname()+" "+task.getRequestor()+" "+task.getDescription()+" "+task.getImg()+" "+task.getNumOfNeeded()+" "+task.getNumOfPart()+"\n";
+
         FileWriter fw=new FileWriter(alltaskInfo,true);
         BufferedWriter bww=new BufferedWriter(fw);
-        bww.write(str);
+        bww.write(desStr);
         bww.close();
+
 
         String userfile="src/main/java/com/seciii/crowdsourcing/Data/UserTaskIndexList/"+requestor+".txt";
         FileWriter fileWriter=new FileWriter(userfile,true);
         BufferedWriter bwww=new BufferedWriter(fileWriter);
         bwww.write("b"+task.getTaskname()+" ");
+        bwww.close();
 
-        return "Success";
+        return taskname;
     }
+
+    //发布任务的图像信息
+    @RequestMapping(value = "/releaseTaskImg",method = RequestMethod.POST)
+    @ResponseBody public String releaseTaskImg(@RequestParam("taskImg") MultipartFile file,@RequestParam("imgName") String imgName) throws IOException{
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskId/TaskId.txt";
+        File f=new File(filename);
+        InputStreamReader srreader=new InputStreamReader(new FileInputStream(f));
+        BufferedReader reader=new BufferedReader(srreader);
+        String taskName=reader.readLine();
+        String foldername="/Users/Leonarda/Desktop/TaskImg/"+taskName;
+        File folder=new File(foldername);
+        if(!folder.exists()){
+            folder.mkdirs();
+        }
+
+        File newfile=new File("/Users/Leonarda/Desktop/TaskImg/"+taskName+"/"+imgName+".jpeg");
+
+        if(!newfile.exists()){
+            newfile.createNewFile();
+        }
+
+        file.transferTo(newfile);
+        return "success";
+    }
+
+    //以旁观者身份查看任务信息
 
 
     //查看一个任务的分发情况

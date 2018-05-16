@@ -11,7 +11,7 @@ $(function () {
     var username=url.split("?")[1];
 
     new Vue({
-        el:'#username',
+        el:'#user',
         data:{
             username:username
         }
@@ -28,8 +28,10 @@ $('#image').on('change',function () {
     }
 })
 
+
 function release() {
     if(saveImagesOfTask()==0){
+        alert("上传失败");
         return;
     }
     saveInfoOfTask();
@@ -49,21 +51,23 @@ function saveImagesOfTask() {
         var fileObj=img_file.files[0];
         var url=decodeURI(window.location.href);
         var username=url.split("?")[1];
-        formData.append("classIcon",fileObj);
-        formData.append("className",username);
+        formData.append("taskImg",fileObj);
+        formData.append("imgName",i);
 
         $.ajax({
-            url:"http://127.0.0.1:8080/saveTaskImg",
+            url:"http://127.0.0.1:8080/releaseTaskImg",
             type:'POST',
             data:formData,
             async:false,
             processData:false,
             contentType:false,
             success:function (data) {
-
+                alert("success");
+                return 1;
             },
             error:function (e) {
                 alert("error");
+                return 0;
             }
         });
     }
@@ -87,7 +91,7 @@ function saveInfoOfTask(){
         alert('任务名称过长');
         return;
     }
-    if(numofneed==""){
+    if(numOfNeeded==""){
         alert('请输入需要人数');
         return;
     }
@@ -112,10 +116,10 @@ function saveInfoOfTask(){
         data:taskJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/saveTaskInfo',//TODO
+        url:'http://127.0.0.1:8080/releaseTaskInfo',
         success:function (data) {
-            var task_builded='task_builded.html'+'?'+username;
-            window.location.href=task_builded;
+            //var task_builded='task_builded.html'+'?'+username;
+            //window.location.href=task_builded;
             alert("发布成功");
         },
         error:function(e){
@@ -130,7 +134,7 @@ function Task(taskname,requestor,tasktag,description,mode,numOfNeeded,numOfPart,
     this.tasktag=tasktag;//任务名称，由发布任务时填写
     this.description=description;//任务描述
     this.mode=mode;//标注模式
-    this.numOfNeed=numOfNeeded;//需要人数，由发布任务时填写
+    this.numOfNeeded=numOfNeeded;//需要人数，由发布任务时填写
     this.numOfPart=numOfPart;//参与人数，由后端统计修改
     this.point=point;//积分
     this.deadline=deadline;//截止日期
