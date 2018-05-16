@@ -18,17 +18,61 @@ public class UserController {
 
 
     //保存个人信息
-    @RequestMapping(value="/json/saveUserInformation.json",method = RequestMethod.POST)
+    @RequestMapping(value="/saveUserInfo",method = RequestMethod.POST)
     public String saveUserInformation(@RequestBody User user) throws IOException{
+        String userId=user.getUsername();
+        String username=user.getName();
+        String userphone=user.getPhone();
+        String useremail=user.getEmail();
+        String userdis=user.getDescription();
 
-        return null;
+        //String info=userId+"^"+username+"^"+userphone+"^"+useremail+"^"+userdis+"\n";
+        //FileWriter writer=new FileWriter("src/main/java/com/seciii/crowdsourcing/Data/UserInformation/UserInformation.txt",true);
+        //BufferedWriter bw=new BufferedWriter(writer);
+        ArrayList<String> oldone=new ArrayList<>();
+
+        Boolean succeed=false;
+
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/UserInformation/UserInformation.txt";
+        File file=new File(filename);
+        InputStreamReader srreader=new InputStreamReader(new FileInputStream(file));
+        BufferedReader reader=new BufferedReader(srreader);
+        String line=null;
+        while((line=reader.readLine())!=null){
+            String usern=line.split(" ")[0];
+            if(usern.equals(userId)){
+                String newuser=line.split(" ")[0]+" "+username+" "+userphone+" "+useremail+" "+userdis+"\n";;
+                oldone.add(newuser);
+                succeed=true;
+            }else{
+                oldone.add(line);
+            }
+        }
+
+        FileWriter writer=new FileWriter("src/main/java/com/seciii/crowdsourcing/Data/UserInformation/UserInformation.txt",false);
+        BufferedWriter bw=new BufferedWriter(writer);
+        for(String str:oldone){
+            bw.write(str+"\n");
+        }
+        bw.close();
+
+        if(!succeed){
+            String info=userId+" "+username+" "+userphone+" "+useremail+" "+userdis+"\n";
+            FileWriter writerr=new FileWriter("src/main/java/com/seciii/crowdsourcing/Data/UserInformation/UserInformation.txt",true);
+            BufferedWriter bww=new BufferedWriter(writerr);
+            bww.write(info);
+            System.out.println(info);
+            bww.close();
+        }
+
+        return "success";
     }
+
 
     //保存个人头像
     @RequestMapping(value="/saveUserImg",method = RequestMethod.POST)
-    @ResponseBody
-    public String saveUserImg(@RequestParam("classIcon") MultipartFile file) throws IOException{
-        File newfile=new File("/Users/Leonarda/Desktop/Img/a.jpeg");
+    @ResponseBody public String saveUserImg(@RequestParam("classIcon") MultipartFile file, @RequestParam("className") String username) throws IOException{
+        File newfile=new File("/Users/Leonarda/Desktop/Img/"+username+".jpeg");
         if(!newfile.exists()){
             newfile.createNewFile();
         }
@@ -37,11 +81,56 @@ public class UserController {
         return "success";
     }
 
+
+    //显示个人头像
+    @RequestMapping(value="/showUserImg",method=RequestMethod.POST)
+    public String showUserImg(@RequestBody User user) throws IOException{
+        String userId=user.getUsername();
+        //System.out.println(userId);
+
+        String filepath="/Users/Leonarda/Desktop/Img/"+userId+".jpeg";
+        String info;
+        File file=new File(filepath);
+        if(!file.exists()){
+            info="no";
+        }else{
+            info=filepath;
+        }
+        return info;
+    }
+
     //显示个人信息
     @RequestMapping(value="/showUserInformation",method = RequestMethod.POST)
     public String showUserInformation(@RequestBody User user) throws IOException{
-        return null;
+        String userId=user.getUsername();
+        //System.out.println(userId);
+
+        Boolean succeed=false;
+
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/UserInformation/UserInformation.txt";
+        File file=new File(filename);
+        InputStreamReader srreader=new InputStreamReader(new FileInputStream(file));
+        BufferedReader reader=new BufferedReader(srreader);
+        String line=null;
+        while((line=reader.readLine())!=null){
+            //System.out.println(line);
+            String usern=line.split(" ")[0];
+            //System.out.println(usern);
+            if(usern.equals(userId)){
+                succeed=true;
+                break;
+            }else{
+                continue;
+            }
+        }
+        System.out.println(line);
+        if(succeed){
+            return line;
+        }else{
+            return "no";
+        }
     }
+
 
     //将注册的新用户保存
     @RequestMapping(value = "/register", method = RequestMethod.POST)
