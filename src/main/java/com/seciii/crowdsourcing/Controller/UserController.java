@@ -16,7 +16,6 @@ import java.util.ArrayList;
 @RestController
 public class UserController {
 
-
     //保存个人信息
     @RequestMapping(value="/saveUserInfo",method = RequestMethod.POST)
     public String saveUserInformation(@RequestBody User user) throws IOException{
@@ -104,6 +103,7 @@ public class UserController {
     public String showUserInformation(@RequestBody User user) throws IOException{
         String userId=user.getUsername();
         //System.out.println(userId);
+
 
         Boolean succeed=false;
 
