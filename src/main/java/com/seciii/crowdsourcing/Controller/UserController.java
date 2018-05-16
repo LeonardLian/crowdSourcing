@@ -3,6 +3,7 @@ package com.seciii.crowdsourcing.Controller;
 import com.seciii.crowdsourcing.Dao.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import sun.misc.BASE64Encoder;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -72,6 +73,7 @@ public class UserController {
     @RequestMapping(value="/saveUserImg",method = RequestMethod.POST)
     @ResponseBody public String saveUserImg(@RequestParam("classIcon") MultipartFile file, @RequestParam("className") String username) throws IOException{
         File newfile=new File("/Users/Leonarda/Desktop/Img/"+username+".jpeg");
+
         if(!newfile.exists()){
             newfile.createNewFile();
         }
@@ -88,14 +90,31 @@ public class UserController {
         //System.out.println(userId);
 
         String filepath="/Users/Leonarda/Desktop/Img/"+userId+".jpeg";
+//        String info;
+//        File file=new File(filepath);
+//        if(!file.exists()){
+//            info="no";
+//        }else{
+//            info=filepath;
+//        }
+//        return info;
         String info;
         File file=new File(filepath);
         if(!file.exists()){
             info="no";
         }else{
-            info=filepath;
+            InputStream input=null;
+            byte[] data=null;
+            input=new FileInputStream(filepath);
+            data=new byte[input.available()];
+            input.read(data);
+            input.close();
+
+            BASE64Encoder encoder=new BASE64Encoder();
+            return encoder.encode(data);
         }
         return info;
+
     }
 
     //显示个人信息
