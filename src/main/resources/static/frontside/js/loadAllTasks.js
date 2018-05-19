@@ -44,22 +44,25 @@ $(function () {
                 //
                 // });
 
+                var result;
                 $.ajax({//获取任务封面图案
                     type:'POST',
                     data:taskJson,
                     contentType:'application/json',
                     dataType:'text',
                     url:'http://127.0.0.1:8080/checkTaskImg',
+                    async:false,
                     success:function (data) {
                         var src=data.split(" ")[0];
-                        $('#taskList').prepend('<li> <a href="javascript:taskdetailsClick(username,taskname);"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt=""/> <div class="gallery-title">'+tasktag+'</div> <div class="gallery-desc">人数：'+numOfPart+'/'+numOfNeeded+'</div> <div class="gallery-desc">截止：'+deadline+'</div> </a> </li>');
+                        result=src;
+                        //$('#taskList').prepend('<li>  <a onclick="taskdetailsClick()" ;> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt=""/> <div class="gallery-title">'+tasktag+'</div> <div class="gallery-desc">人数：'+numOfPart+'/'+numOfNeeded+'</div> <div class="gallery-desc">截止：'+deadline+'</div> </a> </li>');
                     },
                     error:function (e) {
                         alert('error');
                     }
                 });
 
-                //$('#taskList').prepend('<li> <a href="javascript:taskdetailsClick(username,taskname);"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+result+'" alt=""/> <div class="gallery-title">任务名称：'+tasktag+'</div> <div class="gallery-desc">需要人数：'+numOfPart+'/'+numOfNeeded+'</div> <div class="gallery-desc">截止日期：'+deadline+'</div> </a> </li>');
+                $('#taskList').prepend('<li> <a href="javascript:taskdetailsClick(username,taskname);"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+result+'" alt=""/> <div class="gallery-title">'+tasktag+'</div> <div class="gallery-desc">人数：'+numOfPart+'/'+numOfNeeded+'</div> <div class="gallery-desc">截止：'+deadline+'</div> </a> </li>');
 
                 tasknum=tasknum+1;
             }
@@ -74,8 +77,8 @@ $(function () {
     })
 });
 
-function taskdetailsClick(username,taskname){
-    alert('true');
+function taskdetailsClick(){
+
 }
 
 function Task(taskname,requestor,tasktag,description,mode,numOfNeeded,numOfPart,point,deadline) {
