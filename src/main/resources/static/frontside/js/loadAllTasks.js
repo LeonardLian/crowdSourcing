@@ -13,17 +13,6 @@ $(function () {
         }
     });
 
-
-
-    Vue.component('task',{
-        template:'<li> <a href="taskdetails.html"> <img class="am-img-thumbnail am-img-bdrs" v-bind:src="imgaddress" alt=""/> <div class="gallery-title">{{description}}</div> <div class="gallery-desc">{{time}}</div> </a> </li>',
-        props:['imgaddress','description','time']
-    });
-    new Vue({
-        el:'#taskList'
-    });
-
-
     $.get("http://127.0.0.1:8080/checkAllTasks",function (data) {
 
         var tasknum=0;
@@ -34,14 +23,35 @@ $(function () {
             return;
         }
         else{
-            for(x in arr){
-                var taskarr=arr[x].split(" ");
-                var imgAddress=taskarr[3];
-                var description=taskarr[2];
-                var partofneeded='需要人数：'+taskarr[4];
-                var taskname=taskarr[0];
+            for(var x in arr){
+                var infoList=x.split('#');
+                var taskname=infoList[0];
+                var tasktag=infoList[2];
+                var numOfNeeded=infoList[5];
+                var numOfPart=infoList[6];
+                var deadline=infoList[8];
 
-                $('#taskList').prepend('<li> <a href="taskdetails.html?'+taskname+'"'+'> <img class="am-img-thumbnail am-img-bdrs" src="'+imgAddress+'" alt=""/> <div class="gallery-title">'+description+'</div> <div class="gallery-desc">'+partofneeded+'</div> </a> </li>');
+                var task=new Task(taskname,'aaa','aaa','aaa','aaa','aaa','aaa','aaa','aaa');
+                var taskJson=JSON.stringify(task);
+
+                // $.ajax({//判断用户和任务的关系：旁观者、参与者、发布者
+                //
+                // });
+
+                $.ajax({//获取任务封面图案
+                    type:'POST',
+                    data:taskJson,
+                    contentType:'application/json',
+                    dataType:'text',
+                    url:'http://127.0.0.1:8080/checkTaskImg',
+                    success:function (data) {
+                        var src=data.split(" ")[0];
+                        $('#taskList').prepend('<li> <a href="javascript:taskdetailsClick(username,taskname);"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt=""/> <div class="gallery-title">任务名称：'+tasktag+'</div> <div class="gallery-desc">需要人数：'+numOfPart+'/'+numOfNeeded+'</div> <div class="gallery-desc">截止日期：'+deadline+'</div> </a> </li>');
+                    },
+                    error:function (e) {
+                        alert('error');
+                    }
+                });
 
                 tasknum=tasknum+1;
             }
@@ -53,24 +63,21 @@ $(function () {
                 tasknum:tasknum
             }
         })
-        // for(x in arr){
-        //     var taskarr=arr[x].split(" ");
-        //     var imgAddress=taskarr[3];
-        //     var description=taskarr[2];
-        //     var partofneeded='需要人数：'+taskarr[4];
-        //     var taskname=taskarr[0];
-        //
-        //     $('#taskList').prepend('<li> <a href="taskdetails.html?'+taskname+'"'+'> <img class="am-img-thumbnail am-img-bdrs" src="'+imgAddress+'" alt=""/> <div class="gallery-title">'+description+'</div> <div class="gallery-desc">'+partofneeded+'</div> </a> </li>');
-        //
-        //     tasknum=tasknum+1;
-        //
-        //     new Vue({
-        //         el:'#tasknum',
-        //         data:{
-        //             tasknum:tasknum
-        //         }
-        //     })
-        // }
     })
-
 });
+
+function taskdetailsClick(username,taskname){
+    alert('true');
+}
+
+function Task(taskname,requestor,tasktag,description,mode,numOfNeeded,numOfPart,point,deadline) {
+    this.taskname=taskname;//任务ID，由后端自主分配
+    this.requestor=requestor;//发起者的username
+    this.tasktag=tasktag;//任务名称，由发布任务时填写
+    this.description=description;//任务描述
+    this.mode=mode;//标注模式
+    this.numOfNeeded=numOfNeeded;//需要人数，由发布任务时填写
+    this.numOfPart=numOfPart;//参与人数，由后端统计修改
+    this.point=point;//积分
+    this.deadline=deadline;//截止日期
+}

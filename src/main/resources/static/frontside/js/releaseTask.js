@@ -20,6 +20,7 @@ $(function () {
 
 //即时显示上传的图片
 $('#image').on('change',function () {
+    $('#showPic').empty();
     var fileObj = document.getElementById("image");
     var fileList = fileObj.files;
     for(var i=0;i<fileList.length;i++){
