@@ -118,7 +118,7 @@
 <script src="../lib/vue.js"></script>
 <script src="../lib/jquery.js"></script>
 <script src="../js/loadAllTasks.js"></script>
-<script src="../js/checkUserInformation.js"></script>
+
 <script>
     function mainpageClick() {
         var url=decodeURI(window.location.href);
@@ -127,7 +127,10 @@
         window.location.href=mainpage;
     }
     function checkTasksIBuild(){
-
+        var url=decodeURI(window.location.href);
+        var username=url.split("?")[1];
+        var checkBuildTask='mytask_built.html'+'?'+username;
+        window.location.href=checkBuildTask;
     }
     function checkTasksIJoin(){
 

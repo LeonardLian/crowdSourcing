@@ -3,7 +3,7 @@
  */
 $(function () {
     var url=decodeURI(window.location.href);
-    var username=url.split("?")[2];
+    var username=url.split("?")[1];
 
     new Vue({
         el:'#user',
