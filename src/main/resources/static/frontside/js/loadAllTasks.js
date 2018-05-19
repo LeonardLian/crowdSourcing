@@ -1,7 +1,10 @@
 /**
  * Created by Leonarda on 2018/4/22.
  */
-
+/*
+TODO 限制图片长宽一致
+TODO 实现搜索功能
+*/
 $(function () {
     var url=decodeURI(window.location.href);
     var username=url.split("?")[1];
@@ -46,7 +49,7 @@ $(function () {
                     url:'http://127.0.0.1:8080/checkTaskImg',
                     success:function (data) {
                         var src=data.split(" ")[0];
-                        $('#taskList').prepend('<li> <a href="javascript:taskdetailsClick(username,taskname);"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt=""/> <div class="gallery-title">任务名称：'+tasktag+'</div> <div class="gallery-desc">需要人数：'+numOfPart+'/'+numOfNeeded+'</div> <div class="gallery-desc">截止日期：'+deadline+'</div> </a> </li>');
+                        $('#taskList').prepend('<li> <a href="javascript:'+taskdetailsClick(username,taskname)+'\"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt=""/> <div class="gallery-title">任务名称：'+tasktag+'</div> <div class="gallery-desc">需要人数：'+numOfPart+'/'+numOfNeeded+'</div> <div class="gallery-desc">截止日期：'+deadline+'</div> </a> </li>');
                     },
                     error:function (e) {
                         alert('error');
