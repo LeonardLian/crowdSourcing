@@ -15,19 +15,25 @@ $(function () {
 
     $.get("http://127.0.0.1:8080/checkAllTasks",function (data) {
 
+        //alert(data);
+
         var tasknum=0;
 
-        var arr=data.split("!");
+        var arr=data.split('!');
 
         if(data.length==0){
             return;
         }
         else{
             for(var x in arr){
-                var infoList=x.split('#');
+                var infoList=arr[x].split('#');
+                //alert(infoList.length);
                 var taskname=infoList[0];
+                //alert(taskname);
                 var tasktag=infoList[2];
+                //alert(tasktag);
                 var numOfNeeded=infoList[5];
+                //alert(numOfNeeded);
                 var numOfPart=infoList[6];
                 var deadline=infoList[8];
 
@@ -46,12 +52,14 @@ $(function () {
                     url:'http://127.0.0.1:8080/checkTaskImg',
                     success:function (data) {
                         var src=data.split(" ")[0];
-                        $('#taskList').prepend('<li> <a href="javascript:taskdetailsClick(username,taskname);"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt=""/> <div class="gallery-title">任务名称：'+tasktag+'</div> <div class="gallery-desc">需要人数：'+numOfPart+'/'+numOfNeeded+'</div> <div class="gallery-desc">截止日期：'+deadline+'</div> </a> </li>');
+                        $('#taskList').prepend('<li> <a href="javascript:taskdetailsClick(username,taskname);"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt=""/> <div class="gallery-title">'+tasktag+'</div> <div class="gallery-desc">人数：'+numOfPart+'/'+numOfNeeded+'</div> <div class="gallery-desc">截止：'+deadline+'</div> </a> </li>');
                     },
                     error:function (e) {
                         alert('error');
                     }
                 });
+
+                //$('#taskList').prepend('<li> <a href="javascript:taskdetailsClick(username,taskname);"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+result+'" alt=""/> <div class="gallery-title">任务名称：'+tasktag+'</div> <div class="gallery-desc">需要人数：'+numOfPart+'/'+numOfNeeded+'</div> <div class="gallery-desc">截止日期：'+deadline+'</div> </a> </li>');
 
                 tasknum=tasknum+1;
             }

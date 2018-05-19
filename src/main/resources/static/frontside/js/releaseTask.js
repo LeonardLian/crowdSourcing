@@ -119,8 +119,8 @@ function saveInfoOfTask(){
         dataType:'text',
         url:'http://127.0.0.1:8080/releaseTaskInfo',
         success:function (data) {
-            //var task_builded='task_builded.html'+'?'+username;
-            //window.location.href=task_builded;
+            var main='mainpage.html'+'?'+username;
+            window.location.href=main;
             alert("发布成功");
         },
         error:function(e){
