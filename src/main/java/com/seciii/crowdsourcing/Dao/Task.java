@@ -13,27 +13,28 @@ public class Task {
     private String requestor;
     private String tasktag;
     private String description;
-    private String img; //地址
+    private String mode;  //整体标注，方框标注，局部标注
     private String numOfNeeded;
     private String numOfPart;
-    private String kindOfLabel;
     private String point;
+    private String deadline;
 
     public Task(){}
 
-    public Task(String taskname,String requestor,String tasktag,String description,String img,String numOfNeeded,String numOfPart,String kindOfLabel,String point){
+    public Task(String taskname,String requestor,String tasktag,String description,String mode,String numOfNeeded,String numOfPart,String point,String deadline){
         this.taskname=taskname;
         this.requestor=requestor;
         this.tasktag=tasktag;
         this.description=description;
-        this.img=img;
+        this.mode=mode;
         this.numOfNeeded=numOfNeeded;
         this.numOfPart=numOfPart;
-        this.kindOfLabel=kindOfLabel;
         this.point=point;
+        this.deadline=deadline;
     }
 
-    public Task(String requestor,String tasktag,String description,String img,String numOfNeeded,String point,String kindOfLabel){
+
+    public Task(String requestor,String tasktag,String description,String mode,String numOfNeeded,String point,String deadline){
         String taskname="";
         try {
             String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskId/TaskId.txt";
@@ -42,10 +43,11 @@ public class Task {
             BufferedReader reader=new BufferedReader(srreader);
             taskname=reader.readLine();
             int newnum=Integer.parseInt(taskname)+1;
+            System.out.print(newnum);
 
             FileWriter writer=new FileWriter(filename,false);
             BufferedWriter bw=new BufferedWriter(writer);
-            bw.write(newnum);
+            bw.write(String.valueOf(newnum));
             bw.close();
 
         }catch (Exception e){
@@ -54,84 +56,86 @@ public class Task {
         this.taskname=taskname;
 
         this.tasktag=tasktag;
+        this.mode=mode;
         this.point=point;
         this.description=description;
-        this.img=img;
         this.requestor=requestor;
         this.numOfNeeded=numOfNeeded;
         this.numOfPart="0";
-        this.kindOfLabel=kindOfLabel;
-    }
-
-    public String getKindOfLabel() {
-        return kindOfLabel;
-    }
-
-    public void setKindOfLabel(String kindOfLabel) {
-        this.kindOfLabel = kindOfLabel;
-    }
-
-    public String getPoint() {
-        return point;
-    }
-
-    public void setPoint(String point) {
-        this.point = point;
-    }
-
-    public String getTasktag() {
-        return tasktag;
-    }
-
-    public void setTasktag(String tasktag) {
-        this.tasktag = tasktag;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
+        this.deadline=deadline;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public String getRequestor() {
-        return requestor;
-    }
-
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public void setRequestor(String requestor) {
-        this.requestor = requestor;
+    public void setTasktag(String tasktag) {
+        this.tasktag = tasktag;
     }
 
-    public String getNumOfNeeded() {
-        return numOfNeeded;
+    public String getTasktag() {
+        return tasktag;
     }
 
-    public String getNumOfPart() {
-        return numOfPart;
+    public void setPoint(String point) {
+        this.point = point;
     }
 
-    public void setNumOfNeeded(String numOfNeeded) {
-        this.numOfNeeded = numOfNeeded;
+    public String getPoint() {
+        return point;
     }
 
-    public void setNumOfPart(String numOfPart) {
-        this.numOfPart = numOfPart;
+    public String getTaskname() {
+        return taskname;
     }
 
     public void setTaskname(String taskname) {
         this.taskname = taskname;
     }
 
-    public String getTaskname() {
-        return taskname;
+    public void setNumOfPart(String numOfPart) {
+        this.numOfPart = numOfPart;
     }
+
+    public void setNumOfNeeded(String numOfNeeded) {
+        this.numOfNeeded = numOfNeeded;
+    }
+
+    public String getNumOfPart() {
+        return numOfPart;
+    }
+
+    public String getNumOfNeeded() {
+        return numOfNeeded;
+    }
+
+    public void setRequestor(String requestor) {
+        this.requestor = requestor;
+    }
+
+    public String getRequestor() {
+        return requestor;
+    }
+
+    public String getDeadline() {
+        return deadline;
+    }
+
+    public String getMode() {
+        return mode;
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
+
 }
+

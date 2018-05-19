@@ -56,6 +56,8 @@ public class UserController {
         }
         bw.close();
 
+
+
         if(!succeed){
             String info=userId+" "+username+" "+userphone+" "+useremail+" "+userdis+"\n";
             FileWriter writerr=new FileWriter("src/main/java/com/seciii/crowdsourcing/Data/UserInformation/UserInformation.txt",true);
