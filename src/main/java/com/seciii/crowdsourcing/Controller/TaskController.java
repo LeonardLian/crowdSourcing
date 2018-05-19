@@ -188,6 +188,7 @@ public class TaskController {
             input.read(data);
             input.close();
 
+
             BASE64Encoder encoder=new BASE64Encoder();
             String code=encoder.encode(data);
             resultList.add(code);

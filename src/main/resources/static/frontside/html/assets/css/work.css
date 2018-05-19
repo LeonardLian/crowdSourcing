@@ -50,9 +50,9 @@
 }
 
 .upload {
-    left: 1000px;
-    top: 100px;
-    position: fixed;
+    margin-top: 5%;
+    margin-left: auto;
+    margin-right: auto;
     width: 60px;
     height: 40px;
     background-color: #4fa4f8;
@@ -64,8 +64,6 @@
     width:750px;
     height:550px;
     position:relative;
-    left:-375px;
-    top:-275px;
     margin-left:auto;
     margin-right:auto;
     margin-top: 10%;
