@@ -109,6 +109,9 @@ public class TaskController {
         return "success";
     }
 
+    //判断用户与主页点击任务的关系
+
+
 
     //以旁观者身份查看任务信息
 
@@ -150,6 +153,7 @@ public class TaskController {
 
         return line;
     }
+
 
     //查看所有的任务
     @RequestMapping(value = "/checkAllTasks")

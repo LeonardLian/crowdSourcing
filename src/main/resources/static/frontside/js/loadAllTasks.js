@@ -62,6 +62,8 @@ $(function () {
                     }
                 });
 
+
+
                 $('#taskList').prepend('<li> <a href="javascript:taskdetailsClick(username,taskname);"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+result+'" alt=""/> <div class="gallery-title">'+tasktag+'</div> <div class="gallery-desc">人数：'+numOfPart+'/'+numOfNeeded+'</div> <div class="gallery-desc">截止：'+deadline+'</div> </a> </li>');
 
                 tasknum=tasknum+1;

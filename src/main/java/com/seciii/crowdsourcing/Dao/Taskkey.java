@@ -8,13 +8,11 @@ package com.seciii.crowdsourcing.Dao;
 public class Taskkey {
     private String taskId;
     private String workerId;
-    private String point;
 
     public Taskkey(){}
     public Taskkey(String taskId,String workerId,String point){
         this.taskId=taskId;
         this.workerId=workerId;
-        this.point=point;
     }
 
     public String getTaskId() {
@@ -33,11 +31,4 @@ public class Taskkey {
         this.workerId = workerId;
     }
 
-    public void setPoint(String point) {
-        this.point = point;
-    }
-
-    public String getPoint() {
-        return point;
-    }
 }
