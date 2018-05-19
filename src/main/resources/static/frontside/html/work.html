@@ -47,15 +47,8 @@
 </header>
 
 <div class = "am-align-left">
-    <ul class="am-list admin-sidebar-list">
-        <li><a href="mainpage.html"><span class="am-icon-home"></span> 首页</a></li>
-        <li class="admin-parent">
-            <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}" onclick = "openNav()"><span class="am-icon-file"></span> 关于任务 <span class="am-icon-angle-right am-fr am-margin-right" ></span></a>
-        </li>
-    </ul>
 
     <div id="myNav" class="overlay">
-        <a href="javascript:void(0)" class = "closebtn" onclick="closeNav()"> &times;</span></a>
         <div class="overlay-content">
             <p class = "task-content">
                 {{task_content}}整体方框区域标注？任务描述：要求，积分，and so on...
@@ -63,19 +56,12 @@
         </div>
     </div>
 
-    <!--
-    <div id="myChoice" class="select_method">
-        <a href="#" >整体标注</a>
-        <a href="#" >方框标注</a>
-        <a href="#" >区域标注</a>
-    </div>
-    <-->
-
 </div>
-
+<div id="Layer1" style="position:absolute; width:1px; height:86%; z-index:1;
+background-color: #98a6ad; left: 18%; top: 10%"></div>
 <!--<div class="am-cf admin-main">-->
     <div class="admin-content">
-        <div class="admin-content-body am-u-md-8 am-u-md-push-2 am-panel am-panel-default">
+        <div class="admin-content-body am-u-md-8 am-u-md-push-2 ">
             <div class="admin-content-body">
                 <div class="am-cf am-padding am-padding-bottom-0">
                     <div class="am-fl am-cf">
@@ -83,7 +69,6 @@
                     </div>
                 </div>
                 <hr>
-
                 <ul class="am-avg-sm-2 am-avg-md-4 am-avg-lg-6 am-margin gallery-list" id="joined_taskList">
                     <button class="upload" >提交</button>
                 </ul>
@@ -110,23 +95,11 @@
 <script src="../lib/vue.js"></script>
 <script src="../lib/jquery.js"></script>
 <script src="../lib/Jcanvas.js"></script>
-
-    <script>
-        function openNav() {
-            document.getElementById("myNav").style.height = "66%";
-        }
-
-        function closeNav() {
-            document.getElementById("myNav").style.height = "0%";
-        }
-
-    </script>
-
     <script>
         var c = document.getElementById("myCanvas");
         var ctx = c.getContext("2d");
         var img = new Image();
-        img.src = 'assets/img/submit-success.jpg';
+        img.src = 'assets/img/wyf.jpeg';
 
         img.onload = function() {
             var FitWidth = c.width;
