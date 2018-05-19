@@ -11,7 +11,7 @@ $(function () {
     var username=url.split("?")[1];
 
     new Vue({
-        el:'#username',
+        el:'#user',
         data:{
             username:username
         }
@@ -29,9 +29,9 @@ $('#image').on('change',function () {
 })
 
 function release() {
-    if(saveImagesOfTask()==0){
-        return;
-    }
+    // if(saveImagesOfTask()==0){
+    //     return;
+    // }
     saveInfoOfTask();
 }
 
@@ -87,7 +87,7 @@ function saveInfoOfTask(){
         alert('任务名称过长');
         return;
     }
-    if(numofneed==""){
+    if(numOfNeeded==""){
         alert('请输入需要人数');
         return;
     }
