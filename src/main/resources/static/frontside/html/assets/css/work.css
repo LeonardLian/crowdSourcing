@@ -1,16 +1,6 @@
 /* about work.html
    created by mxf , 5/19,2018.
  */
-
-.select_method a {
-    padding: 8px;
-    text-decoration: none;
-    font-size: 30px;
-    color: #818181;
-    display: block;
-    transition: 0.3s;
-}
-
 .overlay {
     height: 66%;
     width: 22%;
@@ -18,7 +8,7 @@
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: #ACD6FF;
+    background-color: transparent;
     overflow-y: hidden;
     transition: 0.5s;
 }
@@ -51,7 +41,7 @@
 
 .upload {
     margin-top: 5%;
-    margin-left: auto;
+    margin-left: 50%;
     margin-right: auto;
     width: 60px;
     height: 40px;
@@ -64,9 +54,9 @@
     width:750px;
     height:550px;
     position:relative;
-    margin-left:auto;
+    margin-left:20%;
     margin-right:auto;
-    margin-top: 10%;
+    margin-top: 5%;
     background: #3b3e47;
 }
 
