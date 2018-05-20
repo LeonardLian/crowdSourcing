@@ -1,3 +1,8 @@
+/*
+* 初始化，显示原有个人信息和头像
+* 修改之后的信息和头像的保存
+ */
+
 $(function () {
     var url=decodeURI(window.location.href);
     var username=url.split("?")[1];
@@ -60,9 +65,6 @@ function save() {
     saveInfoOfUser();
 }
 
-
-
-
 function saveImageOfUser() {
     //var form=document.getElementById("imageForm")
     //var formData=new formData(form);
@@ -111,15 +113,19 @@ function saveInfoOfUser() {
 
     if(name==""){
         alert('请输入您的名字');
+        return;
     }
     if(email==""){
         alert('请输入您的邮箱');
+        return;
     }
     if(phone==""){
         alert('请输入您的电话');
+        return;
     }
     if(description==""){
         alert('描述不能为空');
+        return;
     }
 
     var user=new User(username,'aaa','0',name,email,phone,description,'aaa');
