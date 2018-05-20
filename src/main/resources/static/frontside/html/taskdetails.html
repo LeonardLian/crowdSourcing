@@ -67,7 +67,7 @@
     <div class="am-u-md-8 am-u-md-push-2 am-panel am-panel-default">
      <div class="am-panel-bd">
       <div class="am-u-md-3">
-        <img class="am-img-circle am-img-thumbnail" src="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/200/h/200/q/80" alt="" width="10000"/>
+        <img id="cover" class="am-img-circle am-img-thumbnail" src="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/200/h/200/q/80" alt="" width="10000"/>
 	  </div>
       <div class="am-u-md-9" id="info">
           <h1>任务名称：{{taskName}}</h1>
@@ -116,10 +116,16 @@
         window.location.href=mainpage;
     }
     function checkTasksIBuild(){
-
+        var url=decodeURI(window.location.href);
+        var username=url.split("?")[1];
+        var mytask_built='mytask_built.html'+'?'+username;
+        window.location.href=mytask_built;
     }
     function checkTasksIJoin(){
-
+        var url=decodeURI(window.location.href);
+        var username=url.split("?")[1];
+        var mytask_joined='mytask_joined.html'+'?'+username;
+        window.location.href=mytask_joined;
     }
     function selfpageClick() {
         var url=decodeURI(window.location.href);

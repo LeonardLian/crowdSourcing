@@ -93,24 +93,147 @@ public class TaskController {
         InputStreamReader srreader=new InputStreamReader(new FileInputStream(f));
         BufferedReader reader=new BufferedReader(srreader);
         String taskName=reader.readLine();
-        String foldername="/Users/Leonarda/Desktop/TaskImg/"+taskName;
+
+        String foldername="src/main/java/com/seciii/crowdsourcing/Data/TaskImg/"+taskName;
         File folder=new File(foldername);
         if(!folder.exists()){
             folder.mkdirs();
         }
 
-        File newfile=new File("/Users/Leonarda/Desktop/TaskImg/"+taskName+"/"+imgName+".jpeg");
+        String taskFile="src/main/java/com/seciii/crowdsourcing/Data/TaskImg/"+taskName+"/"+imgName+".txt";
+        File newfile=new File(taskFile);
+        InputStream input=null;
+        byte[] data=null;
+        input=file.getInputStream();
+        data=new byte[input.available()];
+        input.read(data);
+        input.close();
 
-        if(!newfile.exists()){
-            newfile.createNewFile();
-        }
+        BASE64Encoder encoder=new BASE64Encoder();
+        String code= encoder.encode(data);
 
-        file.transferTo(newfile);
+        FileWriter writer=new FileWriter(taskFile,false);
+        BufferedWriter bw=new BufferedWriter(writer);
+        bw.write(code);
+        bw.close();
         return "success";
+
+//        String foldername="/Users/Leonarda/Desktop/TaskImg/"+taskName;
+//        File folder=new File(foldername);
+//        if(!folder.exists()){
+//            folder.mkdirs();
+//        }
+//
+//        File newfile=new File("/Users/Leonarda/Desktop/TaskImg/"+taskName+"/"+imgName+".jpeg");
+//
+//        if(!newfile.exists()){
+//            newfile.createNewFile();
+//        }
+//
+//        file.transferTo(newfile);
+//        return "success";
     }
 
 
-    //以旁观者身份查看任务信息
+    //查看所有的任务
+    @RequestMapping(value = "/checkAllTasks")
+    public String checkAllTasks() throws IOException{
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt";
+        File file=new File(filename);
+        InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
+        BufferedReader br=new BufferedReader(reader);
+        ArrayList<String> strlist=new ArrayList<>();
+        String line=null;
+        while((line=br.readLine())!=null){
+            strlist.add(line);
+        }
+        String list=String.join("!",strlist);
+
+        return list;
+    }
+
+
+    //查看对应任务的图片
+    @RequestMapping(value = "/checkTaskImg",method = RequestMethod.POST)
+    public String checkTaskImg(@RequestBody Task task) throws IOException{
+        String taskName=task.getTaskname();
+        String folderName="src/main/java/com/seciii/crowdsourcing/Data/TaskImg/"+taskName;
+        File dir=new File(folderName);
+        String[] fileList=dir.list();
+
+        ArrayList<String> resultList=new ArrayList<>();
+
+        for(int i=0;i<fileList.length;i++){
+//            String string=fileList[i];
+//            File file=new File(dir.getPath(),string);
+//            InputStream input=null;
+//            byte[] data=null;
+//            input=new FileInputStream(file.getPath());
+//            data=new byte[input.available()];
+//            input.read(data);
+//            input.close();
+//
+//
+//            BASE64Encoder encoder=new BASE64Encoder();
+//            String code=encoder.encode(data);
+//            resultList.add(code);
+            String string=fileList[i];
+            File file=new File(dir.getPath(),string);
+            InputStreamReader srreader=new InputStreamReader(new FileInputStream(file));
+            BufferedReader reader=new BufferedReader(srreader);
+            String line;
+            String info="";
+            while ((line=reader.readLine())!=null){
+                info=info+line;
+            }
+            resultList.add(info);
+        }
+        return String.join(" ",resultList);
+    }
+
+
+    //判断用户与主页点击任务的关系
+    @RequestMapping(value = "/judgeRelation",method = RequestMethod.POST)
+    public String judgeRelation(@RequestBody Taskkey taskkey) throws IOException{
+        String taskname=taskkey.getTaskname();
+        String username=taskkey.getUsername();
+
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/UserTaskIndexList/"+username+".txt";
+        File file=new File(filename);
+        InputStreamReader srreader=new InputStreamReader(new FileInputStream(file));
+        BufferedReader reader=new BufferedReader(srreader);
+        String line=reader.readLine();
+        String[] taskList=line.split(" ");
+        String relation="0";
+        for(String task:taskList){
+            String taskid=task.substring(1);
+            if(taskid.equals(taskname)){
+                if(task.charAt(0)=='b'){
+                    relation="1";
+                    break;
+                }else {
+                    relation="2";
+                    break;
+                }
+            }else{
+                continue;
+            }
+        }
+
+        return relation;
+    }
+
+    //以旁观者身份查看任务文字信息
+    @RequestMapping(value = "/checkTaskInformationAsLooker",method = RequestMethod.POST)
+    public String checkTaskInformationAsLooker(@RequestBody Task task) throws IOException{
+        String taskname=task.getTaskname();
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskname+"/description.txt";
+        File file=new File(filename);
+        InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
+        BufferedReader br=new BufferedReader(reader);
+        String line=br.readLine();
+        return line;
+    }
 
 
 
@@ -139,8 +262,8 @@ public class TaskController {
     //查看一个工人的作品
     @RequestMapping(value = "/checkWorker",method = RequestMethod.POST)
     public String checkWorker(@RequestBody Taskkey taskkey) throws IOException{
-        String task=taskkey.getTaskId();
-        String worker=taskkey.getWorkerId();
+        String task=taskkey.getTaskname();
+        String worker=taskkey.getUsername();
 
         String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+task+"/"+worker+".txt";
         File file=new File(filename);
@@ -151,57 +274,11 @@ public class TaskController {
         return line;
     }
 
-    //查看所有的任务
-    @RequestMapping(value = "/checkAllTasks")
-    public String checkAllTasks() throws IOException{
-        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt";
-        File file=new File(filename);
-        InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
-        BufferedReader br=new BufferedReader(reader);
-        ArrayList<String> strlist=new ArrayList<>();
-        String line=null;
-        while((line=br.readLine())!=null){
-            strlist.add(line);
-        }
-        String list=String.join("!",strlist);
-
-        return list;
-    }
-
-    //查看对应任务的图片
-    @RequestMapping(value = "/checkTaskImg",method = RequestMethod.POST)
-    public String checkTaskImg(@RequestBody Task task) throws IOException{
-        String taskName=task.getTaskname();
-        String folderName="/Users/Leonarda/Desktop/TaskImg/"+taskName;
-        File dir=new File(folderName);
-        String[] fileList=dir.list();
-
-        ArrayList<String> resultList=new ArrayList<>();
-
-        for(int i=0;i<fileList.length;i++){
-            String string=fileList[i];
-            File file=new File(dir.getPath(),string);
-            InputStream input=null;
-            byte[] data=null;
-            input=new FileInputStream(file.getPath());
-            data=new byte[input.available()];
-            input.read(data);
-            input.close();
-
-
-            BASE64Encoder encoder=new BASE64Encoder();
-            String code=encoder.encode(data);
-            resultList.add(code);
-        }
-        return String.join(" ",resultList);
-    }
-
-
     //参与任务
     @RequestMapping(value = "/participateIn",method = RequestMethod.POST)
     public String participateIn(@RequestBody Taskkey taskkey) throws IOException{
-        String task=taskkey.getTaskId();
-        String worker=taskkey.getWorkerId();
+        String task=taskkey.getTaskname();
+        String worker=taskkey.getUsername();
 
         String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+task+"/"+worker+".txt";
         File file=new File(filename);
@@ -221,7 +298,7 @@ public class TaskController {
     //提交自己的标注
     @RequestMapping(value = "/submitLabel",method = RequestMethod.POST)
     public String submitLabel(@RequestBody Taskkey taskkey) throws IOException{
-        String filename="src/main/java/com/seciii/crowdsourcing/Data/TemporaryFile/"+taskkey.getTaskId()+".txt";
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/TemporaryFile/"+taskkey.getTaskname()+".txt";
         String labels="";
         File temfile=new File(filename);
         InputStreamReader reader=new InputStreamReader(new FileInputStream(temfile));
@@ -231,7 +308,7 @@ public class TaskController {
             labels=labels+line+" ";
         }
 
-        String file="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskkey.getTaskId()+"/"+taskkey.getWorkerId()+".txt";
+        String file="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskkey.getTaskname()+"/"+taskkey.getUsername()+".txt";
         FileWriter fileWriter=new FileWriter(file,false);
         BufferedWriter writer=new BufferedWriter(fileWriter);
         writer.write(labels);

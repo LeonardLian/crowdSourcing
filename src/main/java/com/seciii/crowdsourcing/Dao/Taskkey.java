@@ -6,38 +6,28 @@ package com.seciii.crowdsourcing.Dao;
  * @date: create in 下午1:25 2018/4/14
  */
 public class Taskkey {
-    private String taskId;
-    private String workerId;
-    private String point;
+    private String taskname;
+    private String username;
 
     public Taskkey(){}
-    public Taskkey(String taskId,String workerId,String point){
-        this.taskId=taskId;
-        this.workerId=workerId;
-        this.point=point;
+    public Taskkey(String taskname,String username){
+        this.taskname=taskname;
+        this.username=username;
     }
 
-    public String getTaskId() {
-        return taskId;
+    public void setTaskname(String taskname) {
+        this.taskname = taskname;
     }
 
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
+    public String getTaskname() {
+        return taskname;
     }
 
-    public String getWorkerId() {
-        return workerId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setWorkerId(String workerId) {
-        this.workerId = workerId;
-    }
-
-    public void setPoint(String point) {
-        this.point = point;
-    }
-
-    public String getPoint() {
-        return point;
+    public String getUsername() {
+        return username;
     }
 }

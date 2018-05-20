@@ -73,7 +73,7 @@
                     <div class="am-form-group">
                         <label for="taskname" class="am-u-sm-4 am-form-label">任务名称</label>
                         <div class="am-u-sm-8">
-                            <input type="text" id="taskname" placeholder="不超过20字">
+                            <input type="text" id="taskname" placeholder="不超过20字" maxlength="20" autofocus>
                         </div>
                     </div>
                     <div class="am-form-group">
@@ -101,7 +101,7 @@
                     <div class="am-form-group">
                         <label for="deadline" class="am-u-sm-4 am-form-label">截止日期</label>
                         <div class="am-u-sm-8">
-                            <input type="date" id="deadline">
+                            <input type="date" id="deadline" min="2000-1-1">
                         </div>
                     </div>
                     <div class="am-form-group">
@@ -149,10 +149,16 @@
         window.location.href=mainpage;
     }
     function checkTasksIBuild(){
-
+        var url=decodeURI(window.location.href);
+        var username=url.split("?")[1];
+        var mytask_built='mytask_built.html'+'?'+username;
+        window.location.href=mytask_built;
     }
     function checkTasksIJoin(){
-
+        var url=decodeURI(window.location.href);
+        var username=url.split("?")[1];
+        var mytask_joined='mytask_joined.html'+'?'+username;
+        window.location.href=mytask_joined;
     }
     function selfpageClick() {
         var url=decodeURI(window.location.href);
