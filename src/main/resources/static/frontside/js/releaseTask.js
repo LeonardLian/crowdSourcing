@@ -2,8 +2,8 @@
  * Created by Leonarda on 2018/4/27.
  */
 /*
-TODO 删除上传的图片
-TODO html界面调整
+* 发布任务，包括保存任务图片和信息 TODO 关于参与人数、积分、截止日期的输入规范问题未解决
+* TODO html界面调整
  */
 
 $(function () {
@@ -16,6 +16,9 @@ $(function () {
             username:username
         }
     });
+
+    var date=new Date();
+    $('#deadline').attr('min',date);
 })
 
 //即时显示上传的图片
@@ -32,7 +35,6 @@ $('#image').on('change',function () {
 
 function release() {
     if(saveImagesOfTask()==0){
-        alert("上传失败");
         return;
     }
     saveInfoOfTask();
@@ -79,9 +81,9 @@ function saveInfoOfTask(){
     var username=url.split("?")[1];
     var taskname=$('#taskname').val();
     var mode=$('#mode').val();
-    var numOfNeeded=$('#numofneed').val();//TODO 关于人数和积分的输入规范问题仍待解决
+    var numOfNeeded=$('#numofneed').val();
     var point=$('#point').val();
-    var deadline=$('#deadline').val();//TODO 时间规范
+    var deadline=$('#deadline').val();
     var description=$('#description').val();
 
     if(taskname==""){
