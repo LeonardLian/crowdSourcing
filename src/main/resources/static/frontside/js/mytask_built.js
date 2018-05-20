@@ -13,7 +13,7 @@ $(function(){
     });
 
     Vue.component('myBuiltTask', {
-        tenplate:' <li><a href = "taskdetails.html"> <img class="am-img-thumbnail am-img-bdrs" v-bind:src="imgaddress" alt=""/> ' +
+        template:' <li><a href = "taskdetails.html"> <img class="am-img-thumbnail am-img-bdrs" v-bind:src="imgaddress" alt=""/> ' +
         '<div class="gallery-title">{{description}}</div> <div class="gallery-desc-time">{{time}}</div> <div class="gallery-desc-process">{{process}}</div></a> </li>',
     props:['imgaddress','description','time','process']
     });

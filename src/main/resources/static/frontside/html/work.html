@@ -5,86 +5,10 @@
     <title>众包标注工作区</title>
     <link rel="stylesheet" href="assets/css/amazeui.min.css"/>
     <link rel="stylesheet" href="assets/css/admin.css">
-    <style>
-        .select_method a {
-            padding: 8px;
-            text-decoration: none;
-            font-size: 30px;
-            color: #818181;
-            display: block;
-            transition: 0.3s;
-        }
-
-        .overlay {
-            height: 0%;
-            width: 22%;
-            position: fixed;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            background-color: #ACD6FF;
-            overflow-y: hidden;
-            transition: 0.5s;
-        }
-
-        .overlay-content {
-            position: relative;
-            top: 40px;
-            width: 80%;
-            text-align: left;
-            margin-top: 30px;
-            margin-left: 6px;
-        }
-
-        .overlay p {
-            padding: 8px;
-            text-decoration: none;
-            font-size: 20px;
-            color: #818181;
-            display: block;
-            transition: 0.3s;
-        }
-
-        .overlay .closebtn {
-            position: absolute;
-            top: 30px;
-            right: 15px;
-            font-size: 40px;
-            color: #818181;
-        }
-
-        .picture {
-            margin-top: 40px;
-            margin-left: 50px;
-            width: 50%;
-            height: 50%;
-            border-color: #0c79b1;
-            background: transparent;
-        }
-
-        .upload {
-            left: 1000px;
-            top: 100px;
-            position: fixed;
-            width: 60px;
-            height: 40px;
-            background-color: #4fa4f8;
-            color: #3b3e47;
-            border-radius: 10px;
-
-        }
-        #myCanvas{
-            left: 400px;
-            top: 160px;
-            position: absolute;
-            background: transparent;
-        }
-
-
-    </style>
+    <link rel = "stylesheet" href = "assets/css/work.css">
 
 </head>
-<body>
+
 <header class="am-topbar am-topbar-inverse admin-header">
     <div class="am-u-md-8 am-u-md-push-2">
         <div class="am-topbar-brand">
@@ -123,15 +47,8 @@
 </header>
 
 <div class = "am-align-left">
-    <ul class="am-list admin-sidebar-list">
-        <li><a href="mainpage.html"><span class="am-icon-home"></span> 首页</a></li>
-        <li class="admin-parent">
-            <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 关于任务 <span class="am-icon-angle-right am-fr am-margin-right" onclick = "openNav()"></span></a>
-        </li>
-    </ul>
 
     <div id="myNav" class="overlay">
-        <a href="javascript:void(0)" class = "closebtn" onclick="closeNav()"> &times;</span></a>
         <div class="overlay-content">
             <p class = "task-content">
                 {{task_content}}整体方框区域标注？任务描述：要求，积分，and so on...
@@ -139,39 +56,80 @@
         </div>
     </div>
 
-    <!--
-    <div id="myChoice" class="select_method">
-        <a href="#" >整体标注</a>
-        <a href="#" >方框标注</a>
-        <a href="#" >区域标注</a>
+</div>
+<div id="Layer1" style="position:absolute; width:1px; height:86%; z-index:1;
+background-color: #98a6ad; left: 18%; top: 10%"></div>
+<!--<div class="am-cf admin-main">-->
+    <div class="admin-content">
+        <div class="admin-content-body am-u-md-8 am-u-md-push-2 ">
+            <div class="admin-content-body">
+                <div class="am-cf am-padding am-padding-bottom-0">
+                    <div class="am-fl am-cf">
+
+                    </div>
+                </div>
+                <hr>
+                <ul class="am-avg-sm-2 am-avg-md-4 am-avg-lg-6 am-margin gallery-list" id="joined_taskList">
+                    <button class="upload" >提交</button>
+                </ul>
+
+
+                <div class="am-margin am-cf" id="joined_tasknum">
+                    <hr/>
+
+                    <canvas class = "abc" id="myCanvas" style="border:1px solid #c3c3c3;">
+                        您的浏览器不支持 HTML5 canvas 标签。
+                    </canvas>
+
+
+                </div>
+            </div>
+        </div>
     </div>
-    <-->
-
-</div>
+<!--</div>>-->
 
 
-<div class = "picture">
-    <button type = "button" class = "upload">提交</button>
-    <canvas id="myCanvas" width="750" height="550" style="border:1px solid #c3c3c3;">
-        您的浏览器不支持 HTML5 canvas 标签。
-    </canvas>
-</div>
+
 
 
 <script src="../lib/vue.js"></script>
 <script src="../lib/jquery.js"></script>
 <script src="../lib/Jcanvas.js"></script>
+    <script>
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        var img = new Image();
+        img.src = 'assets/img/wyf.jpeg';
 
-<script>
-    function openNav() {
-        document.getElementById("myNav").style.height = "66%";
-    }
+        img.onload = function() {
+            var FitWidth = c.width;
+            var FitHeight = c.height;
+            var _width = img.width;
+            var _height = img.height;
+            if(_width <= FitWidth && _height <= FitHeight){
+                var offset_w = (FitWidth - _width)/2;
+                var offset_h = (FitHeight - _height)/2;
+                ctx.drawImage(img, offset_w, offset_h);
 
-    function closeNav() {
-        document.getElementById("myNav").style.height = "0%";
-    }
+            }
+            else {
+                if (_width / _height >= FitWidth / FitHeight) {
+                    if (_width > FitWidth) {
+                        img.width = FitWidth;
+                        img.height = (_height * FitWidth) / _width;
+                    }
+                }
+                else {
+                        if (_height > FitHeight) {
+                            img.height = FitHeight;
+                            img.width = (_width * FitHeight) / _height;
+                        }
+                }
+                ctx.drawImage(img, 0, 0);
+            }
+        }
 
-</script>
+    </script>
 
 </body>
 </html>
