@@ -152,6 +152,7 @@ public class TaskController {
         return list;
     }
 
+
     //查看对应任务的图片
     @RequestMapping(value = "/checkTaskImg",method = RequestMethod.POST)
     public String checkTaskImg(@RequestBody Task task) throws IOException{
@@ -223,10 +224,16 @@ public class TaskController {
     }
 
     //以旁观者身份查看任务文字信息
-
-
-
-    //以旁观者身份查看任务图片信息
+    @RequestMapping(value = "/checkTaskInformationAsLooker",method = RequestMethod.POST)
+    public String checkTaskInformationAsLooker(@RequestBody Task task) throws IOException{
+        String taskname=task.getTaskname();
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskname+"/description.txt";
+        File file=new File(filename);
+        InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
+        BufferedReader br=new BufferedReader(reader);
+        String line=br.readLine();
+        return line;
+    }
 
 
 
