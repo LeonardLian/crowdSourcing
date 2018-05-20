@@ -12,10 +12,6 @@ $(function(){
         }
     });
 
-    new Vue({
-        el : '#myJoinedTaskList'
-    });
-
     $.get("http://127.0.0.1:8080/checkJoinedTasks",function (data) {
 
         var joinedTaskNum = 0;

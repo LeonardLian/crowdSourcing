@@ -12,40 +12,102 @@ $(function(){
         }
     });
 
-    Vue.component('myBuiltTask', {
-        template:' <li><a href = "taskdetails.html"> <img class="am-img-thumbnail am-img-bdrs" v-bind:src="imgaddress" alt=""/> ' +
-        '<div class="gallery-title">{{description}}</div> <div class="gallery-desc-time">{{time}}</div> <div class="gallery-desc-process">{{process}}</div></a> </li>',
-    props:['imgaddress','description','time','process']
-    });
-
-    new Vue({
-        el : '#myBuiltTaskList'
-    });
-
-    $.get("http://127.0.0.1:8080/checkBuildTasks",function (data) {
-
-        var builtTaskNum = 0;
-
-        var arr = data.split("!");
-        for(x in arr){
-            var taskarr = arr[x].split(" ");
-            var imgAddress = taskarr[3];
-            var description = taskarr[2];
-            var partofneeded = '需要人数： '+ taskarr[4];
-            var taskProcess = '完成进度： ' + taskarr[5]
-            var taskname = taskarr[0];
-
-            $('#myBuiltTaskList').prepend('<li> <a href="taskdetails.html?'+taskname+'"'+'> <img class="am-img-thumbnail am-img-bdrs" src="'+imgAddress+'" alt=""/> <div class="gallery-title">'+description+'</div> <div class="gallery-desc">'+partofneeded+'</div>  </a> </li>');
-
-            builtTaskNum = builtTaskNum +1;
-
-            new Vue({
-                el:'#builtTaskNum',
-                data:{
-                    builtTaskNum: builtTaskNum
-                }
-            })
+    var user = new User(username,"1","1","1","1","1","1","1");
+    var userJson = JSON.stringify(user);
+    var tasklist;
+    $.ajax({
+        type:'POST',
+        data: userJson,
+        contentType: 'application/json',
+        dataType: 'text',
+        url:'http://127.0.0.1:8080/checkBuildTasks',
+        async:false,
+        success:function(data){
+            tasklist=data.split('!');
+        },
+        error:function(e){
+            alert('你未发布任务');
         }
-
     })
+
+    var taskName;
+    var taskTag;
+    var numOfPart;
+    var deadline;
+    var built_tasknum = 0;
+    for(x in tasklist){
+        var taskname=tasklist[x];
+        var task=new Task(taskname,'1', '1','1','1','1','1','1','1');
+        var taskJson = JSON.stringify(task);
+        $.ajax({
+            type:'POST',
+            data:taskJson,
+            contentType: 'application/json',
+            dataType: 'text',
+            url:'http://127.0.0.1:8080/checkTaskInformation',
+            async:false,
+            success:function(data){
+                var infoList = data.split('#');
+                taskName = infoList[0];
+                taskTag = infoList[2];
+                numOfPart = infoList[6];
+                deadline = infoList[8];
+            },
+            error:function (e) {
+                alert('error');
+            }
+        })
+
+        var src;
+        $.ajax({//获取任务封面图案
+            type:'POST',
+            data:taskJson,
+            contentType:'application/json',
+            dataType:'text',
+            url:'http://127.0.0.1:8080/checkTaskImg',
+            async:false,
+            success:function (data) {
+                src=data.split(" ")[0];
+            },
+            error:function (e) {
+                alert('error');
+            }
+        });
+
+        var url='taskdetails_requestor.html'+'?'+username+'?'+taskName;
+        $('#myBuiltTaskList').prepend('<li> <a href="'+url+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt=""/> <div class="gallery-title">'+tasktag+'</div> <div class="gallery-desc">参与人数：'+numOfPart+'</div> <div class="gallery-desc">截止：'+deadline+'</div> </a> </li>');
+
+        built_tasknum = built_tasknum+1;
+
+    }
+    new Vue({
+        el:'#built_tasknum',
+        data: {
+            built_tasknum:built_tasknum
+        }
+    });
 });
+
+
+function User(username, password, point, name, email, phone, description, taskAddress){
+    this.username = username;
+    this.password = password;
+    this.point = point;
+    this.name = name;
+    this.email = email;
+    this.phone = phone;
+    this.description = description;
+    this.taskAddress = taskAddress;
+}
+
+function Task(taskname,requestor,tasktag,description,mode,numOfNeeded,numOfPart,point,deadline){
+    this.taskname=taskname;
+    this.requestor=requestor;
+    this.tasktag=tasktag;
+    this.description=description;
+    this.mode=mode;
+    this.numOfNeeded=numOfNeeded;
+    this.numOfPart=numOfPart;
+    this.point=point;
+    this.deadline=deadline;
+}
