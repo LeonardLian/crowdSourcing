@@ -23,6 +23,7 @@ $(function(){
         url:'http://127.0.0.1:8080/checkBuildTasks',
         async:false,
         success:function(data){
+            //alert(data);
             tasklist=data.split('!');
         },
         error:function(e){
@@ -37,6 +38,7 @@ $(function(){
     var built_tasknum = 0;
     for(x in tasklist){
         var taskname=tasklist[x];
+        //alert(taskname);
         var task=new Task(taskname,'1', '1','1','1','1','1','1','1');
         var taskJson = JSON.stringify(task);
         $.ajax({
@@ -75,7 +77,7 @@ $(function(){
         });
 
         var url='taskdetails_requestor.html'+'?'+username+'?'+taskName;
-        $('#myBuiltTaskList').prepend('<li> <a href="'+url+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt=""/> <div class="gallery-title">'+tasktag+'</div> <div class="gallery-desc">参与人数：'+numOfPart+'</div> <div class="gallery-desc">截止：'+deadline+'</div> </a> </li>');
+        $('#myBuiltTaskList').prepend('<li> <a href="'+url+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt=""/> <div class="gallery-title">'+taskTag+'</div> <div class="gallery-desc">参与人数：'+numOfPart+'</div> <div class="gallery-desc">截止：'+deadline+'</div> </a> </li>');
 
         built_tasknum = built_tasknum+1;
 

@@ -271,17 +271,7 @@ public class TaskController {
         for(String i:arr){
             if(i.charAt(0)=='j'){
                 String taskname=i.substring(1);
-
-                String alltaskInfo="src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt";
-                File infofile=new File(alltaskInfo);
-                InputStreamReader reader1=new InputStreamReader(new FileInputStream(infofile));
-                BufferedReader bufferedReader=new BufferedReader(reader1);
-                String line1=null;
-                while ((line1=bufferedReader.readLine())!=null){
-                    if(line1.split(" ")[0].equals(taskname)){
-                        arrayList.add(line1);
-                    }
-                }
+                arrayList.add(taskname);
             }
         }
         String result=String.join("!",arrayList);
