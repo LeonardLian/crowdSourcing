@@ -22,7 +22,7 @@ $(function(){
         el : '#myBuiltTaskList'
     });
 
-    $.get("http://127.0.0.1:8080/checkBuiltTasks",function (data) {
+    $.get("http://127.0.0.1:8080/checkBuildTasks",function (data) {
 
         var builtTaskNum = 0;
 
