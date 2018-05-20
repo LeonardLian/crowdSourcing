@@ -5,6 +5,7 @@ import com.seciii.crowdsourcing.Dao.User;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import sun.misc.BASE64Encoder;
 
 import java.io.*;
 import java.io.File;
@@ -78,7 +79,7 @@ public class TaskController {
         String userfile="src/main/java/com/seciii/crowdsourcing/Data/UserTaskIndexList/"+requestor+".txt";
         FileWriter fileWriter=new FileWriter(userfile,true);
         BufferedWriter bwww=new BufferedWriter(fileWriter);
-        bwww.write("b"+task.getTaskname()+" ");
+        bwww.write("b"+task1.getTaskname()+" ");
         bwww.close();
 
         return taskname;
@@ -108,7 +109,9 @@ public class TaskController {
         return "success";
     }
 
+
     //以旁观者身份查看任务信息
+
 
 
     //查看一个任务的分发情况
@@ -148,22 +151,6 @@ public class TaskController {
         return line;
     }
 
-
-//    //修改自己发布的任务要求
-//    @RequestMapping(value = "/polishDemand",method = RequestMethod.POST)
-//    public String polishDemand(@RequestBody Task task){
-//
-//        return null;
-//    }
-
-//    //分发积分
-//    @RequestMapping(value = "/givePoint",method = RequestMethod.POST)
-//    public String givePoint(@RequestBody Taskkey taskkey){
-//
-//        return null;
-//    }
-
-
     //查看所有的任务
     @RequestMapping(value = "/checkAllTasks")
     public String checkAllTasks() throws IOException{
@@ -181,6 +168,32 @@ public class TaskController {
         return list;
     }
 
+    //查看对应任务的图片
+    @RequestMapping(value = "/checkTaskImg",method = RequestMethod.POST)
+    public String checkTaskImg(@RequestBody Task task) throws IOException{
+        String taskName=task.getTaskname();
+        String folderName="/Users/Leonarda/Desktop/TaskImg/"+taskName;
+        File dir=new File(folderName);
+        String[] fileList=dir.list();
+
+        ArrayList<String> resultList=new ArrayList<>();
+
+        for(int i=0;i<fileList.length;i++){
+            String string=fileList[i];
+            File file=new File(dir.getPath(),string);
+            InputStream input=null;
+            byte[] data=null;
+            input=new FileInputStream(file.getPath());
+            data=new byte[input.available()];
+            input.read(data);
+            input.close();
+
+            BASE64Encoder encoder=new BASE64Encoder();
+            String code=encoder.encode(data);
+            resultList.add(code);
+        }
+        return String.join(" ",resultList);
+    }
 
 
     //参与任务
