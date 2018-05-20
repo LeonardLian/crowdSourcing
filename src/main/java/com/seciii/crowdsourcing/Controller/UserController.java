@@ -74,46 +74,68 @@ public class UserController {
     //保存个人头像
     @RequestMapping(value="/saveUserImg",method = RequestMethod.POST)
     @ResponseBody public String saveUserImg(@RequestParam("classIcon") MultipartFile file, @RequestParam("className") String username) throws IOException{
-        File newfile=new File("/Users/Leonarda/Desktop/Img/"+username+".jpeg");
+        String fileName="src/main/java/com/seciii/crowdsourcing/Data/UserImg/"+username+".txt";
+        File newfile=new File(fileName);
 
-        if(!newfile.exists()){
-            newfile.createNewFile();
-        }
+        InputStream input=null;
+        byte[] data=null;
+        input=file.getInputStream();
+        data=new byte[input.available()];
+        input.read(data);
+        input.close();
 
-        file.transferTo(newfile);
+        BASE64Encoder encoder=new BASE64Encoder();
+        String code= encoder.encode(data);
+
+        FileWriter writer=new FileWriter(fileName,false);
+        BufferedWriter bw=new BufferedWriter(writer);
+        bw.write(code);
+        bw.close();
         return "success";
+//        File newfile=new File("/Users/Leonarda/Desktop/Img/"+username+".jpeg");
+//        if(!newfile.exists()){
+//            newfile.createNewFile();
+//        }
+//
+//        file.transferTo(newfile);
+//        return "success";
     }
 
 
     //显示个人头像
     @RequestMapping(value="/showUserImg",method=RequestMethod.POST)
     public String showUserImg(@RequestBody User user) throws IOException{
-        String userId=user.getUsername();
+        String username=user.getUsername();
         //System.out.println(userId);
 
-        String filepath="/Users/Leonarda/Desktop/Img/"+userId+".jpeg";
+//        String filepath="/Users/Leonarda/Desktop/Img/"+userId+".jpeg";
 //        String info;
 //        File file=new File(filepath);
 //        if(!file.exists()){
 //            info="no";
 //        }else{
-//            info=filepath;
+//            InputStream input=null;
+//            byte[] data=null;
+//            input=new FileInputStream(filepath);
+//            data=new byte[input.available()];
+//            input.read(data);
+//            input.close();
+//
+//            BASE64Encoder encoder=new BASE64Encoder();
+//            return encoder.encode(data);
 //        }
-//        return info;
-        String info;
-        File file=new File(filepath);
+        String fileName="src/main/java/com/seciii/crowdsourcing/Data/UserImg/"+username+".txt";
+        File file=new File(fileName);
+        String info="";
         if(!file.exists()){
             info="no";
         }else{
-            InputStream input=null;
-            byte[] data=null;
-            input=new FileInputStream(filepath);
-            data=new byte[input.available()];
-            input.read(data);
-            input.close();
-
-            BASE64Encoder encoder=new BASE64Encoder();
-            return encoder.encode(data);
+            InputStreamReader srreader=new InputStreamReader(new FileInputStream(file));
+            BufferedReader reader=new BufferedReader(srreader);
+            String line;
+            while ((line=reader.readLine())!=null){
+                info=info+line;
+            }
         }
         return info;
 
