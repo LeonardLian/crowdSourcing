@@ -278,6 +278,7 @@ public class TaskController {
         return result;
     }
 
+
     //查看自己发布的任务
     @RequestMapping(value = "checkBuildTasks",method = RequestMethod.POST)
     public String checkBuildTasks(@RequestBody User user) throws IOException{
