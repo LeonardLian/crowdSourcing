@@ -1,6 +1,6 @@
 /*
-* TODO 初始化，显示任务详细信息，包括图片和信息
-* TODO 参与任务后的相关响应：用户与任务的相关参数修改，页面跳转至工作界面
+* 初始化，显示任务详细信息，包括图片和信息
+* 参与任务后的相关响应：用户与任务的相关参数修改，页面跳转至工作界面
 */
 $(function () {
     var url=decodeURI(window.location.href);
@@ -8,7 +8,7 @@ $(function () {
     var taskname=url.split("?")[2];
 
     new Vue({
-        el:'#username',
+        el:'#user',
         data:{
             username:username
         }
@@ -21,20 +21,25 @@ $(function () {
         data:taskJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/checkTaskInformationAsLooker',
+        url:'http://127.0.0.1:8080/checkTaskInformation',
         success:function (data) {
-            var infoList=data.split(" ");
+            var infoList=data.split("#");
             new Vue({
                 el:"#info",
                 data:{
-                    requester:infoList[0],
-                    taskName:infoList[1],
-                    description:infoList[2],
-                    mode:infoList[3],
-                    numOfNeeded:infoList[4],
-                    numOfPart:infoList[5],
-                    point:infoList[6],
-                    deadline:infoList[7]
+                    requester:infoList[1],
+                    taskName:infoList[2],
+                    mode:infoList[4],
+                    numOfNeeded:infoList[5],
+                    numOfPart:infoList[6],
+                    point:infoList[7],
+                    deadline:infoList[8]
+                }
+            });
+            new Vue({
+                el:"#description",
+                data:{
+                    description:infoList[3]
                 }
             });
         },
@@ -78,7 +83,7 @@ function join() {
         data:taskkeyJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/join',
+        url:'http://127.0.0.1:8080/participateIn',
         success:function (data) {
             var work='work.html'+'?'+username+'?'+taskname;
             window.location.href=work;
