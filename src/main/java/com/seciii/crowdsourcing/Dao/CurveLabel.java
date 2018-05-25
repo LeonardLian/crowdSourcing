@@ -14,14 +14,14 @@ public class CurveLabel {
     private String comment;
     private String dotlist;
     private String taskname;
-    private String worker;
+    private String username;
 
-    public CurveLabel(String comment,String dotlist,String taskname,String worker){
+    public CurveLabel(String comment,String dotlist,String taskname,String username){
         this.type="2";
         this.comment=comment;
         this.dotlist=dotlist;
         this.taskname=taskname;
-        this.worker=worker;
+        this.username=username;
     }
     public CurveLabel(){}
 
@@ -49,10 +49,6 @@ public class CurveLabel {
         return taskname;
     }
 
-    public String getWorker() {
-        return worker;
-    }
-
     public void setTaskname(String taskname) {
         this.taskname = taskname;
     }
@@ -61,7 +57,11 @@ public class CurveLabel {
         this.type = type;
     }
 
-    public void setWorker(String worker) {
-        this.worker = worker;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

@@ -3,6 +3,7 @@ package com.seciii.crowdsourcing.Controller;
 import com.seciii.crowdsourcing.Dao.*;
 import com.seciii.crowdsourcing.Dao.User;
 
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sun.misc.BASE64Encoder;
@@ -33,15 +34,21 @@ public class TaskController {
         String point=task.getPoint();
         String deadline=task.getDeadline();
 
-        Task task1=new Task(requestor,tasktag,description,mode,numofNeeded,point,deadline);
 
+        Task task1=new Task(requestor,tasktag,description,mode,numofNeeded,point,deadline);
         String taskname=task1.getTaskname();
+
         String foldername="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskname;
         File folder=new File(foldername);
         if(!folder.exists()){
             folder.mkdirs();
         }
 
+        String temporary="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+taskname;
+        File temporaryFolder=new File(temporary);
+        if(!temporaryFolder.exists()){
+            temporaryFolder.mkdirs();
+        }
 
         String taskInformationFile="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskname+"/description.txt";
 
@@ -204,7 +211,7 @@ public class TaskController {
         BufferedReader reader=new BufferedReader(srreader);
         String line=reader.readLine();
         if(line==null){
-            return "0";
+            return "0";                     //旁观
         }
         String[] taskList=line.split(" ");
         String relation="0";
@@ -212,10 +219,10 @@ public class TaskController {
             String taskid=task.substring(1);
             if(taskid.equals(taskname)){
                 if(task.charAt(0)=='b'){
-                    relation="1";
+                    relation="1";         //发布
                     break;
                 }else {
-                    relation="2";
+                    relation="2";        //参与
                     break;
                 }
             }else{
@@ -255,49 +262,92 @@ public class TaskController {
         BufferedWriter writer=new BufferedWriter(fileWriter);
         writer.write("j"+task+" ");
 
+        String temFile="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+task+"/"+worker+".txt";
+        File tem=new File(temFile);
+        if(!tem.exists()){
+            tem.createNewFile();
+        }
+
         return "Success";
     }
 
-    //查看自己参与的任务
-    @RequestMapping(value = "checkJoinTasks",method = RequestMethod.POST)
-    public String checkJoinTasks(@RequestBody User user) throws IOException{
-        ArrayList<String> arrayList=new ArrayList<>();
-        String userfile="src/main/java/com/seciii/crowdsourcing/Data/UserTaskIndexList/"+user.getUsername()+".txt";
-        File file=new File(userfile);
+
+    //返回工人在任务中保存的所有图片的临时标注
+    @RequestMapping(value = "loadTemporaryFile",method = RequestMethod.POST)
+    public String loadTemporaryFile(@RequestBody Taskkey taskkey) throws IOException{
+        String taskname=taskkey.getTaskname();
+        String username=taskkey.getUsername();
+        String temporaryFile="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+taskname+"/"+username+".txt";
+        File file=new File(temporaryFile);
         InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
         BufferedReader br=new BufferedReader(reader);
-        String line=br.readLine();
-        String[] arr=line.split(" ");
-        for(String i:arr){
-            if(i.charAt(0)=='j'){
-                String taskname=i.substring(1);
-                arrayList.add(taskname);
-            }
+        ArrayList<String> list=new ArrayList<>();
+        String line;
+        while((line=br.readLine())!=null){
+            list.add(line);
         }
-        String result=String.join("!",arrayList);
+        String result=String.join("#",list);
         return result;
     }
 
 
-    //查看自己发布的任务
-    @RequestMapping(value = "checkBuildTasks",method = RequestMethod.POST)
-    public String checkBuildTasks(@RequestBody User user) throws IOException{
-        ArrayList<String> arrayList=new ArrayList<>();
-        String userfile="src/main/java/com/seciii/crowdsourcing/Data/UserTaskIndexList/"+user.getUsername()+".txt";
-        File file=new File(userfile);
-        InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
-        BufferedReader br=new BufferedReader(reader);
-        String line=br.readLine();
-        String[] arr=line.split(" ");
-        for(String i:arr){
-            if(i.charAt(0)=='b'){
-                String taskname=i.substring(1);
-                arrayList.add(taskname);
-            }
-        }
-        String result=String.join("!",arrayList);
-        return result;
-    }
+//    //查看自己参与的任务
+//    @RequestMapping(value = "checkJoinTasks",method = RequestMethod.POST)
+//    public String checkJoinTasks(@RequestBody User user) throws IOException{
+//        ArrayList<String> arrayList=new ArrayList<>();
+//        String userfile="src/main/java/com/seciii/crowdsourcing/Data/UserTaskIndexList/"+user.getUsername()+".txt";
+//        File file=new File(userfile);
+//        InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
+//        BufferedReader br=new BufferedReader(reader);
+//        String line=br.readLine();
+//        String[] arr=line.split(" ");
+//        for(String i:arr){
+//            if(i.charAt(0)=='j'){
+//                String taskname=i.substring(1);
+//                arrayList.add(taskname);
+//            }
+//        }
+//        String result=String.join("!",arrayList);
+//        return result;
+//    }
+//
+//
+//    //查看自己发布的任务
+//    @RequestMapping(value = "checkBuildTasks",method = RequestMethod.POST)
+//    public String checkBuildTasks(@RequestBody User user) throws IOException{
+//        ArrayList<String> arrayList=new ArrayList<>();
+//        String userfile="src/main/java/com/seciii/crowdsourcing/Data/UserTaskIndexList/"+user.getUsername()+".txt";
+//        File file=new File(userfile);
+//        InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
+//        BufferedReader br=new BufferedReader(reader);
+//        String line=br.readLine();
+//        String[] arr=line.split(" ");
+//        for(String i:arr){
+//            if(i.charAt(0)=='b'){
+//                String taskname=i.substring(1);
+//                arrayList.add(taskname);
+//            }
+//        }
+//        String result=String.join("!",arrayList);
+//        return result;
+//    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
