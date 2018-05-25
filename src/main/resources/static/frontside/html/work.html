@@ -51,7 +51,7 @@
     <div id="myNav" class="overlay">
         <div class="overlay-content">
             <p class = "task-content">
-                {{task_content}}整体方框区域标注？任务描述：要求，积分，and so on...
+                {{task_content}}
             </p>
         </div>
     </div>
@@ -88,6 +88,7 @@ background-color: #98a6ad; left: 18%; top: 10%"></div>
     </div>
 <!--</div>>-->
 
+<script src="../js/workSpace.js"></script>
 <script src="../js/loadMyLabel.js"></script>
 <script src="../js/allLabel.js"></script>
 <script src="../js/easyCurveLabel.js"></script>
@@ -96,40 +97,6 @@ background-color: #98a6ad; left: 18%; top: 10%"></div>
 <script src="../lib/vue.js"></script>
 <script src="../lib/jquery.js"></script>
 <script src="../lib/Jcanvas.js"></script>
-<script>
-    var c = document.getElementById("myCanvas");
-    var ctx = c.getContext("2d");
-    var img = new Image();
-    img.src = 'assets/img/wyf.jpeg';
-
-    img.onload = function() {
-        var FitWidth = c.width;
-        var FitHeight = c.height;
-        var _width = img.width;
-        var _height = img.height;
-        if(_width <= FitWidth && _height <= FitHeight){
-            var offset_w = (FitWidth - _width)/2;
-            var offset_h = (FitHeight - _height)/2;
-            ctx.drawImage(img, offset_w, offset_h);
-
-        }
-        else {
-            if (_width / _height >= FitWidth / FitHeight) {
-                if (_width > FitWidth) {
-                    img.width = FitWidth;
-                    img.height = (_height * FitWidth) / _width;
-                }
-            }
-            else {
-                if (_height > FitHeight) {
-                    img.height = FitHeight;
-                    img.width = (_width * FitHeight) / _height;
-                }
-            }
-            ctx.drawImage(img, 0, 0);
-        }
-    }
-</script>
 
 </body>
 </html>
