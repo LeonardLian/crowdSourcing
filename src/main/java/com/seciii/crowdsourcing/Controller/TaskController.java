@@ -226,7 +226,7 @@ public class TaskController {
         return relation;
     }
 
-    //以旁观者身份查看任务文字信息
+    //查看任务文字信息
     @RequestMapping(value = "/checkTaskInformation",method = RequestMethod.POST)
     public String checkTaskInformationAsLooker(@RequestBody Task task) throws IOException{
         String taskname=task.getTaskname();
