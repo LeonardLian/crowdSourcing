@@ -50,33 +50,11 @@
     border-radius: 10px;
 
 }
+
 #myCanvas{
-    width:750px;
-    height:550px;
     position:relative;
     margin-left:20%;
-    margin-right:auto;
+    //margin-right:auto;
     margin-top: 5%;
-    background: #3b3e47;
+    background: whitesmoke;
 }
-
-/*.abc{ border:1px solid #000; margin:0 auto}*/
-/*@media screen and (min-width: 1201px) {*/
-    /*.abc {width: 750px; height: 550px}*/
-/*}*/
-/*!* 设置了浏览器宽度不小于1201px时 abc 显示1200px宽度 *!*/
-
-/*@media screen and (max-width: 1200px) {*/
-    /*.abc {width: 700px; height: 500px}*/
-/*}*/
-/*!* 设置了浏览器宽度不大于1200px时 abc 显示900px宽度 *!*/
-
-/*@media screen and (max-width: 901px) {*/
-    /*.abc {width: 600px;height: 400px}*/
-/*}*/
-/*!* 设置了浏览器宽度不大于901px时 abc 显示200px宽度 *!*/
-
-/*@media screen and (max-width: 500px) {*/
-    /*.abc {width: 300px; height: 180px}*/
-/*}*/
-/*!* 设置了浏览器宽度不大于500px时 abc 显示100px宽度 *!*/
