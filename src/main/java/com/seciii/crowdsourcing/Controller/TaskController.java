@@ -22,7 +22,6 @@ import java.util.ArrayList;
 @RestController
 public class TaskController {
 
-
     //发布任务的基本信息
     @RequestMapping(value = "/releaseTaskInfo",method = RequestMethod.POST)
     public String releaseTask(@RequestBody Task task) throws IOException{

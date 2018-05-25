@@ -66,7 +66,7 @@ $(function () {
        data:taskJson,
        contentType:'application/json',
        dataType:'text',
-       url:'',//TODO
+       url:'http://127.0.0.1:8080/',//TODO
        success:function (data) {
            var workList=data.split('#');
            if(workList.length==0){
