@@ -76,7 +76,7 @@ $(function () {
            for(var x in workList){
                var usernameOfWorker=workList[x];
                var src=getImgOfWorker(usernameOfWorker);
-               var url='viewer.html'+'?'+username+'?'+taskname+'?'+usernameOfWorker;
+               var url='TaskView.html'+'?'+username+'?'+taskname+'?'+usernameOfWorker;
 
                $('#workerList').prepend('<li> <a href="'+url+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/200/h/200/q/80"/> <div class="gallery-title">'+usernameOfWorker+'</div> </a> </li>');
            }

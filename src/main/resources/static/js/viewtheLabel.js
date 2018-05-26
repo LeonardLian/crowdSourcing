@@ -33,6 +33,8 @@ $(function () {
             alert("error");
         }
     });
+
+
 });
 
 function rewardClick() {
