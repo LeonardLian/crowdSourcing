@@ -1,7 +1,8 @@
 /*
-* 初始化，显示任务详细信息，包括图片和信息
-* 参与任务后的相关响应：用户与任务的相关参数修改，页面跳转至工作界面
-*/
+* 初始化任务信息、参与者列表:参与者点击跳转至查看参与者的标注情况
+* TODO 关闭任务响应
+ */
+
 $(function () {
     var url=decodeURI(window.location.href);
     var username=url.split("?")[1];
@@ -14,6 +15,7 @@ $(function () {
         }
     });
 
+    //加载任务信息
     var task=new Task(taskname,'aaa','aaa','aaa','aaa','aaa','aaa','aaa','aaa');
     var taskJson=JSON.stringify(task);
     $.ajax({
@@ -36,18 +38,13 @@ $(function () {
                     deadline:infoList[8]
                 }
             });
-            new Vue({
-                el:"#description",
-                data:{
-                    description:infoList[3]
-                }
-            });
         },
         error:function(e){
             alert("error");
         }
     });
 
+    //加载任务封面
     $.ajax({
         type:'POST',
         data:taskJson,
@@ -56,10 +53,6 @@ $(function () {
         url:'http://127.0.0.1:8080/checkTaskImg',
         success:function (data) {
             var imageList=data.split(" ");
-            for(var i in imageList){
-                var src='data:image/jpeg;base64,'+imageList[i];
-                $('#showImage').prepend('<li> <img class="am-img-thumbnail am-img-bdrs" src="'+src+'" alt="failed" width="1000"/> </li>');
-            }
             $('#cover').attr("src","data:image/jpeg;base64,"+imageList[0]);
         },
         error:function(e){
@@ -67,28 +60,73 @@ $(function () {
         }
     });
 
-});
-
-function join() {
-    var url=decodeURI(window.location.href);
-    var username=url.split("?")[1];
-    var taskname=url.split("?")[2];
-
-    var taskkey=new Taskkey(username,taskname);
-    var taskkeyJson=JSON.stringify(taskkey);
-
+    //加载参与者列表
     $.ajax({
-        type:'POST',
-        data:taskkeyJson,
-        contentType:'application/json',
-        dataType:'text',
-        url:'http://127.0.0.1:8080/participateIn',
-        success:function (data) {
-            var work='work.html'+'?'+username+'?'+taskname;
-            window.location.href=work;
-        },
+       type:'POST',
+       data:taskJson,
+       contentType:'application/json',
+       dataType:'text',
+       url:'http://127.0.0.1:8080/',//TODO
+       success:function (data) {
+           var workList=data.split('#');
+           if(workList.length==0){
+               $('#description').html('当前没有参与者。');
+               return;
+           }
+           for(var x in workList){
+               var usernameOfWorker=workList[x];
+               var src=getImgOfWorker(usernameOfWorker);
+               var url='viewer.html'+'?'+username+'?'+taskname+'?'+usernameOfWorker;
+
+               $('#workerList').prepend('<li> <a href="'+url+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/200/h/200/q/80"/> <div class="gallery-title">'+usernameOfWorker+'</div> </a> </li>');
+           }
+       },
         error:function (e) {
             alert('error');
+        }
+    });
+});
+
+function getImgOfWorker(usernameOfWorker) {
+    var user=new User(usernameOfWorker,'aaa','aaa','aaa','aaa','aaa','aaa','aaa');
+    var userJson=JSON.stringify(user);
+
+    $.ajax({
+        type: 'POST',
+        data: userJson,
+        contentType: 'application/json',
+        dataType: 'text',
+        url: 'http://127.0.0.1:8080/showUserImg',
+        success: function (data) {
+            if (data == 'no') {
+                return;
+            } else {
+                return data;
+            }
+        },
+        error: function (e) {
+            alert("error");
+        }
+    });
+}
+
+function closeTask() {
+    var url=decodeURI(window.location.href);
+    var taskname=url.split("?")[2];
+
+    var task=new Task(taskname,'aaa','aaa','aaa','aaa','aaa','aaa','aaa','aaa');
+    var taskJson=JSON.stringify(task);
+    $.ajax({
+        type:'POST',
+        data:taskJson,
+        contentType:'application/json',
+        dataType:'text',
+        url:'',
+        success:function (data) {
+
+        },
+        error:function(e){
+            alert("error");
         }
     });
 }
@@ -105,7 +143,13 @@ function Task(taskname,requestor,tasktag,description,mode,numOfNeeded,numOfPart,
     this.deadline=deadline;//截止日期，格式为xxxx-xx-xx
 }
 
-function Taskkey(username,taskname){
-    this.username=username;
-    this.taskname=taskname;
+function User(username,password,point,name,email,phone,description,taskAddress) {
+    this.username = username;
+    this.password = password;
+    this.point = point;
+    this.name = name;
+    this.email = email;
+    this.phone = phone;
+    this.description = description;
+    this.taskAddress = taskAddress;
 }
