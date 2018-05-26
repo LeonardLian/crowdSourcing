@@ -64,7 +64,6 @@ $(function () {
     var img = new Image();
     img.src = 'data:image/jpeg;base64,'+imgBase[0];
 
-
     c.width = 750;
     c.height = 550;
     var FitWidth = 750;
