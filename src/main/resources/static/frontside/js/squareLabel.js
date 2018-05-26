@@ -2,7 +2,7 @@
  * Created by Leonarda on 2018/3/22.
  */
 
-function squarelabel() {
+function squarelabel(taskname,username) {
 
     // var oimg=document.getElementById('exampleImg');
     // oimg.style.opacity=0.5;
@@ -88,17 +88,15 @@ function squarelabel() {
                 // txt.style.width=60+'px';
                 // ab.appendChild(txt);
 
-
-                var squarelocation=new dot(startX,startY,ab.style.width,ab.style.height);
-                var jsonsquare=JSON.stringify(squarelocation);
-
+                var squareLabel=new SquareLabel('1',startX,startY,ab.style.width,ab.style.height,comment,taskname,username);
+                var squareLabelJson=JSON.stringify(squareLabel);
 
                 $.ajax({
                     type:'POST',
-                    data:jsonsquare,
+                    data:squareLabelJson,
                     contentType:'application/json',
                     dataType:'json',
-                    url:'http://127.0.0.1:8080/squaredot',
+                    url:'http://127.0.0.1:8080/saveSquareLabel',
                     success:function (data) {
                         alert("OK");
                     },
@@ -122,11 +120,14 @@ function squarelabel() {
 
     }
 
-    function dot(x,y,width,height) {
-        this.x=x;
-        this.y=y;
+    function SquareLabel(type,startX,startY,width,height,comment,taskname,username) {
+        this.type=type;
+        this.startX=startX;
+        this.startY=startY;
         this.width=width;
         this.height=height;
+        this.comment=comment;
+        this.taskname=taskname;
+        this.username=username;
     }
-
 }

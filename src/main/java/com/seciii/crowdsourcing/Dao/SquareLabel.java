@@ -13,11 +13,11 @@ public class SquareLabel {
     private String height;
     private String comment;
     private String taskname;
-    private String worker;
+    private String username;
 
     public SquareLabel(){}
 
-    public SquareLabel(String startX,String startY,String width,String height,String comment,String taskname,String worker){
+    public SquareLabel(String startX,String startY,String width,String height,String comment,String taskname,String username){
         this.type="1";
         this.startX=startX;
         this.startY=startY;
@@ -25,7 +25,7 @@ public class SquareLabel {
         this.height=height;
         this.comment=comment;
         this.taskname=taskname;
-        this.worker=worker;
+        this.username=username;
     }
 
     public String getComment() {
@@ -80,15 +80,15 @@ public class SquareLabel {
         this.taskname = taskname;
     }
 
-    public String getWorker() {
-        return worker;
-    }
-
     public void setType(String type) {
         this.type = type;
     }
 
-    public void setWorker(String worker) {
-        this.worker = worker;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }

@@ -27,9 +27,11 @@ public class LabelManageController {
                 "\"type\":"+curvelabel.getType()+","+
                 "\"comment\":"+"\""+curvelabel.getComment()+"\""+","+
                 "\"dotlist\""+"\""+curvelabel.getDotlist()+"\""+","+
-                "\"taskname\""+"\""+curvelabel.getTaskname()+"\""+
+                "\"taskname\""+"\""+curvelabel.getTaskname()+"\""+","+
+                "\"username\""+"\""+curvelabel.getUsername()+"\""+
                 "}"+"\n";
-        String filename="src/main/java/com/seciii/crowdsourcing/Data/TemporaryFile/"+curvelabel.getTaskname()+".txt";
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+
+                curvelabel.getTaskname()+"/"+curvelabel.getUsername()+".txt";
 
         File file=new File(filename);
         if(!file.exists()){
@@ -43,6 +45,7 @@ public class LabelManageController {
         return "success";
     }
 
+
     //删除一个用曲线标注的标签，保存到临时文件里
     @RequestMapping(value = "/deleteCurveLabel",method = RequestMethod.POST)
     public String deleteCurveLabel(@RequestBody CurveLabel curvelabel) throws IOException{
@@ -50,11 +53,13 @@ public class LabelManageController {
                 "\"type\":"+curvelabel.getType()+","+
                 "\"comment\":"+"\""+curvelabel.getComment()+"\""+","+
                 "\"dotlist\""+"\""+curvelabel.getDotlist()+"\""+","+
-                "\"taskname\""+"\""+curvelabel.getTaskname()+"\""+
+                "\"taskname\""+"\""+curvelabel.getTaskname()+"\""+","+
+                "\"username\""+"\""+curvelabel.getUsername()+"\""+
                 "}";
         Boolean succeed=false;
         ArrayList<String> allSquareLabelList=new ArrayList<>();
-        String filename="src/main/java/com/seciii/crowdsourcing/Data/TemporaryFile/"+curvelabel.getTaskname()+".txt";
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+
+                curvelabel.getTaskname()+"/"+curvelabel.getUsername()+".txt";
         File file=new File(filename);
         InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
         BufferedReader br=new BufferedReader(reader);
@@ -88,29 +93,32 @@ public class LabelManageController {
                 "\"type\":"+curvelabel.getType()+","+
                 "\"comment\":"+"\""+curvelabel.getComment()+"\""+","+
                 "\"dotlist\""+"\""+curvelabel.getDotlist()+"\""+","+
-                "\"taskname\""+"\""+curvelabel.getTaskname()+"\""+
+                "\"taskname\""+"\""+curvelabel.getTaskname()+"\""+","+
+                "\"username\""+"\""+curvelabel.getUsername()+"\""+
                 "}";
         Boolean succeed=false;
-        ArrayList<String> allSquareLabelList=new ArrayList<>();
-        String filename="src/main/java/com/seciii/crowdsourcing/Data/TemporaryFile/"+curvelabel.getTaskname()+".txt";
+        ArrayList<String> curveLabelList=new ArrayList<>();
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+
+                curvelabel.getTaskname()+"/"+curvelabel.getUsername()+".txt";
         File file=new File(filename);
         InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
         BufferedReader br=new BufferedReader(reader);
         String line=null;
+
         while ((line=br.readLine())!=null){
             if((line.split(",")[0].equals(polishStr.split(",")[0]))&&
                     (line.split(",")[2].equals(polishStr.split(",")[2]))
                     ){
-                allSquareLabelList.add(polishStr);
+                curveLabelList.add(polishStr);
                 succeed=true;
             }else{
-                allSquareLabelList.add(line);
+                curveLabelList.add(line);
             }
         }
 
         FileWriter writer=new FileWriter(filename,false);
         BufferedWriter bw=new BufferedWriter(writer);
-        for(String a:allSquareLabelList){
+        for(String a:curveLabelList){
             bw.write(a+"\n");
         }
         bw.close();
@@ -121,13 +129,6 @@ public class LabelManageController {
             return "?????";
         }
     }
-
-
-    //从后端取得所有的曲线标注标签，传到前端
-//    @RequestMapping(value = "/sendAllCurveLabel",method =RequestMethod.POST)
-//    public String sendAllCurveLabel(@RequestBody CurveLabel curveLabel){
-//        return null;
-//    }
 
 
     //方框标注
@@ -142,9 +143,12 @@ public class LabelManageController {
                 "\"width\":"+"\""+squarelabel.getWidth()+"\""+","+
                 "\"height\""+"\""+squarelabel.getHeight()+"\""+","+
                 "\"comment\""+"\""+squarelabel.getComment()+"\""+","+
-                "\"taskname\""+"\""+squarelabel.getTaskname()+"\""+
+                "\"taskname\""+"\""+squarelabel.getTaskname()+"\""+","+
+                "\"username\""+"\""+squarelabel.getUsername()+"\""+
                 "}"+"\n";
-        String filename="src/main/java/com/seciii/crowdsourcing/Data/TemporaryFile/"+squarelabel.getTaskname()+".txt";
+
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+
+                squarelabel.getTaskname()+"/"+squarelabel.getUsername()+".txt";
 
         File file=new File(filename);
         if(!file.exists()){
@@ -158,6 +162,7 @@ public class LabelManageController {
         return "success";
     }
 
+
     //删除一个用方框标注的标签 保存到临时文件里
     @RequestMapping(value = "/deleteSquareLabel",method = RequestMethod.POST)
     public String deleteSquareLabel(@RequestBody SquareLabel squarelabel) throws IOException{
@@ -168,11 +173,15 @@ public class LabelManageController {
                 "\"width\":"+"\""+squarelabel.getWidth()+"\""+","+
                 "\"height\""+"\""+squarelabel.getHeight()+"\""+","+
                 "\"comment\""+"\""+squarelabel.getComment()+"\""+","+
-                "\"taskname\""+"\""+squarelabel.getTaskname()+"\""+
+                "\"taskname\""+"\""+squarelabel.getTaskname()+"\""+","+
+                "\"username\""+"\""+squarelabel.getUsername()+"\""+
                 "}";
         Boolean succeed=false;
         ArrayList<String> allSquareLabelList=new ArrayList<>();
-        String filename="src/main/java/com/seciii/crowdsourcing/Data/TemporaryFile/"+squarelabel.getTaskname()+".txt";
+
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+
+                squarelabel.getTaskname()+"/"+squarelabel.getUsername()+".txt";
+
         File file=new File(filename);
         InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
         BufferedReader br=new BufferedReader(reader);
@@ -209,11 +218,15 @@ public class LabelManageController {
                 "\"width\":"+"\""+squarelabel.getWidth()+"\""+","+
                 "\"height\""+"\""+squarelabel.getHeight()+"\""+","+
                 "\"comment\""+"\""+squarelabel.getComment()+"\""+","+
-                "\"taskname\""+"\""+squarelabel.getTaskname()+"\""+
+                "\"taskname\""+"\""+squarelabel.getTaskname()+"\""+","+
+                "\"username\""+"\""+squarelabel.getUsername()+"\""+
                 "}";
         Boolean succeed=false;
         ArrayList<String> allSquareLabelList=new ArrayList<>();
-        String filename="src/main/java/com/seciii/crowdsourcing/Data/TemporaryFile/"+squarelabel.getTaskname()+".txt";
+
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+
+                squarelabel.getTaskname()+"/"+squarelabel.getUsername()+".txt";
+
         File file=new File(filename);
         InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
         BufferedReader br=new BufferedReader(reader);
@@ -246,15 +259,6 @@ public class LabelManageController {
     }
 
 
-    //从后端取得所有的方框标注标签，传到前端
-//    @RequestMapping(value = "/sendAllSquareLabel",method = RequestMethod.POST)
-//    public String sendAllSquareLabel(@RequestBody SquareLabel squareLabel){
-//        return null;
-//    }
-
-
-
-
     //整体标注
 
     //将整体标注 保存到临时文件里
@@ -263,9 +267,11 @@ public class LabelManageController {
         String wholeLabelStr="{"+
                 "\"type\":"+"\""+wholelabel.getType()+"\""+","+
                 "\"comment\":"+"\""+wholelabel.getComment()+"\""+","+
-                "\"taskname\""+"\""+wholelabel.getTaskname()+"\""+
+                "\"taskname\""+"\""+wholelabel.getTaskname()+"\""+","+
+                "\"username\""+"\""+wholelabel.getUsername()+"\""+
                 "}"+"\n";
-        String filename="src/main/java/com/seciii/crowdsourcing/Data/TemporaryFile/"+wholelabel.getTaskname()+".txt";
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+
+                wholelabel.getTaskname()+"/"+wholelabel.getUsername()+".txt";
 
         File file=new File(filename);
         if(!file.exists()){
@@ -282,38 +288,14 @@ public class LabelManageController {
     //删除整体标注 保存到临时文件里
     @RequestMapping(value = "/deleteWholeLabel",method = RequestMethod.POST)
     public String deleteWholeLabel(@RequestBody WholeLabel wholelabel) throws IOException{
-        String deleteStr="{"+
-                "\"type\":"+"\""+wholelabel.getType()+"\""+","+
-                "\"comment\":"+"\""+wholelabel.getComment()+"\""+","+
-                "\"taskname\""+"\""+wholelabel.getTaskname()+"\""+
-                "}";
-        Boolean succeed=false;
-        ArrayList<String> allSquareLabelList=new ArrayList<>();
-        String filename="src/main/java/com/seciii/crowdsourcing/Data/TemporaryFile/"+wholelabel.getTaskname()+".txt";
-        File file=new File(filename);
-        InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
-        BufferedReader br=new BufferedReader(reader);
-        String line=null;
-        while ((line=br.readLine())!=null){
-            if(line.equals(deleteStr)){
-                succeed=true;
-            }else{
-                allSquareLabelList.add(line);
-            }
-        }
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+
+                wholelabel.getTaskname()+"/"+wholelabel.getUsername()+".txt";
 
         FileWriter writer=new FileWriter(filename,false);
         BufferedWriter bw=new BufferedWriter(writer);
-        for(String a:allSquareLabelList){
-            bw.write(a+"\n");
-        }
+        bw.write("");
         bw.close();
-
-        if(succeed){
-            return "删除成功";
-        }else{
-            return "?????";
-        }
+        return "success";
     }
 
     //修改整体标注的内容 保存到临时文件里
@@ -322,46 +304,53 @@ public class LabelManageController {
         String polishStr="{"+
                 "\"type\":"+"\""+wholelabel.getType()+"\""+","+
                 "\"comment\":"+"\""+wholelabel.getComment()+"\""+","+
-                "\"taskname\""+"\""+wholelabel.getTaskname()+"\""+
+                "\"taskname\""+"\""+wholelabel.getTaskname()+"\""+","+
+                "\"username\""+"\""+wholelabel.getUsername()+"\""+
                 "}";
-        Boolean succeed=false;
-        ArrayList<String> allSquareLabelList=new ArrayList<>();
-        String filename="src/main/java/com/seciii/crowdsourcing/Data/TemporaryFile/"+wholelabel.getTaskname()+".txt";
-        File file=new File(filename);
-        InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
-        BufferedReader br=new BufferedReader(reader);
-        String line=null;
-        while ((line=br.readLine())!=null){
-            if((line.split(",")[0].equals(polishStr.split(",")[0]))&&
-                    (line.split(",")[2].equals(polishStr.split(",")[2]))
-                    ){
-                allSquareLabelList.add(polishStr);
-                succeed=true;
-            }else{
-                allSquareLabelList.add(line);
-            }
-        }
+
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+
+                wholelabel.getTaskname()+"/"+wholelabel.getUsername()+".txt";
 
         FileWriter writer=new FileWriter(filename,false);
         BufferedWriter bw=new BufferedWriter(writer);
-        for(String a:allSquareLabelList){
-            bw.write(a+"\n");
-        }
+        bw.write(polishStr+"\n");
         bw.close();
+        return "success";
 
-        if(succeed){
-            return "修改成功";
-        }else{
-            return "?????";
-        }
+//        Boolean succeed=false;
+//        ArrayList<String> wholeLabelList=new ArrayList<>();
+//
+//        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+
+//                wholelabel.getTaskname()+"/"+wholelabel.getUsername()+".txt";
+//
+//        File file=new File(filename);
+//        InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
+//        BufferedReader br=new BufferedReader(reader);
+//        String line=null;
+//        while ((line=br.readLine())!=null){
+//            if((line.split(",")[0].equals(polishStr.split(",")[0]))&&
+//                    (line.split(",")[2].equals(polishStr.split(",")[2]))
+//                    ){
+//                wholeLabelList.add(polishStr);
+//                succeed=true;
+//            }else{
+//                wholeLabelList.add(line);
+//            }
+//        }
+//
+//        FileWriter writer=new FileWriter(filename,false);
+//        BufferedWriter bw=new BufferedWriter(writer);
+//        for(String a:wholeLabelList){
+//            bw.write(a+"\n");
+//        }
+//        bw.close();
+//
+//        if(succeed){
+//            return "修改成功";
+//        }else{
+//            return "?????";
+//        }
     }
-
-
-    //从后端取得所有整体标注，传到前端
-//    @RequestMapping(value = "/sendAllWholeLabel",method = RequestMethod.POST)
-//    public String sendAllWholeLabel(@RequestBody WholeLabel wholeLabel){
-//        return null;
-//    }
 
 
 }

@@ -9,13 +9,13 @@ public class WholeLabel {
     private String type;
     private String comment;
     private String taskname;
-    private String worker;
+    private String username;
 
     public WholeLabel(String comment,String taskname,String worker){
         this.type="0";
         this.comment=comment;
         this.taskname=taskname;
-        this.worker=worker;
+        this.username=worker;
     }
     public WholeLabel(){}
 
@@ -27,8 +27,8 @@ public class WholeLabel {
         return comment;
     }
 
-    public String getWorker() {
-        return worker;
+    public String getUsername() {
+        return username;
     }
 
     public String getTaskname() {
@@ -43,8 +43,8 @@ public class WholeLabel {
         this.type = type;
     }
 
-    public void setWorker(String worker) {
-        this.worker = worker;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setTaskname(String taskname) {
