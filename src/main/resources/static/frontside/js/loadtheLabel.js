@@ -58,20 +58,25 @@ $(function () {
     })
 
 
+
     var c = document.getElementById("myCanvas");
-    var ctx=c.getContext("2d");
+    var ctx = c.getContext("2d");
     var img = new Image();
     img.src = 'data:image/jpeg;base64,'+imgBase[0];
 
+
+    c.width = 750;
+    c.height = 550;
+    var FitWidth = 750;
+    var FitHeight = 550;
+
     img.onload = function() {
-        var FitWidth = c.width;
-        var FitHeight = c.height;
         var _width = img.width;
         var _height = img.height;
         if(_width <= FitWidth && _height <= FitHeight){
             var offset_w = (FitWidth - _width)/2;
             var offset_h = (FitHeight - _height)/2;
-            ctx.drawImage(img, offset_w, offset_h);
+            ctx.drawImage(img, offset_w, offset_h, _width, _height);
 
         }
         else {
@@ -80,16 +85,60 @@ $(function () {
                     img.width = FitWidth;
                     img.height = (_height * FitWidth) / _width;
                 }
+                else{
+                    img.width = _width;
+                    img.height = _height;
+                }
             }
             else {
                 if (_height > FitHeight) {
                     img.height = FitHeight;
                     img.width = (_width * FitHeight) / _height;
                 }
+                else{
+                    img.width = _width;
+                    img.height = _height;
+                }
             }
-            ctx.drawImage(img, 0, 0);
+            // img.width = 750;
+            // img.height = 550;
+            ctx.drawImage(img, 0, 0, 750, 550);
         }
     };
+
+    // var c = document.getElementById("myCanvas");
+    // var ctx=c.getContext("2d");
+    // var img = new Image();
+    // img.src = 'data:image/jpeg;base64,'+imgBase[0];
+    //
+    // img.onload = function() {
+    //     var FitWidth = c.width;
+    //     var FitHeight = c.height;
+    //     var _width = img.width;
+    //     var _height = img.height;
+    //     if(_width <= FitWidth && _height <= FitHeight){
+    //         var offset_w = (FitWidth - _width)/2;
+    //         var offset_h = (FitHeight - _height)/2;
+    //         ctx.drawImage(img, offset_w, offset_h);
+    //
+    //     }
+    //     else {
+    //         if (_width / _height >= FitWidth / FitHeight) {
+    //             if (_width > FitWidth) {
+    //                 img.width = FitWidth;
+    //                 img.height = (_height * FitWidth) / _width;
+    //             }
+    //         }
+    //         else {
+    //             if (_height > FitHeight) {
+    //                 img.height = FitHeight;
+    //                 img.width = (_width * FitHeight) / _height;
+    //             }
+    //         }
+    //         ctx.drawImage(img, 0, 0);
+    //     }
+    // };
+
 
 
     //显示之前保存的标注
@@ -123,7 +172,7 @@ $(function () {
             var mode=jsonLabel.type;
 
             if(mode=='0'){
-                //TODO
+
             }
             else if(mode=='1'){
                 var oDiv=document.createElement("div");
@@ -161,13 +210,13 @@ $(function () {
 
     //工作界面敲定
     if(taskmode=="整体标注"){
-        wholeLabel();
+        wholeLabel(taskname,username);
     }
     else if(taskmode=="方框标注"){
-        squarelabel();
+        squarelabel(taskname,username);
     }
     else if(taskmode=="局部标注"){
-        curveLabel();
+        curveLabel(taskname,username);
     }
     else{}
 

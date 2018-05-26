@@ -1,13 +1,13 @@
 /**
  * Created by Leonarda on 2018/3/24.
  */
-function curveLabel() {
-    CanvasExt.drawPen("canvas");
+function curveLabel(taskname,username) {
+    CanvasExt.drawPen("myCanvas",taskname,username);
 }
 
 var layer=0;
 CanvasExt={
-    drawPen:function (canvasId) {
+    drawPen:function (canvasId,taskname,username) {
         var canvas=document.getElementById(canvasId);
         var canvasRect=canvas.getBoundingClientRect();
 
@@ -33,9 +33,12 @@ CanvasExt={
             // var startstr='{' +'"x":' + startX + ',' + '"y":' +startY +'}';
             // var startjson=eval('(' + startstr + ')');
 
-            var startdot=new Curvedot(startX,startY);
-            var startjson=JSON.stringify(startdot);
-            dotArray.push(startjson);
+            // var startdot=new Curvedot(startX,startY);
+            // var startjson=JSON.stringify(startdot);
+            // dotArray.push(startjson);
+
+            var startStr=startX+','+startY;
+            dotArray.push(startStr)
 
             sourceX=e.clientX-canvasLeft;
             sourceY=e.clientY-canvasTop;
@@ -51,9 +54,11 @@ CanvasExt={
                 // var moveStr='{' +'"x":' + moveX + ',' + '"y":' +moveY +'}';
                 //var movejson=eval('(' + moveStr + ')');
 
-                var newdot=new Curvedot(moveX,moveY);
-                var movejson=JSON.stringify(newdot);
-                dotArray.push(movejson);
+                // var newdot=new Curvedot(moveX,moveY);
+                // var movejson=JSON.stringify(newdot);
+
+                var dotStr=moveX+','+moveY;
+                dotArray.push(dotStr);
 
                 var currX=e.clientX-canvasLeft;
                 var currY=e.clientY-canvasTop;
@@ -65,7 +70,7 @@ CanvasExt={
                     strokeWidth:width,
                     x1:sourceX,y1:sourceY,
                     x2:currX,y2:currY
-                })
+                });
 
                 sourceX=currX;
                 sourceY=currY;
@@ -75,26 +80,32 @@ CanvasExt={
             $("#"+canvasId).drawLayers().saveCanvas();
             canvas.onmousemove=null;
             //alert(dotArray[0]);
-            for(var i=0;i<dotArray.length;i++){
-                $.ajax({
-                    type:'POST',
-                    data:dotArray[i],
-                    contentType:'application/json',
-                    dataType:'json',
-                    url:'http://127.0.0.1:8080/CurveDot',
-                    success:function (data) {
-                        alert("success");
-                    },
-                    error:function(e){
-                        alert("error");
-                    }
-                })
-            }
+            var dotString=dotArray.join(' ');
+
+            var curveLabel=new CurveLabel('2',comment,dotString,taskname,username);
+            var curveLabelJson=JSON.stringify(curveLabel);
+            $.ajax({
+                type:'POST',
+                data:curveLabelJson,
+                contentType:'application/json',
+                dataType:'json',
+                url:'http://127.0.0.1:8080/saveCurveLabel',
+                success:function (data) {
+                    alert("success");
+                },
+                error:function(e){
+                    alert("error");
+                }
+            });
+
         }
     }
 }
 
-function Curvedot(x,y) {
-    this.x=x;
-    this.y=y;
+function CurveLabel(type,comment,dotlist,taskname,username){
+    this.type=type;
+    this.comment=comment;
+    this.dotlist=dotlist;
+    this.taskname=taskname;
+    this.username=username;
 }
