@@ -355,21 +355,21 @@ public class TaskController {
         return "Success";
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    //查看一个工人的作品
+    @RequestMapping(value = "/loadWorkerFile",method = RequestMethod.POST)
+    public String checkWorker(@RequestBody Taskkey taskkey) throws IOException {
+        String temporaryFile="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskkey.getTaskname()+"/"+taskkey.getUsername()+".txt";
+        File file=new File(temporaryFile);
+        InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
+        BufferedReader br=new BufferedReader(reader);
+        ArrayList<String> list=new ArrayList<>();
+        String line;
+        while((line=br.readLine())!=null){
+            list.add(line);
+        }
+        String result=String.join("#",list);
+        return result;
+    }
 
     //查看一个任务的分发情况
     @RequestMapping(value = "/checkTask",method = RequestMethod.POST)
@@ -379,33 +379,18 @@ public class TaskController {
         File folder=new File(foldername);
         String[] files=folder.list();
 
-        String workerId="";
+        ArrayList<String> workerList=new ArrayList<>();
         for(String file:files){
             if(file.equals("description.txt")){
             }
             else{
                 String id=file.split(".")[0];
-                workerId=workerId+id+" ";
+                workerList.add(id);
             }
         }
 
-        return workerId;
-    }
-
-
-    //查看一个工人的作品
-    @RequestMapping(value = "/checkWorker",method = RequestMethod.POST)
-    public String checkWorker(@RequestBody Taskkey taskkey) throws IOException {
-        String task = taskkey.getTaskname();
-        String worker = taskkey.getUsername();
-
-        String filename = "src/main/java/com/seciii/crowdsourcing/Data/TaskList/" + task + "/" + worker + ".txt";
-        File file = new File(filename);
-        InputStreamReader reader = new InputStreamReader(new FileInputStream(file));
-        BufferedReader br = new BufferedReader(reader);
-        String line = br.readLine();
-
-        return line;
+        String result=String.join("#",workerList);
+        return result;
     }
 
 }
