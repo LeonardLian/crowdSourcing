@@ -44,6 +44,7 @@ $(function () {
         }
     });
 
+    var imageList;
     //加载任务封面
     $.ajax({
         type:'POST',
@@ -51,8 +52,9 @@ $(function () {
         contentType:'application/json',
         dataType:'text',
         url:'http://127.0.0.1:8080/checkTaskImg',
+        async:false,
         success:function (data) {
-            var imageList=data.split(" ");
+            imageList=data.split(" ");
             $('#cover').attr("src","data:image/jpeg;base64,"+imageList[0]);
         },
         error:function(e){
@@ -62,53 +64,31 @@ $(function () {
 
     //加载参与者列表
     $.ajax({
-       type:'POST',
-       data:taskJson,
-       contentType:'application/json',
-       dataType:'text',
-       url:'http://127.0.0.1:8080/',//TODO
-       success:function (data) {
-           var workList=data.split('#');
-           if(workList.length==0){
-               $('#description').html('当前没有参与者。');
-               return;
-           }
-           for(var x in workList){
-               var usernameOfWorker=workList[x];
-               var src=getImgOfWorker(usernameOfWorker);
-               var url='TaskView.html'+'?'+username+'?'+taskname+'?'+usernameOfWorker;
+        type:'POST',
+        data:taskJson,
+        contentType:'application/json',
+        dataType:'text',
+        url:'http://127.0.0.1:8080/',
+        success:function (data) {
+            var workList=data.split('#');
+            if(workList.length==0){
+                $('#description').html('当前没有参与者。');
+                return;
+            }
+            for(var x in workList){
+                var usernameOfWorker=workList[x];
+                var src=imageList[0];
+                var url='TaskView.html'+'?'+username+'?'+taskname+'?'+usernameOfWorker;
 
-               $('#workerList').prepend('<li> <a href="'+url+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/200/h/200/q/80"/> <div class="gallery-title">'+usernameOfWorker+'</div> </a> </li>');
-           }
-       },
+                $('#workerList').prepend('<li> <a href="'+url+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/200/h/200/q/80"/> <div class="gallery-title">'+usernameOfWorker+'</div> </a> </li>');
+            }
+        },
         error:function (e) {
             alert('error');
         }
     });
 });
 
-function getImgOfWorker(usernameOfWorker) {
-    var user=new User(usernameOfWorker,'aaa','aaa','aaa','aaa','aaa','aaa','aaa');
-    var userJson=JSON.stringify(user);
-
-    $.ajax({
-        type: 'POST',
-        data: userJson,
-        contentType: 'application/json',
-        dataType: 'text',
-        url: 'http://127.0.0.1:8080/showUserImg',
-        success: function (data) {
-            if (data == 'no') {
-                return;
-            } else {
-                return data;
-            }
-        },
-        error: function (e) {
-            alert("error");
-        }
-    });
-}
 
 function closeTask() {
     var url=decodeURI(window.location.href);
