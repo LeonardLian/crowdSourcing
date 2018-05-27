@@ -2,6 +2,9 @@
  * Created by Leonarda on 2018/5/23.
  */
 $(function () {
+
+    $('#des').hide();
+
     var url=decodeURI(window.location.href);
     var username=url.split("?")[1];
     var taskname=url.split("?")[2];
@@ -171,7 +174,8 @@ $(function () {
             var mode=jsonLabel.type;
 
             if(mode=='0'){
-
+                $('#des').show();
+                $('#description').text(jsonLabel.comment);
             }
             else if(mode=='1'){
                 var oDiv=document.createElement("div");
@@ -209,10 +213,11 @@ $(function () {
 
     //工作界面敲定
     if(taskmode=="整体标注"){
-        wholeLabel(taskname,username);
+        $('#des').show();
     }
     else if(taskmode=="方框标注"){
         squarelabel(taskname,username);
+
     }
     else if(taskmode=="局部标注"){
         curveLabel(taskname,username);
