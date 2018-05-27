@@ -332,7 +332,28 @@ public class TaskController {
 //    }
 
 
+    //提交自己的标注
+    @RequestMapping(value = "/submittheLabel",method = RequestMethod.POST)
+    public String submitLabel(@RequestBody Taskkey taskkey) throws IOException{
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+taskkey.getTaskname()+"/"+taskkey.getUsername()+".txt";
+        String labels="";
+        File temfile=new File(filename);
+        InputStreamReader reader=new InputStreamReader(new FileInputStream(temfile));
+        BufferedReader br=new BufferedReader(reader);
 
+        String file="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskkey.getTaskname()+"/"+taskkey.getUsername()+".txt";
+        FileWriter fileWriter=new FileWriter(file,false);
+        BufferedWriter writer=new BufferedWriter(fileWriter);
+
+        String line=null;
+        while ((line=br.readLine())!=null){
+            writer.write(line+"\n");
+        }
+
+        writer.close();
+
+        return "Success";
+    }
 
 
 
@@ -385,29 +406,6 @@ public class TaskController {
         String line = br.readLine();
 
         return line;
-    }
-
-
-    //提交自己的标注
-    @RequestMapping(value = "/submitLabel",method = RequestMethod.POST)
-    public String submitLabel(@RequestBody Taskkey taskkey) throws IOException{
-        String filename="src/main/java/com/seciii/crowdsourcing/Data/TemporaryFile/"+taskkey.getTaskname()+".txt";
-        String labels="";
-        File temfile=new File(filename);
-        InputStreamReader reader=new InputStreamReader(new FileInputStream(temfile));
-        BufferedReader br=new BufferedReader(reader);
-        String line=null;
-        while ((line=br.readLine())!=null){
-            labels=labels+line+" ";
-        }
-
-        String file="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskkey.getTaskname()+"/"+taskkey.getUsername()+".txt";
-        FileWriter fileWriter=new FileWriter(file,false);
-        BufferedWriter writer=new BufferedWriter(fileWriter);
-        writer.write(labels);
-        writer.close();
-
-        return "Success";
     }
 
 }
