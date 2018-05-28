@@ -128,7 +128,8 @@ public class UrlController {
     @RequestMapping(value="/work/{taskname}")
     public String work(@PathVariable("taskname") String taskname){
         if(haveLoggedIn()) {
-            task.setTaskname(taskname);
+            if(taskname!=null)
+                task.setTaskname(taskname);
             return "work";
         }
         return "login";

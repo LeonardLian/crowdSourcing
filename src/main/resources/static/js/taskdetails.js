@@ -95,7 +95,6 @@ function join() {
         taskname=data;
     });
 
-    alert(taskname);
     var taskkey=new Taskkey(username,taskname);
     var taskkeyJson=JSON.stringify(taskkey);
 
@@ -106,7 +105,7 @@ function join() {
         dataType:'text',
         url:'http://127.0.0.1:8080/participateIn',
         success:function (data) {
-            window.location.href="http://localhost:8080/work";
+            window.location.href="/work";
         },
         error:function (e) {
             alert('error');

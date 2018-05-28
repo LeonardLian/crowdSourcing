@@ -412,7 +412,7 @@ public class TaskController {
 
     //前端获取任务编号
     @RequestMapping(value="/getTaskname")
-    public String getTaskname() throws IOException{
+    public String getTasknameForHTML() throws IOException{
         return UrlController.task.getTaskname();
     }
 }

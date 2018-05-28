@@ -113,9 +113,10 @@ function getImgOfWorker(usernameOfWorker) {
 }
 
 function closeTask() {
-    var url=decodeURI(window.location.href);
-    var taskname=url.split("?")[2];
-
+    var taskname;
+    $.get("http://127.0.0.1:8080/getTaskname",function (data) {
+        taskname=data;
+    });
     var task=new Task(taskname,'aaa','aaa','aaa','aaa','aaa','aaa','aaa','aaa');
     var taskJson=JSON.stringify(task);
     $.ajax({

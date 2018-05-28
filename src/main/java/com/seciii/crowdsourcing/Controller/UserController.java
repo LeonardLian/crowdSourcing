@@ -287,7 +287,7 @@ public class UserController {
 
     //前端获取用户名
     @RequestMapping(value="/getUsername")
-    public String getUsername() throws IOException{
+    public String getUsernameForHTML() throws IOException{
         return UrlController.user.getUsername();
     }
 }
