@@ -290,4 +290,10 @@ public class UserController {
     public String getUsernameForHTML() throws IOException{
         return UrlController.user.getUsername();
     }
+
+    //前端获取被批阅工人的用户名
+    @RequestMapping(value="/getUsernameOfWorker")
+    public String getUsernameOfWorkerForHTML() throws IOException{
+        return UrlController.worker.getUsername();
+    }
 }

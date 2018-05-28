@@ -5,9 +5,16 @@ $(function () {
 
     $('#des').hide();
 
-    var url=decodeURI(window.location.href);
-    var username=url.split("?")[1];
-    var taskname=url.split("?")[2];
+    var username="";
+    var taskname="";
+
+    $.get("http://127.0.0.1:8080/getUsername",function (data) {
+        username=data;
+    });
+
+    $.get("http://127.0.0.1:8080/getTaskname",function (data) {
+        taskname=data;
+    });
 
     var task=new Task(taskname,'aa','aa','aa','aa','aa','aa','aa','aa');
     var taskJson=JSON.stringify(task);

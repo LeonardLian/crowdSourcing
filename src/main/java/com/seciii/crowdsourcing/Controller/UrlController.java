@@ -17,6 +17,7 @@ public class UrlController {
 
     static User user=new User();
     static Task task=new Task();
+    static User worker=new User();
 
     //判断是否已登录
     boolean haveLoggedIn(){
@@ -117,10 +118,13 @@ public class UrlController {
     }
 
     //发起者“批阅”工人标注
-    @RequestMapping(value="/TaskView")
-    public String taskView(){
-        if(haveLoggedIn())
+    @RequestMapping(value="/TaskView/{taskname}/{usernameOfWorker}")
+    public String taskView(@PathVariable("taskname") String taskname,@PathVariable("usernameOfWorker") String usernameOfWorker){
+        if(haveLoggedIn()){
+            task.setTaskname(taskname);
+            worker.setUsername(usernameOfWorker);
             return "TaskView";
+        }
         return "login";
     }
 
