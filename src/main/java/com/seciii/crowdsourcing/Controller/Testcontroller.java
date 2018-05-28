@@ -15,11 +15,4 @@ public class Testcontroller {
         return a;
     }
 
-    @RequestMapping("index")
-    public String index(){
-        return "login";
-    }
-
-
-
 }
