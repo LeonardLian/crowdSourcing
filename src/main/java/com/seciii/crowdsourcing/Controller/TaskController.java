@@ -332,23 +332,44 @@ public class TaskController {
 //    }
 
 
+    //提交自己的标注
+    @RequestMapping(value = "/submittheLabel",method = RequestMethod.POST)
+    public String submitLabel(@RequestBody Taskkey taskkey) throws IOException{
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+taskkey.getTaskname()+"/"+taskkey.getUsername()+".txt";
+        String labels="";
+        File temfile=new File(filename);
+        InputStreamReader reader=new InputStreamReader(new FileInputStream(temfile));
+        BufferedReader br=new BufferedReader(reader);
 
+        String file="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskkey.getTaskname()+"/"+taskkey.getUsername()+".txt";
+        FileWriter fileWriter=new FileWriter(file,false);
+        BufferedWriter writer=new BufferedWriter(fileWriter);
 
+        String line=null;
+        while ((line=br.readLine())!=null){
+            writer.write(line+"\n");
+        }
 
+        writer.close();
 
+        return "Success";
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
+    //查看一个工人的作品
+    @RequestMapping(value = "/loadWorkerFile",method = RequestMethod.POST)
+    public String checkWorker(@RequestBody Taskkey taskkey) throws IOException {
+        String temporaryFile="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskkey.getTaskname()+"/"+taskkey.getUsername()+".txt";
+        File file=new File(temporaryFile);
+        InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
+        BufferedReader br=new BufferedReader(reader);
+        ArrayList<String> list=new ArrayList<>();
+        String line;
+        while((line=br.readLine())!=null){
+            list.add(line);
+        }
+        String result=String.join("#",list);
+        return result;
+    }
 
     //查看一个任务的分发情况
     @RequestMapping(value = "/checkTask",method = RequestMethod.POST)
@@ -358,56 +379,18 @@ public class TaskController {
         File folder=new File(foldername);
         String[] files=folder.list();
 
-        String workerId="";
+        ArrayList<String> workerList=new ArrayList<>();
         for(String file:files){
             if(file.equals("description.txt")){
             }
             else{
                 String id=file.split(".")[0];
-                workerId=workerId+id+" ";
+                workerList.add(id);
             }
         }
 
-        return workerId;
-    }
-
-
-    //查看一个工人的作品
-    @RequestMapping(value = "/checkWorker",method = RequestMethod.POST)
-    public String checkWorker(@RequestBody Taskkey taskkey) throws IOException {
-        String task = taskkey.getTaskname();
-        String worker = taskkey.getUsername();
-
-        String filename = "src/main/java/com/seciii/crowdsourcing/Data/TaskList/" + task + "/" + worker + ".txt";
-        File file = new File(filename);
-        InputStreamReader reader = new InputStreamReader(new FileInputStream(file));
-        BufferedReader br = new BufferedReader(reader);
-        String line = br.readLine();
-
-        return line;
-    }
-
-
-    //提交自己的标注
-    @RequestMapping(value = "/submitLabel",method = RequestMethod.POST)
-    public String submitLabel(@RequestBody Taskkey taskkey) throws IOException{
-        String filename="src/main/java/com/seciii/crowdsourcing/Data/TemporaryFile/"+taskkey.getTaskname()+".txt";
-        String labels="";
-        File temfile=new File(filename);
-        InputStreamReader reader=new InputStreamReader(new FileInputStream(temfile));
-        BufferedReader br=new BufferedReader(reader);
-        String line=null;
-        while ((line=br.readLine())!=null){
-            labels=labels+line+" ";
-        }
-
-        String file="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskkey.getTaskname()+"/"+taskkey.getUsername()+".txt";
-        FileWriter fileWriter=new FileWriter(file,false);
-        BufferedWriter writer=new BufferedWriter(fileWriter);
-        writer.write(labels);
-        writer.close();
-
-        return "Success";
+        String result=String.join("#",workerList);
+        return result;
     }
 
     //前端获取任务编号

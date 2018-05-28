@@ -46,6 +46,15 @@
     color: #818181;
 }
 
+#Layer1 {
+    position:absolute;
+    width:1px;
+    height:86%;
+    z-index:1;
+    background-color: #98a6ad;
+    left: 18%; top: 10%
+}
+
 .upload {
     margin-top: 5%;
     margin-left: 50%;
@@ -64,6 +73,7 @@
     //margin-right:auto;
     margin-top: 5%;
     background: whitesmoke;
+    border:1px solid #c3c3c3;
 }
 
 .input_des{
