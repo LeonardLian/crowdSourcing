@@ -80,16 +80,25 @@ function squarelabel(taskname,username) {
                 delbtn.style.height=20+'px';
                 ab.appendChild(delbtn);
 
-                // var txt=document.createElement("text");
+                // var txt=document.createElement("textarea");
                 // txt.id='write';
                 // txt.style.top=startY+'px';
                 // txt.style.left==(parseInt(startX)+21)+'px';
                 // txt.style.height=20+'px';
                 // txt.style.width=60+'px';
                 // ab.appendChild(txt);
+                var comment_box = document.createElement("textarea");
+                comment_box.id = 'write';
+                comment_box.style.top = startY + 'px';
+                comment_box.style.left = (parseInt(startX)+21) + 'px';
+                comment_box.style.height = ab.height;    //20 + 'px';
+                comment_box.style.width = ab.width;     //20 + 'px';
+                ab.appendChild(comment_box);
 
                 var squareLabel=new SquareLabel('1',startX,startY,ab.style.width,ab.style.height,comment,taskname,username);
                 var squareLabelJson=JSON.stringify(squareLabel);
+
+
 
                 $.ajax({
                     type:'POST',

@@ -188,6 +188,17 @@ $(function () {
                 oDiv.style.position='absolute';
                 document.body.appendChild(oDiv);
 
+                var cb = document.createElement("textarea");
+                cb.style.top = jsonLabel.startY + 'px';
+                cb.style.left = jsonLabel.startX + 'px';
+                cb.style.width = jsonLabel.width;
+                cb.style.height = jsonLabel.height;
+                cb.value = jsonLabel.comment;
+                cb.style.background='transparent';
+                cb.style.border='3px solid black';
+                cb.style.position='absolute';
+                oDiv.appendChild(cb);
+
             }
             else if(mode=='2'){
                 var dotList=(jsonLabel.dotlist).split(' ');
