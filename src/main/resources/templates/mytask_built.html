@@ -1,26 +1,18 @@
 <!doctype html>
-<html class="no-js">
+<html>
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>我发布的任务</title>
-    <meta name="description" content="这是一个 gallery 页面">
-    <meta name="keywords" content="gallery">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
-    <link rel="icon" type="image/png" href="/assets/i/favicon.png">
-    <link rel="apple-touch-icon-precomposed" href="../static/frontside/html/assets/i/app-icon72x72@2x.png">
     <meta name="apple-mobile-web-app-title" content="Amaze UI" />
-    <link rel="stylesheet" href="../static/frontside/html/assets/css/amazeui.min.css"/>
-    <link rel="stylesheet" href="../static/frontside/html/assets/css/admin.css">
+    <link rel="stylesheet" href="/assets/css/amazeui.min.css"/>
+    <link rel="stylesheet" href="/assets/css/admin.css">
 </head>
 <body>
 
 <header class="am-topbar am-topbar-inverse admin-header">
     <div class="am-u-md-8 am-u-md-push-2">
         <div class="am-topbar-brand">
-            <a href="mainpage.html">
+            <a href="/mainpage">
                 <strong>Crowdsourcing</strong>
                 <small>
                     众包标注平台
@@ -31,24 +23,29 @@
         <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
             <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
                 <li class="am-hide-sm-only">
-                    <a href="javascript:checkTasksIBuild();">
+                    <a href="/mytask_built">
                         我发布的任务
                         <span class="am-badge am-badge-warning">5</span>
                     </a>
                 </li>
                 <li class="am-hide-sm-only">
-                    <a href="javascript:checkTasksIJoin();">
+                    <a href="/mytask_joined">
                         我参与的任务
                         <span class="am-badge am-badge-warning">5</span>
                     </a>
                 </li>
 
                 <li class="am-dropdown" >
-                    <a href="selfpage.html" class="am-dropdown-toggle" id="user">
+                    <a href="/selfpage" class="am-dropdown-toggle" id="user">
                         用户{{username}}
                     </a>
                 </li>
-                <li class = "logout"><a href = "login.html"> 退出<span class="am-icon-sign-out"></span></a></li>
+                <li>
+                    <a href = "/logout">
+                        退出
+                        <span class="am-icon-sign-out"></span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
@@ -87,22 +84,9 @@
 </div>>
 
 
-<script src="../static/frontside/lib/vue.js"></script>
-<script src="../static/frontside/lib/jquery.js"></script>
-<script src="../static/js/mytask_built.js"></script>
-
-<script>
-    function checkTasksIJoin(){
-        window.location.href='mytask_joined.html?'+window.location.href;
-    }
-    function checkTasksIBuild() {
-        window.location.href='mytask_built.html?'+window.location.href;
-    }
-    function releaseTask(){
-        window.location.href='releaseTask.html?'+window.location.href;
-    }
-</script>
-
+<script src="/lib/vue.js"></script>
+<script src="/lib/jquery.js"></script>
+<script src="/js/mytask_built.js"></script>
 
 </body>
 </html>

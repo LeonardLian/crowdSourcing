@@ -25,11 +25,10 @@ function register() {
             data:newUserJson,
             contentType:'application/json',
             dataType:'text',
-            url:'http://127.0.0.1:8080/register',
+            url:'http://127.0.0.1:8080/registerr',
             success:function (data) {
                 if(data=="注册成功！"){
-                    alert(data);
-                    window.location.href="login.html";
+                    window.location.href="/login";
                 }else{
                     alert(data);
                 }

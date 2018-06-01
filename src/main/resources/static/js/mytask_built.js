@@ -2,14 +2,16 @@
  * mxf
  */
 $(function(){
-    var url = decodeURI(window.location.href);
-    var username = url.split("?")[1];
+    var username;
 
-    new Vue({
-        el:'#user',
-        data:{
-            username:username
-        }
+    $.get("http://127.0.0.1:8080/getUsername",function (data) {
+        username=data;
+        new Vue({
+            el:'#user',
+            data:{
+                username:username
+            }
+        });
     });
 
     var user = new User(username,"1","1","1","1","1","1","1");
@@ -27,7 +29,6 @@ $(function(){
             tasklist=data.split('!');
         },
         error:function(e){
-            alert('你未发布任务');
         }
     })
 
@@ -76,7 +77,7 @@ $(function(){
             }
         });
 
-        var url='taskdetails_requestor.html'+'?'+username+'?'+taskName;
+        var url='taskdetails_requestor.html'+'?'+username+'?'+taskName;//TODO
         $('#myBuiltTaskList').prepend('<li> <a href="'+url+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt=""/> <div class="gallery-title">'+taskTag+'</div> <div class="gallery-desc">参与人数：'+numOfPart+'</div> <div class="gallery-desc">截止：'+deadline+'</div> </a> </li>');
 
         built_tasknum = built_tasknum+1;

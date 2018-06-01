@@ -176,7 +176,7 @@ public class UserController {
 
 
     //将注册的新用户保存
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/registerr", method = RequestMethod.POST)
     public String register(@RequestBody User user) throws IOException{
         String username=user.getUsername();
         String password=user.getPassword();
@@ -211,7 +211,7 @@ public class UserController {
 
 
     //登录时判断是否正确
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    @RequestMapping(value = "/loginn",method = RequestMethod.POST)
     public String login(@RequestBody User user) throws IOException{
         String username=user.getUsername();
         String password=user.getPassword();
@@ -237,6 +237,7 @@ public class UserController {
         }
 
         if(isright){
+            UrlController.user.setUsername(username);
             return "登录成功";
         }else{
             return "密码错误";
@@ -284,4 +285,15 @@ public class UserController {
         }
     }
 
+    //前端获取用户名
+    @RequestMapping(value="/getUsername")
+    public String getUsernameForHTML() throws IOException{
+        return UrlController.user.getUsername();
+    }
+
+    //前端获取被批阅工人的用户名
+    @RequestMapping(value="/getUsernameOfWorker")
+    public String getUsernameOfWorkerForHTML() throws IOException{
+        return UrlController.worker.getUsername();
+    }
 }

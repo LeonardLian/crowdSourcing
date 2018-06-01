@@ -5,17 +5,23 @@
 * TODO 给予积分奖励
  */
 $(function () {
-    var url=decodeURI(window.location.href);
-    var usernameOfRequestor=url.split("?")[1];
-    var taskname=url.split("?")[2];
-    var username=url.split("?")[3];
+    var usernameOfRequestor="";
+    var taskname="";
+    var usernameOfWorker="";
 
+    $.get("http://127.0.0.1:8080/getUsername",function (data) {
+        usernameOfRequestor=data;
+    });
+
+    $.get("http://127.0.0.1:8080/getTaskname",function (data) {
+        taskname=data;
+    });
+
+    $.get("http://127.0.0.1:8080/getUsernameOfWorker",function(data){
+        usernameOfWorker=data;
+    })
 
     $('#des').hide();
-
-    var url=decodeURI(window.location.href);
-    var username=url.split("?")[1];
-    var taskname=url.split("?")[2];
 
     var task=new Task(taskname,'aa','aa','aa','aa','aa','aa','aa','aa');
     var taskJson=JSON.stringify(task);
@@ -153,7 +159,7 @@ $(function () {
 
     //显示之前保存的标注
     var labelList;
-    var tKey=new Taskkey(username,taskname);
+    var tKey=new Taskkey(usernameOfWorker,taskname);
     var keyJson=JSON.stringify(tKey);
     $.ajax({
         type:'POST',
