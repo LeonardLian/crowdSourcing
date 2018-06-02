@@ -284,16 +284,5 @@ public class UserController {
             return "？？？？";
         }
     }
-
-    //前端获取用户名
-    @RequestMapping(value="/getUsername")
-    public String getUsernameForHTML() throws IOException{
-        return UrlController.user.getUsername();
-    }
-
-    //前端获取被批阅工人的用户名
-    @RequestMapping(value="/getUsernameOfWorker")
-    public String getUsernameOfWorkerForHTML() throws IOException{
-        return UrlController.worker.getUsername();
-    }
+    
 }
