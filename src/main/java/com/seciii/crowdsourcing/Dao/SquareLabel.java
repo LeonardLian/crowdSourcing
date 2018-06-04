@@ -17,6 +17,17 @@ public class SquareLabel {
 
     public SquareLabel(){}
 
+    public SquareLabel(String type,String startX,String startY,String width,String height,String comment,String taskname,String username){
+        this.type=type;
+        this.startX=startX;
+        this.startY=startY;
+        this.width=width;
+        this.height=height;
+        this.comment=comment;
+        this.taskname=taskname;
+        this.username=username;
+    }
+
     public SquareLabel(String startX,String startY,String width,String height,String comment,String taskname,String username){
         this.type="1";
         this.startX=startX;

@@ -74,7 +74,7 @@ function join() {
     var username=url.split("?")[1];
     var taskname=url.split("?")[2];
 
-    var taskkey=new Taskkey(username,taskname);
+    var taskkey=new Taskkey(taskname,username);
     var taskkeyJson=JSON.stringify(taskkey);
 
     $.ajax({
@@ -105,7 +105,7 @@ function Task(taskname,requestor,tasktag,description,mode,numOfNeeded,numOfPart,
     this.deadline=deadline;//截止日期，格式为xxxx-xx-xx
 }
 
-function Taskkey(username,taskname){
-    this.username=username;
+function Taskkey(taskname,username){
     this.taskname=taskname;
+    this.username=username;
 }

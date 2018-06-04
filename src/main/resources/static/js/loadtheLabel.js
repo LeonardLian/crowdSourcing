@@ -3,8 +3,6 @@
  */
 $(function () {
 
-    $('#des').hide();
-
     var url=decodeURI(window.location.href);
     var username=url.split("?")[1];
     var taskname=url.split("?")[2];
@@ -79,7 +77,6 @@ $(function () {
             var offset_w = (FitWidth - _width)/2;
             var offset_h = (FitHeight - _height)/2;
             ctx.drawImage(img, offset_w, offset_h, _width, _height);
-
         }
         else {
             if (_width / _height >= FitWidth / FitHeight) {
@@ -108,44 +105,9 @@ $(function () {
         }
     };
 
-    // var c = document.getElementById("myCanvas");
-    // var ctx=c.getContext("2d");
-    // var img = new Image();
-    // img.src = 'data:image/jpeg;base64,'+imgBase[0];
-    //
-    // img.onload = function() {
-    //     var FitWidth = c.width;
-    //     var FitHeight = c.height;
-    //     var _width = img.width;
-    //     var _height = img.height;
-    //     if(_width <= FitWidth && _height <= FitHeight){
-    //         var offset_w = (FitWidth - _width)/2;
-    //         var offset_h = (FitHeight - _height)/2;
-    //         ctx.drawImage(img, offset_w, offset_h);
-    //
-    //     }
-    //     else {
-    //         if (_width / _height >= FitWidth / FitHeight) {
-    //             if (_width > FitWidth) {
-    //                 img.width = FitWidth;
-    //                 img.height = (_height * FitWidth) / _width;
-    //             }
-    //         }
-    //         else {
-    //             if (_height > FitHeight) {
-    //                 img.height = FitHeight;
-    //                 img.width = (_width * FitHeight) / _height;
-    //             }
-    //         }
-    //         ctx.drawImage(img, 0, 0);
-    //     }
-    // };
-
-
-
     //显示之前保存的标注
-    var labelList;
-    var tKey=new Taskkey(username,taskname);
+    var labelList=null;
+    var tKey=new Taskkey(taskname,username);
     var keyJson=JSON.stringify(tKey);
     $.ajax({
         type:'POST',
@@ -155,11 +117,12 @@ $(function () {
         url:'http://127.0.0.1:8080/loadTemporaryFile',
         async:false,
         success:function(data){
-            if(data==null){
+            if(data==""){
                 labelList=null;
             }else {
                 labelList=data.split('#');
             }
+            //alert(labelList);
         },
         error:function (e) {
             alert("error!");
@@ -169,59 +132,97 @@ $(function () {
     if(labelList==null){
     }
     else{
+        var layername=0;
         for(var i=0;i<labelList.length;i++){
+            //alert(labelList[i]);
             var jsonLabel=eval('(' + labelList[i] + ')');
             var mode=jsonLabel.type;
 
             if(mode=='0'){
-                $('#des').show();
+                setLayers(labelList.length);
+                CanvasExt.drawWholeLabel();
                 $('#description').text(jsonLabel.comment);
             }
             else if(mode=='1'){
-                var oDiv=document.createElement("div");
-                oDiv.style.top=jsonLabel.startY+'px';
-                oDiv.style.left=jsonLabel.startX+'px';
-                oDiv.style.width=jsonLabel.width;
-                oDiv.style.height=jsonLabel.height;
-                oDiv.style.background='transparent';
-                oDiv.style.border='3px solid black';
-                oDiv.style.position='absolute';
-                document.body.appendChild(oDiv);
+
+                var bot=document.getElementById("bottom");
+                var layer="layer"+i;
+                $("#myCanvas").addLayer({
+                    type:'rectangle',
+                    fillStyle:'rgb(254,67,101,0.6)',
+                    name:layer,
+                    fromCenter:false,
+                    x:jsonLabel.startX,
+                    y:jsonLabel.startY,
+                    width:jsonLabel.width,
+                    height:jsonLabel.height
+                });
+
+                var text=document.createElement("textarea");
+                bot.appendChild(text);
+                text.id=layer;
+                text.left=jsonLabel.startX;
+                text.top=jsonLabel.startY;
+                text.innerHTML=jsonLabel.comment;
+                //text.style.background='transparent';
+                text.height=2;
+                text.width=10;
 
             }
             else if(mode=='2'){
-                var dotList=(jsonLabel.dotlist).split(' ');
-                for(var j=0;j<dotList.length;j++){
-                    var x=dotList[j].split(',')[0];
-                    var y=dotList[j].split(',')[1];
-                    var oDiv=document.createElement("div");
-                    oDiv.style.top=y+'px';
-                    oDiv.style.left=x+'px';
-                    oDiv.style.background='black';
-                    oDiv.style.width='2px';
-                    oDiv.style.height='2px';
-                    oDiv.dragging='false';
-                    oDiv.style.position='absolute';
-                    document.body.appendChild(oDiv);
+                var layer;
+                var bot=document.getElementById("bottom");
+                var dotList=(jsonLabel.dotlist).split('!');
+                for(var j=0;j<dotList.length-1;j++){
+                    var x1=dotList[j].split(',')[0];
+                    var y1=dotList[j].split(',')[1];
+                    var x2=dotList[j+1].split(',')[0];
+                    var y2=dotList[j+1].split(',')[1];
+
+                    layer="layer"+layername;
+                    $("#myCanvas").drawLine({
+                        layer:true,
+                        name:layer,
+                        strokeStyle:color,
+                        strokeWidth:width,
+                        x1:x1,y1:y1,
+                        x2:x2,y2:y2
+                    });
+                    layername++;
                 }
+
+                var text=bot.createElement("textarea");
+                text.id=layer;
+                text.left=dotList[0].split(',')[0];
+                text.top=dotList[0].split(',')[1];
+                text.innerHTML=jsonLabel.comment;
+                //text.style.background='transparent';
+                text.height=2;
+                text.width=10;
             }
             else{}
 
         }
     }
 
-
     //工作界面敲定
     if(taskmode=="整体标注"){
-        $('#des').show();
-        document.getElementById("description").addEventListener("input",wholeLabel(taskname,username));
     }
     else if(taskmode=="方框标注"){
-        squarelabel(taskname,username);
-
+        if(labelList==null){
+            setLayers(0);
+        }else{
+            setLayers(labelList.length);
+        }
+        CanvasExt.drawSquareLabel();
     }
     else if(taskmode=="局部标注"){
-        curveLabel(taskname,username);
+        if(labelList==null){
+            setLayers(0);
+        }else{
+            setLayers(labelList.length);
+        }
+        CanvasExt.drawCurveLabel();
     }
     else{}
 

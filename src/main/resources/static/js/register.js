@@ -20,6 +20,7 @@ function register() {
         var newUser=new User(username,password,'0','aaa');
         var newUserJson=JSON.stringify(newUser);
 
+
         $.ajax({
             type:'POST',
             data:newUserJson,

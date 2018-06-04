@@ -10,6 +10,8 @@ $(function(){
         data:{
             username:username
         }
+
+
     });
 
     var user = new User(username,"1","1","1","1","1","1","1");

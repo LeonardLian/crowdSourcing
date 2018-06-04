@@ -12,6 +12,7 @@ $(function(){
         }
     });
 
+
     var user = new User(username,"1","1","1","1","1","1","1");
     var userJson = JSON.stringify(user);
     var tasklist;

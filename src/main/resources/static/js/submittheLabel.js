@@ -6,29 +6,27 @@ function submittheLabel(){
     var username=url.split("?")[1];
     var taskname=url.split("?")[2];
 
+    var formdata=new FormData();
+    var canvas=document.getElementById("myCanvas");
+    var basestr=canvas.toDataURL("image/png");
 
-
-    var taskkey=new Taskkey(taskname,username);
-    var taskkeyJson=JSON.stringify(taskkey);
+    formdata.append("label",basestr);
+    formdata.append("username",username);
+    formdata.append("taskname",taskname);
 
     $.ajax({
+        url:"http://127.0.0.1:8080/submittheLabel",
         type:'POST',
-        data:taskkeyJson,
-        contentType:'application/json',
-        dataType:'text',
-        url:'http://127.0.0.1:8080/submittheLabel',
+        data:formdata,
         async:false,
+        processData:false,
+        contentType:false,
         success:function (data) {
-            alert(data);
+            alert("success");
         },
         error:function (e) {
             alert("error");
         }
     });
 
-}
-
-function Taskkey(taskname,username) {
-    this.taskname=taskname;
-    thsi.username=username;
 }

@@ -81,19 +81,11 @@
             </div>
             <hr>
             <ul class="am-avg-sm-2 am-avg-md-4 am-avg-lg-6 am-margin gallery-list">
-                <button class="upload" id="submit" >给予积分</button>
+                <button class="upload" id="submit" onclick="givethePoint()">给予积分</button>
+                <button class="upload" id="comment" onclick="givetheScore()">质量评分</button>
             </ul>
 
-            <div class="am-margin am-cf">
-                <hr/>
-
-                <canvas id="myCanvas">
-                    您的浏览器不支持 HTML5 canvas 标签。
-                </canvas>
-
-            </div>
-            <div id="des">
-                <textarea class="input_des" id="description"  placeholder=" 整体描述：" ></textarea>
+            <div class="am-margin am-cf" id="userWork">
             </div>
 
         </div>
@@ -107,6 +99,8 @@
 <script src="../static/frontside/lib/Jcanvas.js"></script>
 
 <script src="../static/js/viewtheLabel.js"></script>
+<script src="../static/js/givethePoint.js"></script>
+<script src="../static/js/givetheScore.js"></script>
 
 </body>
 </html>

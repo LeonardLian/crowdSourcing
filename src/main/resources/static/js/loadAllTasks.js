@@ -25,6 +25,7 @@ $(function () {
 
         if(data.length==0){
             return;
+
         }
         else{
             for(var x in arr){

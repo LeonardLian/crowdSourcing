@@ -68,7 +68,7 @@ $(function () {
         data:taskJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/',
+        url:'http://127.0.0.1:8080/checkAllWorker',
         success:function (data) {
             var workList=data.split('#');
             if(workList.length==0){
@@ -103,7 +103,7 @@ function closeTask() {
         dataType:'text',
         url:'',
         success:function (data) {
-
+            alert(data);
         },
         error:function(e){
             alert("error");
