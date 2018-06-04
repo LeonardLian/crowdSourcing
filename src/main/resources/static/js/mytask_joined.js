@@ -2,16 +2,25 @@
  * mxf
  */
 $(function(){
-    var url = decodeURI(window.location.href);
-    var username = url.split("?")[1];
-
+    var username;
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getUsername',
+        async:false,
+        success:function(data){
+            username=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
     new Vue({
         el:'#user',
         data:{
             username:username
         }
     });
-
 
     var user = new User(username,"1","1","1","1","1","1","1");
     var userJson = JSON.stringify(user);
@@ -21,7 +30,7 @@ $(function(){
         data: userJson,
         contentType: 'application/json',
         dataType: 'text',
-        url:'http://127.0.0.1:8080/checkJoinTasks',
+        url:'/checkJoinTasks',
         async:false,
         success:function(data){
             if(data==""){
@@ -41,7 +50,6 @@ $(function(){
     var joined_tasknum = 0;
 
     if(tasklist==null){
-        alert("你暂时未参与任何任务！")
     }else {
         for (x in tasklist) {
             var taskname = tasklist[x];
@@ -52,7 +60,7 @@ $(function(){
                 data: taskJson,
                 contentType: 'application/json',
                 dataType: 'text',
-                url: 'http://127.0.0.1:8080/checkTaskInformation',
+                url: '/checkTaskInformation',
                 async: false,
                 success: function (data) {
                     var infoList = data.split('#');
@@ -71,7 +79,7 @@ $(function(){
                 data: taskJson,
                 contentType: 'application/json',
                 dataType: 'text',
-                url: 'http://127.0.0.1:8080/checkTaskImg',
+                url: '/checkTaskImg',
                 async: false,
                 success: function (data) {
                     src = data.split(" ")[0];
@@ -81,8 +89,8 @@ $(function(){
                 }
             });
 
-            var url = 'work.html' + '?' + username + '?' + taskName;
-            $('#myJoinedTaskList').prepend('<li> <a href="' + url + '"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,' + src + '" alt=""/> <div class="gallery-title">' + taskTag + '</div> <div class="gallery-desc">截止：' + deadline + '</div> </a> </li>');
+            var url = 'work/'+ username + '/' + taskName;
+            $('#myJoinedTaskList').prepend('<li> <a href="' + url + '"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,' + src + '" alt=""/> <div class="gallery-title">' + tasktag + '</div> <div class="gallery-desc">截止：' + deadline + '</div> </a> </li>');
 
             joined_tasknum = joined_tasknum + 1;
         }

@@ -4,11 +4,22 @@
  */
 
 $(function () {
-    var url=decodeURI(window.location.href);
-    var username=url.split("?")[1];
+    var username;
 
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getUsername',
+        async:false,
+        success:function(data){
+            username=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
     new Vue({
-        el:'#username',
+        el:'#user',
         data:{
             username:username
         }
@@ -22,10 +33,9 @@ $(function () {
         data:userJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/showUserInformation',
+        url:'/showUserInformation',
         success:function (data) {
             if(data=='no'){
-                alert("no info");
                 return;
             }else {
                 var infoList=data.split(' ');
@@ -45,10 +55,9 @@ $(function () {
         data:userJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/showUserImg',
+        url:'/showUserImg',
         success:function (data) {
             if(data=='no') {
-                alert("no image");
                 return;
             }else{
                 $('#newImage').attr('src',data);
@@ -82,7 +91,7 @@ function saveImageOfUser() {
     formData.append("className",username);
 
     $.ajax({
-        url:"http://127.0.0.1:8080/saveUserImg",
+        url:"/saveUserImg",
         type:'POST',
         data:formData,
         async:false,
@@ -104,8 +113,19 @@ $('#image').on('change',function () {
 })
 
 function saveInfoOfUser() {
-    var url=decodeURI(window.location.href);
-    var username=url.split("?")[1];
+    var username;
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getUsername',
+        async:false,
+        success:function(data){
+            username=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
     var name=$('#name').val();
     var email=$('#email').val();
     var phone=$('#telephone').val();
@@ -136,10 +156,9 @@ function saveInfoOfUser() {
         data:userJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/saveUserInfo',
+        url:'/saveUserInfo',
         success:function (data) {
-            var selfpage='selfpage.html'+'?'+username;
-            window.location.href=selfpage;
+            window.location.href="/selfpage";
         },
         error:function(e){
             alert("error");

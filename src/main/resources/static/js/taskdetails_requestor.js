@@ -4,14 +4,37 @@
  */
 
 $(function () {
-    var url=decodeURI(window.location.href);
-    var username=url.split("?")[1];
-    var taskname=url.split("?")[2];
+    var username;
+    var taskname;
 
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getUsername',
+        async:false,
+        success:function(data){
+            username=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
     new Vue({
         el:'#user',
         data:{
             username:username
+        }
+    });
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getTaskname',
+        async:false,
+        success:function(data){
+            taskname=data;
+        },
+        error:function (e) {
+            alert("error!");
         }
     });
 
@@ -23,7 +46,7 @@ $(function () {
         data:taskJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/checkTaskInformation',
+        url:'/checkTaskInformation',
         success:function (data) {
             var infoList=data.split("#");
             new Vue({
@@ -53,7 +76,7 @@ $(function () {
         data:taskJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/checkTaskImg',
+        url:'/checkTaskImg',
         async:false,
         success:function (data) {
             imageList=data.split(" ");
@@ -70,7 +93,7 @@ $(function () {
         data:taskJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/checkAllWorker',
+        url:'/checkAllWorker',
         success:function (data) {
             var workList=data.split('#');
             if(workList.length==0){
@@ -80,7 +103,7 @@ $(function () {
             for(var x in workList){
                 var usernameOfWorker=workList[x];
                 var src=imageList[0];
-                var url='TaskView.html'+'?'+username+'?'+taskname+'?'+usernameOfWorker;
+                var url='/TaskView'+'/'+taskname+'/'+usernameOfWorker;
 
                 $('#workerList').prepend('<li> <a href="'+url+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/200/h/200/q/80"/> <div class="gallery-title">'+usernameOfWorker+'</div> </a> </li>');
             }
@@ -93,8 +116,19 @@ $(function () {
 
 
 function closeTask() {
-    var url=decodeURI(window.location.href);
-    var taskname=url.split("?")[2];
+    var username;
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getUsername',
+        async:false,
+        success:function(data){
+            username=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
 
     var task=new Task(taskname,'aaa','aaa','aaa','aaa','aaa','aaa','aaa','aaa');
     var taskJson=JSON.stringify(task);
@@ -103,7 +137,7 @@ function closeTask() {
         data:taskJson,
         contentType:'application/json',
         dataType:'text',
-        url:'',
+        url:'/closeTask',
         success:function (data) {
             alert(data);
         },

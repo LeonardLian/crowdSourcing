@@ -5,10 +5,46 @@
 * TODO 给予积分奖励
  */
 $(function () {
-    var url=decodeURI(window.location.href);
-    var usernameOfRequestor=url.split("?")[1];
-    var taskname=url.split("?")[2];
-    var username=url.split("?")[3];
+    var usernameOfRequestor;
+    var taskname;
+    var usernameOfWorker;
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getUsername',
+        async:false,
+        success:function(data){
+            usernameOfRequestor=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getTaskname',
+        async:false,
+        success:function(data){
+            taskname=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
+
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getUsernameOfWorker',
+        async:false,
+        success:function(data){
+            usernameOfWorker=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
 
     var task=new Task(taskname,'aa','aa','aa','aa','aa','aa','aa','aa');
     var taskJson=JSON.stringify(task);
@@ -19,7 +55,7 @@ $(function () {
         data:taskJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/checkTaskInformation',
+        url:'/checkTaskInformation',
         async:false,
         success:function (data) {
             taskInformation=data.split('#');
@@ -45,7 +81,7 @@ $(function () {
     })
 
     var workimg=null;
-    var tKey=new Taskkey(taskname,username);
+    var tKey=new Taskkey(taskname,usernameOfWorker);
     var keyJson=JSON.stringify(tKey);
     $.ajax({
         type:'POST',

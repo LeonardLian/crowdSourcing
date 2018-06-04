@@ -2,9 +2,32 @@
  * Created by Leonarda on 2018/5/26.
  */
 function submittheLabel(){
-    var url=decodeURI(window.location.href);
-    var username=url.split("?")[1];
-    var taskname=url.split("?")[2];
+    var username;
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getUsername',
+        async:false,
+        success:function(data){
+            username=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
+    var taskname;
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getTaskname',
+        async:false,
+        success:function(data){
+            taskname=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
 
     var formdata=new FormData();
     var canvas=document.getElementById("myCanvas");
@@ -17,7 +40,7 @@ function submittheLabel(){
     savetheLabel();
 
     $.ajax({
-        url:"http://127.0.0.1:8080/submittheLabel",
+        url:"/submittheLabel",
         type:'POST',
         data:formdata,
         async:false,

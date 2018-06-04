@@ -2,11 +2,22 @@
 * 初始化，包括个人信息和头像
  */
 $(function() {
-    var url=decodeURI(window.location.href);
-    var username=url.split("?")[1];
+    var username;
 
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getUsername',
+        async:false,
+        success:function(data){
+            username=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
     new Vue({
-        el:'#username',
+        el:'#user',
         data:{
             username:username
         }
@@ -21,7 +32,7 @@ $(function() {
         data:userJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/showUserInformation',
+        url:'/showUserInformation',
         success:function (data) {
             if(data=='no'){
                 return;
@@ -45,7 +56,7 @@ $(function() {
         data:userJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/showUserImg',
+        url:'/showUserImg',
         success:function (data) {
            if(data=='no') {
                return;

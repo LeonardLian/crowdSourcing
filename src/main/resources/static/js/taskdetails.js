@@ -2,15 +2,40 @@
 * 初始化，显示任务详细信息，包括图片和信息
 * 参与任务后的相关响应：用户与任务的相关参数修改，页面跳转至工作界面
 */
-$(function () {
-    var url=decodeURI(window.location.href);
-    var username=url.split("?")[1];
-    var taskname=url.split("?")[2];
 
+
+$(function () {
+    var username;
+    var taskname;
+
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getUsername',
+        async:false,
+        success:function(data){
+            username=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
     new Vue({
         el:'#user',
         data:{
             username:username
+        }
+    });
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getTaskname',
+        async:false,
+        success:function(data){
+            taskname=data;
+        },
+        error:function (e) {
+            alert("error!");
         }
     });
 
@@ -21,7 +46,7 @@ $(function () {
         data:taskJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/checkTaskInformation',
+        url:'/checkTaskInformation',
         success:function (data) {
             var infoList=data.split("#");
             new Vue({
@@ -53,7 +78,7 @@ $(function () {
         data:taskJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/checkTaskImg',
+        url:'/checkTaskImg',
         success:function (data) {
             var imageList=data.split(" ");
             for(var i in imageList){
@@ -70,9 +95,34 @@ $(function () {
 });
 
 function join() {
-    var url=decodeURI(window.location.href);
-    var username=url.split("?")[1];
-    var taskname=url.split("?")[2];
+
+    var username;
+    var taskname;
+
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getUsername',
+        async:false,
+        success:function(data){
+            username=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getTaskname',
+        async:false,
+        success:function(data){
+            taskname=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
 
     var taskkey=new Taskkey(taskname,username);
     var taskkeyJson=JSON.stringify(taskkey);
@@ -82,10 +132,9 @@ function join() {
         data:taskkeyJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/participateIn',
+        url:'/participateIn',
         success:function (data) {
-            var work='work.html'+'?'+username+'?'+taskname;
-            window.location.href=work;
+            window.location.href="/work/"+taskname;
         },
         error:function (e) {
             alert('error');
