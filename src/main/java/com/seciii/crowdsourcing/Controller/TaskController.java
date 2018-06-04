@@ -246,7 +246,6 @@ public class TaskController {
         return line;
     }
 
-
     //参与任务
     @RequestMapping(value = "/participateIn",method = RequestMethod.POST)
     public String participateIn(@RequestBody Taskkey taskkey) throws IOException{
@@ -271,47 +270,7 @@ public class TaskController {
             tem.createNewFile();
         }
 
-        //参与人数+1
-        String desFile="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+task+"/description.txt";
-        File dFile=new File(desFile);
-        InputStreamReader reader=new InputStreamReader(new FileInputStream(dFile));
-        BufferedReader br=new BufferedReader(reader);
-        String line1=br.readLine();
-        String[] arr=line1.split("#");
-        arr[6]=String.valueOf(Integer.parseInt(arr[6])+1);
-
-        String newLine=String.join("#",arr);
-        FileWriter desFileWriter=new FileWriter(desFile,false);
-        BufferedWriter desWriter=new BufferedWriter(desFileWriter);
-        desWriter.write(newLine);
-        desWriter.close();
-
-
-        String TaskInfoFile="src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt";
-        File infoFile=new File(TaskInfoFile);
-        InputStreamReader reader1=new InputStreamReader(new FileInputStream(infoFile));
-        BufferedReader br1=new BufferedReader(reader1);
-
-        ArrayList<String> taskList=new ArrayList<>();
-        String line;
-        while ((line=br1.readLine())!=null){
-            String taskname=line.split("#")[0];
-            if(taskname.equals(task)){
-                String[] array=line.split("#");
-                array[6]=String.valueOf(Integer.parseInt(array[6])+1);
-                String newtask=String.join("#",array);
-                taskList.add(newtask);
-            }else{
-                taskList.add(line);
-            }
-        }
-        FileWriter tFile=new FileWriter(TaskInfoFile,false);
-        BufferedWriter twriter=new BufferedWriter(tFile);
-        String newTaskList=String.join("\n",taskList);
-        twriter.write(newTaskList);
-
         return "part success";
-
     }
 
 

@@ -1,6 +1,6 @@
-{"type":1,"startX":350,"startY":259,"width":"279","height":"164","comment":"b","taskname":"1","username":"123"}
-{"type":1,"startX":133,"startY":420,"width":"206","height":"112","comment":"c","taskname":"1","username":"123"}
-{"type":1,"startX":68,"startY":46,"width":"281","height":"214","comment":"a","taskname":"1","username":"123"}
-{"type":1,"startX":350,"startY":259,"width":"279","height":"164","comment":"b","taskname":"1","username":"123"}
-{"type":1,"startX":133,"startY":420,"width":"206","height":"112","comment":"c","taskname":"1","username":"123"}
-{"type":1,"startX":68,"startY":46,"width":"281","height":"214","comment":"a","taskname":"1","username":"123"}
+{"type":1,"startX":75,"startY":62,"width":"239","height":"158","comment":"a","taskname":"1","username":"123"}
+{"type":1,"startX":274,"startY":248,"width":"205","height":"149","comment":"b","taskname":"1","username":"123"}
+{"type":1,"startX":32,"startY":391,"width":"258","height":"133","comment":"c","taskname":"1","username":"123"}
+{"type":1,"startX":274,"startY":248,"width":"205","height":"149","comment":"b","taskname":"1","username":"123"}
+{"type":1,"startX":32,"startY":391,"width":"258","height":"133","comment":"c","taskname":"1","username":"123"}
+{"type":1,"startX":75,"startY":62,"width":"239","height":"158","comment":"a","taskname":"1","username":"123"}
