@@ -2,16 +2,24 @@
 * 初始化，显示任务详细信息，包括图片和信息
 * 参与任务后的相关响应：用户与任务的相关参数修改，页面跳转至工作界面
 */
-$(function () {
-    var url=decodeURI(window.location.href);
-    var username=url.split("?")[1];
-    var taskname=url.split("?")[2];
 
-    new Vue({
-        el:'#user',
-        data:{
-            username:username
-        }
+
+$(function () {
+    var username;
+    var taskname;
+
+    $.get("http://127.0.0.1:8080/getUsername",function (data) {
+        username=data;
+        new Vue({
+            el:'#user',
+            data:{
+                username:username
+            }
+        });
+    });
+
+    $.get("http://127.0.0.1:8080/getTaskname",function (data) {
+        taskname=data;
     });
 
     var task=new Task(taskname,'aaa','aaa','aaa','aaa','aaa','aaa','aaa','aaa');
@@ -70,9 +78,22 @@ $(function () {
 });
 
 function join() {
-    var url=decodeURI(window.location.href);
-    var username=url.split("?")[1];
-    var taskname=url.split("?")[2];
+    var username;
+    var taskname;
+
+    $.get("http://127.0.0.1:8080/getUsername",function (data) {
+        username=data;
+        new Vue({
+            el:'#user',
+            data:{
+                username:username
+            }
+        });
+    });
+
+    $.get("http://127.0.0.1:8080/getTaskname",function (data) {
+        taskname=data;
+    });
 
     var taskkey=new Taskkey(taskname,username);
     var taskkeyJson=JSON.stringify(taskkey);
@@ -84,8 +105,7 @@ function join() {
         dataType:'text',
         url:'http://127.0.0.1:8080/participateIn',
         success:function (data) {
-            var work='work.html'+'?'+username+'?'+taskname;
-            window.location.href=work;
+            window.location.href="/work";
         },
         error:function (e) {
             alert('error');

@@ -2,14 +2,16 @@
  * mxf
  */
 $(function(){
-    var url = decodeURI(window.location.href);
-    var username = url.split("?")[1];
+    var username;
 
-    new Vue({
-        el:'#user',
-        data:{
-            username:username
-        }
+    $.get("http://127.0.0.1:8080/getUsername",function (data) {
+        username=data;
+        new Vue({
+            el:'#user',
+            data:{
+                username:username
+            }
+        });
     });
 
 
