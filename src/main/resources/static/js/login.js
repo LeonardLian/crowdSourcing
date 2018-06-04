@@ -13,10 +13,11 @@ function login(){
         data:userJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/loginn',
+        url:'http://127.0.0.1:8080/login',
         success:function (data) {
             if(data=="登录成功"){
-                window.location.href="/mainpage";
+                var mainpage='mainpage.html'+'?'+username;
+                window.location.href=mainpage;
             }else{
                 alert(data);
             }

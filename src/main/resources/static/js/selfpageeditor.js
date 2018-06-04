@@ -4,16 +4,14 @@
  */
 
 $(function () {
-    var username;
+    var url=decodeURI(window.location.href);
+    var username=url.split("?")[1];
 
-    $.get("http://127.0.0.1:8080/getUsername",function (data) {
-        username=data;
-        new Vue({
-            el:'#user',
-            data:{
-                username:username
-            }
-        });
+    new Vue({
+        el:'#username',
+        data:{
+            username:username
+        }
     });
 
     var user=new User(username,'aaa',0,'aaa','aaa','aaa','aaa','aaa');
@@ -27,6 +25,7 @@ $(function () {
         url:'http://127.0.0.1:8080/showUserInformation',
         success:function (data) {
             if(data=='no'){
+                alert("no info");
                 return;
             }else {
                 var infoList=data.split(' ');
@@ -49,6 +48,7 @@ $(function () {
         url:'http://127.0.0.1:8080/showUserImg',
         success:function (data) {
             if(data=='no') {
+                alert("no image");
                 return;
             }else{
                 $('#newImage').attr('src',data);
@@ -138,7 +138,8 @@ function saveInfoOfUser() {
         dataType:'text',
         url:'http://127.0.0.1:8080/saveUserInfo',
         success:function (data) {
-            window.location.href="/selfpage";
+            var selfpage='selfpage.html'+'?'+username;
+            window.location.href=selfpage;
         },
         error:function(e){
             alert("error");

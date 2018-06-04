@@ -70,9 +70,7 @@ $(function () {
         alert("该工人还未提交作品");
     }
     else{
-        //$('#userWork').prepend('<li><img class="am-img-thumbnail am-img-bdrs" src="data:image/png;base64,'+workimg+'" alt=""/> </li>');
-        $('#userWork').prepend('<li><img class="am-img-thumbnail am-img-bdrs" src="'+workimg+'" alt=""/> </li>');
-
+        $('#userWork').prepend('<li><img class="am-img-thumbnail am-img-bdrs" src="data:image/png;base64,'+workimg+'" alt=""/> </li>');
     }
 });
 

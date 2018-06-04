@@ -8,16 +8,14 @@
 * 加载所有任务，包括图片和任务信息
  */
 $(function () {
-    var username;
+    var url=decodeURI(window.location.href);
+    var username=url.split("?")[1];
 
-    $.get("http://127.0.0.1:8080/getUsername",function (data) {
-        username=data;
-        new Vue({
-            el:'#user',
-            data:{
-                username:username
-            }
-        });
+    new Vue({
+        el:'#user',
+        data:{
+            username:username
+        }
     });
 
     $.get("http://127.0.0.1:8080/checkAllTasks",function (data) {
@@ -60,7 +58,7 @@ $(function () {
                 var taskkeyJson=JSON.stringify(taskkey);
 
                 var url='#';
-                $.ajax({//判断用户和任务的关系：旁观者、参与者、发布者 TODO
+                $.ajax({//判断用户和任务的关系：旁观者、参与者、发布者
                     type:'POST',
                     data:taskkeyJson,
                     contentType:'application/json',
@@ -69,11 +67,11 @@ $(function () {
                     async:false,
                     success:function (data) {
                         if(data=='0'){//旁观者
-                            url='taskdetails'+'/'+taskname;
+                            url='taskdetails.html'+'?'+username+'?'+taskname;
                         }else if(data=='2'){//参与者
-                            url='work'+'/'+taskname;
+                            url='work.html'+'?'+username+'?'+taskname;
                         }else if(data=='1'){//发布者
-                            url='taskdetails_requestor'+'/'+taskname;
+                            url='taskdetails_requestor.html'+'?'+username+'?'+taskname;
                         }
                     },
                     error:function (e) {
@@ -81,7 +79,7 @@ $(function () {
                     }
                 });
 
-                $('#taskList').prepend('<li id="app"> <a href="'+url+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt=""/> <div class="gallery-title">'+tasktag+'</div> <div class="gallery-desc">人数：'+numOfPart+'/'+numOfNeeded+'</div> <div class="gallery-desc">截止：'+deadline+'</div> </a> </li>');
+                $('#taskList').prepend('<li> <a href="'+url+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt=""/> <div class="gallery-title">'+tasktag+'</div> <div class="gallery-desc">人数：'+numOfPart+'/'+numOfNeeded+'</div> <div class="gallery-desc">截止：'+deadline+'</div> </a> </li>');
 
                 tasknum=tasknum+1;
             }
@@ -95,11 +93,6 @@ $(function () {
         })
     })
 });
-
-
-function releaseTaskClick() {
-    window.location.href="/releaseTask";
-}
 
 function Task(taskname,requestor,tasktag,description,mode,numOfNeeded,numOfPart,point,deadline) {
     this.taskname=taskname;//任务ID，由后端自主分配

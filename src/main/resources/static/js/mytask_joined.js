@@ -2,16 +2,14 @@
  * mxf
  */
 $(function(){
-    var username;
+    var url = decodeURI(window.location.href);
+    var username = url.split("?")[1];
 
-    $.get("http://127.0.0.1:8080/getUsername",function (data) {
-        username=data;
-        new Vue({
-            el:'#user',
-            data:{
-                username:username
-            }
-        });
+    new Vue({
+        el:'#user',
+        data:{
+            username:username
+        }
     });
 
 
@@ -43,6 +41,7 @@ $(function(){
     var joined_tasknum = 0;
 
     if(tasklist==null){
+        alert("你暂时未参与任何任务！")
     }else {
         for (x in tasklist) {
             var taskname = tasklist[x];
@@ -83,7 +82,7 @@ $(function(){
             });
 
             var url = 'work.html' + '?' + username + '?' + taskName;
-            $('#myJoinedTaskList').prepend('<li> <a href="' + url + '"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,' + src + '" alt=""/> <div class="gallery-title">' + tasktag + '</div> <div class="gallery-desc">截止：' + deadline + '</div> </a> </li>');
+            $('#myJoinedTaskList').prepend('<li> <a href="' + url + '"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,' + src + '" alt=""/> <div class="gallery-title">' + taskTag + '</div> <div class="gallery-desc">截止：' + deadline + '</div> </a> </li>');
 
             joined_tasknum = joined_tasknum + 1;
         }

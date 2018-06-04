@@ -4,21 +4,15 @@
  */
 
 $(function () {
-    var username;
-    var taskname;
+    var url=decodeURI(window.location.href);
+    var username=url.split("?")[1];
+    var taskname=url.split("?")[2];
 
-    $.get("http://127.0.0.1:8080/getUsername",function (data) {
-        username=data;
-        new Vue({
-            el:'#user',
-            data:{
-                username:username
-            }
-        });
-    });
-
-    $.get("http://127.0.0.1:8080/getTaskname",function (data) {
-        taskname=data;
+    new Vue({
+        el:'#user',
+        data:{
+            username:username
+        }
     });
 
     //加载任务信息
@@ -86,7 +80,7 @@ $(function () {
             for(var x in workList){
                 var usernameOfWorker=workList[x];
                 var src=imageList[0];
-                var url='/TaskView'+'/'+taskname+'/'+usernameOfWorker;
+                var url='TaskView.html'+'?'+username+'?'+taskname+'?'+usernameOfWorker;
 
                 $('#workerList').prepend('<li> <a href="'+url+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/200/h/200/q/80"/> <div class="gallery-title">'+usernameOfWorker+'</div> </a> </li>');
             }
@@ -99,10 +93,8 @@ $(function () {
 
 
 function closeTask() {
-    var taskname;
-    $.get("http://127.0.0.1:8080/getTaskname",function (data) {
-        taskname=data;
-    });
+    var url=decodeURI(window.location.href);
+    var taskname=url.split("?")[2];
 
     var task=new Task(taskname,'aaa','aaa','aaa','aaa','aaa','aaa','aaa','aaa');
     var taskJson=JSON.stringify(task);

@@ -2,16 +2,14 @@
 * 初始化，包括个人信息和头像
  */
 $(function() {
-    var username;
+    var url=decodeURI(window.location.href);
+    var username=url.split("?")[1];
 
-    $.get("http://127.0.0.1:8080/getUsername",function (data) {
-        username=data;
-        new Vue({
-            el:'#user',
-            data:{
-                username:username
-            }
-        });
+    new Vue({
+        el:'#username',
+        data:{
+            username:username
+        }
     });
 
 
