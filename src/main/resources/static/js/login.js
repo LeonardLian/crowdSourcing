@@ -24,6 +24,8 @@ function login(){
         error:function(e){
             alert("error");
         }
+
+
     });
 
     function User(username,password,point,taskAddress) {

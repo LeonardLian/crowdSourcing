@@ -14,8 +14,8 @@ import java.util.ArrayList;
  * @date: create in 下午3:18 2018/4/8
  */
 
-@CrossOrigin
 @RestController
+@CrossOrigin
 public class LabelManageController {
 
     //曲线标注
@@ -26,9 +26,9 @@ public class LabelManageController {
         String curveLabelStr="{"+
                 "\"type\":"+curvelabel.getType()+","+
                 "\"comment\":"+"\""+curvelabel.getComment()+"\""+","+
-                "\"dotlist\""+"\""+curvelabel.getDotlist()+"\""+","+
-                "\"taskname\""+"\""+curvelabel.getTaskname()+"\""+","+
-                "\"username\""+"\""+curvelabel.getUsername()+"\""+
+                "\"dotlist\":"+"\""+curvelabel.getDotlist()+"\""+","+
+                "\"taskname\":"+"\""+curvelabel.getTaskname()+"\""+","+
+                "\"username\":"+"\""+curvelabel.getUsername()+"\""+
                 "}"+"\n";
         String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+
                 curvelabel.getTaskname()+"/"+curvelabel.getUsername()+".txt";
@@ -52,9 +52,9 @@ public class LabelManageController {
         String deleteStr="{"+
                 "\"type\":"+curvelabel.getType()+","+
                 "\"comment\":"+"\""+curvelabel.getComment()+"\""+","+
-                "\"dotlist\""+"\""+curvelabel.getDotlist()+"\""+","+
-                "\"taskname\""+"\""+curvelabel.getTaskname()+"\""+","+
-                "\"username\""+"\""+curvelabel.getUsername()+"\""+
+                "\"dotlist\":"+"\""+curvelabel.getDotlist()+"\""+","+
+                "\"taskname\":"+"\""+curvelabel.getTaskname()+"\""+","+
+                "\"username\":"+"\""+curvelabel.getUsername()+"\""+
                 "}";
         Boolean succeed=false;
         ArrayList<String> allSquareLabelList=new ArrayList<>();
@@ -92,9 +92,9 @@ public class LabelManageController {
         String polishStr="{"+
                 "\"type\":"+curvelabel.getType()+","+
                 "\"comment\":"+"\""+curvelabel.getComment()+"\""+","+
-                "\"dotlist\""+"\""+curvelabel.getDotlist()+"\""+","+
-                "\"taskname\""+"\""+curvelabel.getTaskname()+"\""+","+
-                "\"username\""+"\""+curvelabel.getUsername()+"\""+
+                "\"dotlist\":"+"\""+curvelabel.getDotlist()+"\""+","+
+                "\"taskname\":"+"\""+curvelabel.getTaskname()+"\""+","+
+                "\"username\":"+"\""+curvelabel.getUsername()+"\""+
                 "}";
         Boolean succeed=false;
         ArrayList<String> curveLabelList=new ArrayList<>();
@@ -131,20 +131,23 @@ public class LabelManageController {
     }
 
 
+
+
+
     //方框标注
 
     //将一个用方框标注的标签 保存到临时文件里
-    @RequestMapping(value = "/saveSquareLabel",method = RequestMethod.POST)
+    @RequestMapping(value = "/saveSquareLabel", method = RequestMethod.POST)
     public String saveSquareLabel(@RequestBody SquareLabel squarelabel) throws IOException{
         String squareLabelStr="{"+
                 "\"type\":"+squarelabel.getType()+","+
                 "\"startX\":"+squarelabel.getStartX()+","+
                 "\"startY\":"+squarelabel.getStartY()+","+
                 "\"width\":"+"\""+squarelabel.getWidth()+"\""+","+
-                "\"height\""+"\""+squarelabel.getHeight()+"\""+","+
-                "\"comment\""+"\""+squarelabel.getComment()+"\""+","+
-                "\"taskname\""+"\""+squarelabel.getTaskname()+"\""+","+
-                "\"username\""+"\""+squarelabel.getUsername()+"\""+
+                "\"height\":"+"\""+squarelabel.getHeight()+"\""+","+
+                "\"comment\":"+"\""+squarelabel.getComment()+"\""+","+
+                "\"taskname\":"+"\""+squarelabel.getTaskname()+"\""+","+
+                "\"username\":"+"\""+squarelabel.getUsername()+"\""+
                 "}"+"\n";
 
         String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+
@@ -171,10 +174,10 @@ public class LabelManageController {
                 "\"startX\":"+squarelabel.getStartX()+","+
                 "\"startY\":"+squarelabel.getStartY()+","+
                 "\"width\":"+"\""+squarelabel.getWidth()+"\""+","+
-                "\"height\""+"\""+squarelabel.getHeight()+"\""+","+
-                "\"comment\""+"\""+squarelabel.getComment()+"\""+","+
-                "\"taskname\""+"\""+squarelabel.getTaskname()+"\""+","+
-                "\"username\""+"\""+squarelabel.getUsername()+"\""+
+                "\"height\":"+"\""+squarelabel.getHeight()+"\""+","+
+                "\"comment\":"+"\""+squarelabel.getComment()+"\""+","+
+                "\"taskname\":"+"\""+squarelabel.getTaskname()+"\""+","+
+                "\"username\":"+"\""+squarelabel.getUsername()+"\""+
                 "}";
         Boolean succeed=false;
         ArrayList<String> allSquareLabelList=new ArrayList<>();
@@ -216,10 +219,10 @@ public class LabelManageController {
                 "\"startX\":"+squarelabel.getStartX()+","+
                 "\"startY\":"+squarelabel.getStartY()+","+
                 "\"width\":"+"\""+squarelabel.getWidth()+"\""+","+
-                "\"height\""+"\""+squarelabel.getHeight()+"\""+","+
-                "\"comment\""+"\""+squarelabel.getComment()+"\""+","+
-                "\"taskname\""+"\""+squarelabel.getTaskname()+"\""+","+
-                "\"username\""+"\""+squarelabel.getUsername()+"\""+
+                "\"height\":"+"\""+squarelabel.getHeight()+"\""+","+
+                "\"comment\":"+"\""+squarelabel.getComment()+"\""+","+
+                "\"taskname\":"+"\""+squarelabel.getTaskname()+"\""+","+
+                "\"username\":"+"\""+squarelabel.getUsername()+"\""+
                 "}";
         Boolean succeed=false;
         ArrayList<String> allSquareLabelList=new ArrayList<>();
@@ -267,8 +270,8 @@ public class LabelManageController {
         String wholeLabelStr="{"+
                 "\"type\":"+"\""+wholelabel.getType()+"\""+","+
                 "\"comment\":"+"\""+wholelabel.getComment()+"\""+","+
-                "\"taskname\""+"\""+wholelabel.getTaskname()+"\""+","+
-                "\"username\""+"\""+wholelabel.getUsername()+"\""+
+                "\"taskname\":"+"\""+wholelabel.getTaskname()+"\""+","+
+                "\"username\":"+"\""+wholelabel.getUsername()+"\""+
                 "}"+"\n";
         String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+
                 wholelabel.getTaskname()+"/"+wholelabel.getUsername()+".txt";
@@ -304,8 +307,8 @@ public class LabelManageController {
         String polishStr="{"+
                 "\"type\":"+"\""+wholelabel.getType()+"\""+","+
                 "\"comment\":"+"\""+wholelabel.getComment()+"\""+","+
-                "\"taskname\""+"\""+wholelabel.getTaskname()+"\""+","+
-                "\"username\""+"\""+wholelabel.getUsername()+"\""+
+                "\"taskname\":"+"\""+wholelabel.getTaskname()+"\""+","+
+                "\"username\":"+"\""+wholelabel.getUsername()+"\""+
                 "}";
 
         String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+

@@ -51,6 +51,7 @@ function release() {
     saveInfoOfTask();
 }
 
+
 function saveImagesOfTask() {
     var img_file=document.getElementById("image");
     var fileList=img_file.files;

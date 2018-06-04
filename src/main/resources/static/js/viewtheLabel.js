@@ -5,68 +5,13 @@
 * TODO 给予积分奖励
  */
 $(function () {
-    var usernameOfRequestor="";
-    var taskname="";
-    var usernameOfWorker="";
-
-    $.ajax({
-        type:'POST',
-        dataType:'text',
-        url:'/getUsername',
-        async:false,
-        success:function(data){
-            usernameOfRequestor=data;
-        },
-        error:function (e) {
-            alert("error!");
-        }
-    });
-    $.ajax({
-        type:'POST',
-        dataType:'text',
-        url:'/getTaskname',
-        async:false,
-        success:function(data){
-            taskname=data;
-        },
-        error:function (e) {
-            alert("error!");
-        }
-    });
-    $.ajax({
-        type:'POST',
-        dataType:'text',
-        url:'/getUsernameOfWorker',
-        async:false,
-        success:function(data){
-            usernameOfWorker=data;
-        },
-        error:function (e) {
-            alert("error!");
-        }
-    });
-
-    $('#des').hide();
+    var url=decodeURI(window.location.href);
+    var usernameOfRequestor=url.split("?")[1];
+    var taskname=url.split("?")[2];
+    var username=url.split("?")[3];
 
     var task=new Task(taskname,'aa','aa','aa','aa','aa','aa','aa','aa');
     var taskJson=JSON.stringify(task);
-
-    var imgBase=null;
-    $.ajax({
-        type:'POST',
-        data:taskJson,
-        contentType:'application/json',
-        dataType:'text',
-        url:'/checkTaskImg',
-        async:false,
-        success:function (data) {
-            imgBase=data.split(" ");
-        },
-        error:function (e) {
-            alert("img error");
-        }
-    });
-
 
     var taskInformation=null;
     $.ajax({
@@ -74,7 +19,7 @@ $(function () {
         data:taskJson,
         contentType:'application/json',
         dataType:'text',
-        url:'/checkTaskInformation',
+        url:'http://127.0.0.1:8080/checkTaskInformation',
         async:false,
         success:function (data) {
             taskInformation=data.split('#');
@@ -99,105 +44,21 @@ $(function () {
         }
     })
 
-
-
-    var c = document.getElementById("myCanvas");
-    var ctx = c.getContext("2d");
-    var img = new Image();
-    img.src = 'data:image/jpeg;base64,'+imgBase[0];
-
-    c.width = 750;
-    c.height = 550;
-    var FitWidth = 750;
-    var FitHeight = 550;
-
-    img.onload = function() {
-        var _width = img.width;
-        var _height = img.height;
-        if(_width <= FitWidth && _height <= FitHeight){
-            var offset_w = (FitWidth - _width)/2;
-            var offset_h = (FitHeight - _height)/2;
-            ctx.drawImage(img, offset_w, offset_h, _width, _height);
-
-        }
-        else {
-            if (_width / _height >= FitWidth / FitHeight) {
-                if (_width > FitWidth) {
-                    img.width = FitWidth;
-                    img.height = (_height * FitWidth) / _width;
-                }
-                else{
-                    img.width = _width;
-                    img.height = _height;
-                }
-            }
-            else {
-                if (_height > FitHeight) {
-                    img.height = FitHeight;
-                    img.width = (_width * FitHeight) / _height;
-                }
-                else{
-                    img.width = _width;
-                    img.height = _height;
-                }
-            }
-            // img.width = 750;
-            // img.height = 550;
-            ctx.drawImage(img, 0, 0, 750, 550);
-        }
-    };
-
-    // var c = document.getElementById("myCanvas");
-    // var ctx=c.getContext("2d");
-    // var img = new Image();
-    // img.src = 'data:image/jpeg;base64,'+imgBase[0];
-    //
-    // img.onload = function() {
-    //     var FitWidth = c.width;
-    //     var FitHeight = c.height;
-    //     var _width = img.width;
-    //     var _height = img.height;
-    //     if(_width <= FitWidth && _height <= FitHeight){
-    //         var offset_w = (FitWidth - _width)/2;
-    //         var offset_h = (FitHeight - _height)/2;
-    //         ctx.drawImage(img, offset_w, offset_h);
-    //
-    //     }
-    //     else {
-    //         if (_width / _height >= FitWidth / FitHeight) {
-    //             if (_width > FitWidth) {
-    //                 img.width = FitWidth;
-    //                 img.height = (_height * FitWidth) / _width;
-    //             }
-    //         }
-    //         else {
-    //             if (_height > FitHeight) {
-    //                 img.height = FitHeight;
-    //                 img.width = (_width * FitHeight) / _height;
-    //             }
-    //         }
-    //         ctx.drawImage(img, 0, 0);
-    //     }
-    // };
-
-
-
-    //显示之前保存的标注
-    var labelList;
-    var tKey=new Taskkey(usernameOfWorker,taskname);
+    var workimg=null;
+    var tKey=new Taskkey(taskname,username);
     var keyJson=JSON.stringify(tKey);
     $.ajax({
         type:'POST',
         data:keyJson,
         contentType:'application/json',
         dataType:'text',
-        url:'/loadWorkerFile',
+        url:'http://127.0.0.1:8080/loadWorkerFile',
         async:false,
         success:function(data){
-            if(data==null){
-                labelList=null;
+            if(data==""){
+                workimg=null;
             }else {
-                labelList=data.split('#');
+                workimg=data;
             }
         },
         error:function (e) {
@@ -205,51 +66,16 @@ $(function () {
         }
     });
 
-    if(labelList==null){
+    if(workimg==null){
+        alert("该工人还未提交作品");
     }
     else{
-        for(var i=0;i<labelList.length;i++){
-            var jsonLabel=eval('(' + labelList[i] + ')');
-            var mode=jsonLabel.type;
+        //$('#userWork').prepend('<li><img class="am-img-thumbnail am-img-bdrs" src="data:image/png;base64,'+workimg+'" alt=""/> </li>');
+        $('#userWork').prepend('<li><img class="am-img-thumbnail am-img-bdrs" src="'+workimg+'" alt=""/> </li>');
 
-            if(mode=='0'){
-                $('#des').show();
-                $('#description').text(jsonLabel.comment);
-            }
-            else if(mode=='1'){
-                var oDiv=document.createElement("div");
-                oDiv.style.top=jsonLabel.startY+'px';
-                oDiv.style.left=jsonLabel.startX+'px';
-                oDiv.style.width=jsonLabel.width;
-                oDiv.style.height=jsonLabel.height;
-                oDiv.style.background='transparent';
-                oDiv.style.border='3px solid black';
-                oDiv.style.position='absolute';
-                document.body.appendChild(oDiv);
-
-            }
-            else if(mode=='2'){
-                var dotList=(jsonLabel.dotlist).split(' ');
-                for(var j=0;j<dotList.length;j++){
-                    var x=dotList[j].split(',')[0];
-                    var y=dotList[j].split(',')[1];
-                    var oDiv=document.createElement("div");
-                    oDiv.style.top=y+'px';
-                    oDiv.style.left=x+'px';
-                    oDiv.style.background='black';
-                    oDiv.style.width='2px';
-                    oDiv.style.height='2px';
-                    oDiv.dragging='false';
-                    oDiv.style.position='absolute';
-                    document.body.appendChild(oDiv);
-                }
-            }
-            else{}
-
-        }
     }
-
 });
+
 
 function Taskkey(taskname,username) {
     this.taskname=taskname;
