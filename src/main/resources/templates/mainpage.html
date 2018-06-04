@@ -1,17 +1,26 @@
 <!doctype html>
-<html>
+<html class="no-js">
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>主页</title>
-    <link rel="stylesheet" href="/assets/css/amazeui.min.css"/>
-    <link rel="stylesheet" href="/assets/css/admin.css">
+    <meta name="description" content="这是一个 gallery 页面">
+    <meta name="keywords" content="gallery">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="icon" type="image/png" href="/assets/i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="../static/frontside/html/assets/i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <link rel="stylesheet" href="../static/frontside/html/assets/css/amazeui.min.css"/>
+    <link rel="stylesheet" href="../static/frontside/html/assets/css/admin.css">
 </head>
 <body>
 
 <header class="am-topbar am-topbar-inverse admin-header">
     <div class="am-u-md-8 am-u-md-push-2">
         <div class="am-topbar-brand">
-            <a href="/mainpage">
+            <a href="javascript:mainpageClick();">
                 <strong>Crowdsourcing</strong>
                 <small>
                     众包标注平台
@@ -22,25 +31,25 @@
         <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
             <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
                 <li class="am-hide-sm-only">
-                    <a href="/mytask_built">
+                    <a href="javascript:checkTasksIBuild();">
                         我发布的任务
                         <span class="am-badge am-badge-warning">5</span>
                     </a>
                 </li>
                 <li class="am-hide-sm-only">
-                    <a href="/mytask_joined">
+                    <a href="javascript:checkTasksIJoin();">
                         我参与的任务
                         <span class="am-badge am-badge-warning">5</span>
                     </a>
                 </li>
 
                 <li class="am-dropdown" >
-                    <a href="/selfpage" class="am-dropdown-toggle" id="user">
+                    <a href="javascript:selfpageClick();" class="am-dropdown-toggle" id="user">
                         用户{{username}}
                     </a>
                 </li>
                 <li>
-                    <a href = "/logout">
+                    <a href = "login.html">
                         退出
                         <span class="am-icon-sign-out"></span>
                     </a>
@@ -63,7 +72,7 @@
                         <small>
                             All Assignments
                         </small>
-                        <button type="button" class="am-btn am-btn-primary am-btn-xs" onclick="releaseTaskClick()">
+                        <button type="button" class="am-btn am-btn-primary am-btn-xs" onClick="releaseTaskClick()">
                             发布任务
                         </button>
                     </div>
@@ -76,6 +85,15 @@
                 <div class="am-margin am-cf" id="tasknum">
                     <hr/>
                     <p class="am-fl">共{{tasknum}}条记录</p>
+                    <!--<ol class="am-pagination am-fr">-->
+                        <!--<li class="am-disabled"><a href="#">&laquo;</a></li>-->
+                        <!--<li class="am-active"><a href="#">1</a></li>-->
+                        <!--<li><a href="#">2</a></li>-->
+                        <!--<li><a href="#">3</a></li>-->
+                        <!--<li><a href="#">4</a></li>-->
+                        <!--<li><a href="#">5</a></li>-->
+                        <!--<li><a href="#">&raquo;</a></li>-->
+                    <!--</ol>-->
                 </div>
             </div>
         </div>
@@ -88,9 +106,52 @@
     </div>
 </footer>
 
-<script src="/lib/vue.js"></script>
-<script src="/lib/jquery.js"></script>
-<script src="/js/loadAllTasks.js"></script>
+
+<!--<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>-->
+<!--<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>-->
+<!--<script src="assets/js/amazeui.ie8polyfill.min.js"></script>-->
+<!--<script src="assets/js/jquery.min.js"></script>-->
+<!--<script src="assets/js/amazeui.min.js"></script>-->
+<!--<script src="assets/js/app.js"></script>-->
+
+
+<script src="../static/lib/vue.js"></script>
+<script src="../static/lib/jquery.js"></script>
+<script src="../static/js/loadAllTasks.js"></script>
+<script src="../js/checkUserInformation.js"></script>
+<script>
+    function mainpageClick() {
+        var url=decodeURI(window.location.href);
+        var username=url.split("?")[1];
+        var mainpage='templates.mainpage.html'+'?'+username;
+        window.location.href=mainpage;
+    }
+    function checkTasksIBuild(){
+        var url=decodeURI(window.location.href);
+        var username=url.split("?")[1];
+        var mytask_built='mytask_built.html'+'?'+username;
+        window.location.href=mytask_built;
+    }
+    function checkTasksIJoin(){
+        var url=decodeURI(window.location.href);
+        var username=url.split("?")[1];
+        var mytask_joined='mytask_joined.html'+'?'+username;
+        window.location.href=mytask_joined;
+    }
+    function selfpageClick() {
+        var url=decodeURI(window.location.href);
+        var username=url.split("?")[1];
+        var selfpage='selfpage.html'+'?'+username;
+        window.location.href=selfpage;
+    }
+    function releaseTaskClick() {
+        var url=decodeURI(window.location.href);
+        var username=url.split("?")[1];
+        var releaseTask='releaseTask.html'+'?'+username;
+        window.location.href=releaseTask;
+    }
+</script>
+
 
 </body>
 </html>
