@@ -26,7 +26,11 @@ $(function(){
         async:false,
         success:function(data){
             //alert(data);
-            tasklist=data.split('!');
+            if(data==""){
+                tasklist=null;
+            }else {
+                tasklist = data.split('!');
+            }
         },
         error:function(e){
             alert('你未发布任务');
@@ -38,51 +42,54 @@ $(function(){
     var numOfPart;
     var deadline;
     var built_tasknum = 0;
-    for(x in tasklist){
-        var taskname=tasklist[x];
-        //alert(taskname);
-        var task=new Task(taskname,'1', '1','1','1','1','1','1','1');
-        var taskJson = JSON.stringify(task);
-        $.ajax({
-            type:'POST',
-            data:taskJson,
-            contentType: 'application/json',
-            dataType: 'text',
-            url:'http://127.0.0.1:8080/checkTaskInformation',
-            async:false,
-            success:function(data){
-                var infoList = data.split('#');
-                taskName = infoList[0];
-                taskTag = infoList[2];
-                numOfPart = infoList[6];
-                deadline = infoList[8];
-            },
-            error:function (e) {
-                alert('error');
-            }
-        })
 
-        var src;
-        $.ajax({//获取任务封面图案
-            type:'POST',
-            data:taskJson,
-            contentType:'application/json',
-            dataType:'text',
-            url:'http://127.0.0.1:8080/checkTaskImg',
-            async:false,
-            success:function (data) {
-                src=data.split(" ")[0];
-            },
-            error:function (e) {
-                alert('error');
-            }
-        });
+    if(tasklist==null){
+    }else {
+        for (x in tasklist) {
+            var taskname = tasklist[x];
+            //alert(taskname);
+            var task = new Task(taskname, '1', '1', '1', '1', '1', '1', '1', '1');
+            var taskJson = JSON.stringify(task);
+            $.ajax({
+                type: 'POST',
+                data: taskJson,
+                contentType: 'application/json',
+                dataType: 'text',
+                url: 'http://127.0.0.1:8080/checkTaskInformation',
+                async: false,
+                success: function (data) {
+                    var infoList = data.split('#');
+                    taskName = infoList[0];
+                    taskTag = infoList[2];
+                    numOfPart = infoList[6];
+                    deadline = infoList[8];
+                },
+                error: function (e) {
+                    alert('error');
+                }
+            })
 
-        var url='taskdetails_requestor.html'+'?'+username+'?'+taskName;
-        $('#myBuiltTaskList').prepend('<li> <a href="'+url+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt=""/> <div class="gallery-title">'+taskTag+'</div> <div class="gallery-desc">参与人数：'+numOfPart+'</div> <div class="gallery-desc">截止：'+deadline+'</div> </a> </li>');
+            var src;
+            $.ajax({//获取任务封面图案
+                type: 'POST',
+                data: taskJson,
+                contentType: 'application/json',
+                dataType: 'text',
+                url: 'http://127.0.0.1:8080/checkTaskImg',
+                async: false,
+                success: function (data) {
+                    src = data.split(" ")[0];
+                },
+                error: function (e) {
+                    alert('error');
+                }
+            });
 
-        built_tasknum = built_tasknum+1;
+            var url = 'taskdetails_requestor.html' + '?' + username + '?' + taskName;
+            $('#myBuiltTaskList').prepend('<li> <a href="' + url + '"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,' + src + '" alt=""/> <div class="gallery-title">' + taskTag + '</div> <div class="gallery-desc">参与人数：' + numOfPart + '</div> <div class="gallery-desc">截止：' + deadline + '</div> </a> </li>');
 
+            built_tasknum = built_tasknum + 1;
+        }
     }
     new Vue({
         el:'#built_tasknum',

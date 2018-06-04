@@ -50,6 +50,8 @@ $(function () {
         }
     });
 
+
+
     var imageList;
     //加载任务封面
     $.ajax({

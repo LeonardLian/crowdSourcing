@@ -16,7 +16,6 @@ $(function () {
         });
     });
 
-
     var user=new User(username,'aaa',0,'aaa','aaa','aaa','aaa','aaa');
     var userJson=JSON.stringify(user);
 

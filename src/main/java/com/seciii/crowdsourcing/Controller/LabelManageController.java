@@ -157,7 +157,7 @@ public class LabelManageController {
         if(!file.exists()){
             file.createNewFile();
         }
-        FileWriter writer=new FileWriter(filename,false);
+        FileWriter writer=new FileWriter(filename,true);
         BufferedWriter bw=new BufferedWriter(writer);
         bw.write(squareLabelStr);
         bw.close();

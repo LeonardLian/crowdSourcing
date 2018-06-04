@@ -307,7 +307,12 @@ public class TaskController {
                 arrayList.add(taskname);
             }
         }
-        String result=String.join("!",arrayList);
+        String result;
+        if(arrayList.isEmpty()){
+            result="";
+        }else {
+            result = String.join("!", arrayList);
+        }
         return result;
     }
 
@@ -328,7 +333,12 @@ public class TaskController {
                 arrayList.add(taskname);
             }
         }
-        String result=String.join("!",arrayList);
+        String result;
+        if(arrayList.isEmpty()){
+            result="";
+        }else {
+            result = String.join("!", arrayList);
+        }
         return result;
     }
 
@@ -386,20 +396,25 @@ public class TaskController {
         File folder=new File(foldername);
         String[] files=folder.list();
 
+        //System.out.println(folder);
         ArrayList<String> workerList=new ArrayList<>();
         for(String file:files){
+            //System.out.println(file);
             if(file.equals("description.txt")){
             }
             else{
-                String id=file.split(".")[0];
+                String id=file.split("\\.")[0];
                 workerList.add(id);
             }
         }
 
-        String result=String.join("#",workerList);
+        String result;
+        if(workerList.isEmpty()){
+            result="";
+        }else {
+            result = String.join("#", workerList);
+        }
         return result;
     }
-
-
 
 }
