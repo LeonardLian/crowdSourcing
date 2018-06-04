@@ -24,7 +24,7 @@ public class Task {
 
     public Task(){}
 
-    public Task(String taskname,String requestor,String tasktag,String description,String mode,String numOfNeeded,String numOfPart,String point,String deadline,String type,String labels){
+    public Task(String taskname,String requestor,String tasktag,String description,String mode,String numOfNeeded,String numOfPart,String point,String deadline){
         this.taskname=taskname;
         this.requestor=requestor;
         this.tasktag=tasktag;
@@ -34,8 +34,6 @@ public class Task {
         this.numOfPart=numOfPart;
         this.point=point;
         this.deadline=deadline;
-        this.type=type;
-        this.labels=labels;
     }
 
 

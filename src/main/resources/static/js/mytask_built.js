@@ -2,16 +2,24 @@
  * mxf
  */
 $(function(){
-    var url = decodeURI(window.location.href);
-    var username = url.split("?")[1];
-
+    var username;
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getUsername',
+        async:false,
+        success:function(data){
+            username=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
     new Vue({
         el:'#user',
         data:{
             username:username
         }
-
-
     });
 
     var user = new User(username,"1","1","1","1","1","1","1");
@@ -22,7 +30,7 @@ $(function(){
         data: userJson,
         contentType: 'application/json',
         dataType: 'text',
-        url:'http://127.0.0.1:8080/checkBuildTasks',
+        url:'/checkBuildTasks',
         async:false,
         success:function(data){
             //alert(data);
@@ -55,7 +63,7 @@ $(function(){
                 data: taskJson,
                 contentType: 'application/json',
                 dataType: 'text',
-                url: 'http://127.0.0.1:8080/checkTaskInformation',
+                url: '/checkTaskInformation',
                 async: false,
                 success: function (data) {
                     var infoList = data.split('#');
@@ -75,7 +83,7 @@ $(function(){
                 data: taskJson,
                 contentType: 'application/json',
                 dataType: 'text',
-                url: 'http://127.0.0.1:8080/checkTaskImg',
+                url: '/checkTaskImg',
                 async: false,
                 success: function (data) {
                     src = data.split(" ")[0];
@@ -85,7 +93,7 @@ $(function(){
                 }
             });
 
-            var url = 'taskdetails_requestor.html' + '?' + username + '?' + taskName;
+            var url = 'taskdetails_requestor/'+ username + '/' + taskName;
             $('#myBuiltTaskList').prepend('<li> <a href="' + url + '"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,' + src + '" alt=""/> <div class="gallery-title">' + taskTag + '</div> <div class="gallery-desc">参与人数：' + numOfPart + '</div> <div class="gallery-desc">截止：' + deadline + '</div> </a> </li>');
 
             built_tasknum = built_tasknum + 1;

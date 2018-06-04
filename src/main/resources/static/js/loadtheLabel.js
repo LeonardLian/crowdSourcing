@@ -3,9 +3,32 @@
  */
 $(function () {
 
-    var url=decodeURI(window.location.href);
-    var username=url.split("?")[1];
-    var taskname=url.split("?")[2];
+    var username;
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getUsername',
+        async:false,
+        success:function(data){
+            username=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
+    var taskname;
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getTaskname',
+        async:false,
+        success:function(data){
+            taskname=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
 
     var task=new Task(taskname,'aa','aa','aa','aa','aa','aa','aa','aa');
     var taskJson=JSON.stringify(task);

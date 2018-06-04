@@ -2,9 +2,32 @@
  * Created by Leonarda on 2018/6/1.
  */
 function savetheLabel(){
-    var url=decodeURI(window.location.href);
-    var username=url.split("?")[1];
-    var taskname=url.split("?")[2];
+    var username;
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getUsername',
+        async:false,
+        success:function(data){
+            username=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
+    var taskname;
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getTaskname',
+        async:false,
+        success:function(data){
+            taskname=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
 
     var bot=document.getElementById("bottom");
     var canvas=document.getElementById("myCanvas");
@@ -18,7 +41,7 @@ function savetheLabel(){
         data:taskJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/checkTaskInformation',
+        url:'/checkTaskInformation',
         async:false,
         success:function (data) {
             alert("success");
@@ -55,7 +78,7 @@ function savetheLabel(){
                 data:squareLabelJson,
                 contentType:'application/json',
                 dataType:'text',
-                url:'http://127.0.0.1:8080/saveSquareLabel',
+                url:'/saveSquareLabel',
                 success:function(data){
                     alert(data);
                 },
@@ -74,7 +97,7 @@ function savetheLabel(){
             type:'POST',
             data:wholeLabelJson,
             contentType:'application/json',
-            url:'http://127.0.0.1:8080/saveWholeLabel',
+            url:'/saveWholeLabel',
             dataType:'text',
             async:false,
             success:function(data){
@@ -126,7 +149,7 @@ function savetheLabel(){
                     type:'POST',
                     data:curveLabelJson,
                     contentType:'application/json',
-                    url:'http://127.0.0.1:8080/saveCurveLabel',
+                    url:'/saveCurveLabel',
                     dataType:'text',
                     async:false,
                     success:function(data){

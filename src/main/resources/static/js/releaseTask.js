@@ -90,13 +90,19 @@ function saveInfoOfTask(){
     $.ajax({
         type:'POST',
         dataType:'text',
-        url:'http://127.0.0.1:8080/getUsername',
+        url:'/getUsername',
         async:false,
         success:function(data){
             username=data;
         },
         error:function (e) {
             alert("error!");
+        }
+    });
+    new Vue({
+        el:'#user',
+        data:{
+            username:username
         }
     });
     var taskname=$('#taskname').val();
@@ -145,7 +151,7 @@ function saveInfoOfTask(){
         data:taskJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/releaseTaskInfo',
+        url:'/releaseTaskInfo',
         success:function (data) {
             window.location.href="/mainpage";
             alert("发布成功");

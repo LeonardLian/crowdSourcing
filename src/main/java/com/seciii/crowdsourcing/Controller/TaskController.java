@@ -1,5 +1,6 @@
 package com.seciii.crowdsourcing.Controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.seciii.crowdsourcing.Dao.*;
 import com.seciii.crowdsourcing.Dao.User;
 
@@ -11,6 +12,7 @@ import sun.misc.BASE64Encoder;
 import java.io.*;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * @author: pis
@@ -417,4 +419,129 @@ public class TaskController {
         return result;
     }
 
+    //前端获取任务编号
+    @RequestMapping(value="/getTaskname")
+    public String getTasknameForHTML() throws IOException{
+        return UrlController.task.getTaskname();
+    }
+
+    //整合标注
+    @RequestMapping(value = "/closeTask",method = RequestMethod.POST)
+    public String closeTask(@RequestBody Task task) throws IOException{
+
+        //读取所有参与者的标注信息
+        String temporaryFile="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+task.getTaskname()+"/";
+        File file=new File(temporaryFile);
+        File[] tempList=file.listFiles();
+
+        InputStreamReader reader;
+        if(tempList[0].getName().equals("description.txt")){
+            reader=new InputStreamReader(new FileInputStream(tempList[1]));
+        } else{
+            reader=new InputStreamReader(new FileInputStream(tempList[0]));
+        }
+        BufferedReader br=new BufferedReader(reader);
+
+        String line;
+        int numOfLine=0;
+        while((line=br.readLine())!=null){
+            numOfLine++;
+        }
+
+        int numOfWorker=0;
+        int numOfPic;
+        SquareLabel[][] allLabels=new SquareLabel[numOfLine][tempList.length-1];
+        for(File worker:tempList){
+            if(worker.getName().equals("description.txt")){}
+            else {
+                reader = new InputStreamReader(new FileInputStream(worker));
+                br = new BufferedReader(reader);
+                numOfPic=0;
+                while ((line = br.readLine()) != null) {
+                    JSONObject json = JSONObject.parseObject(line);
+                    SquareLabel label = new SquareLabel(json.getString("startX"), json.getString("startY"), json.getString("width"), json.getString("height"), json.getString("comment"), json.getString("taskname"), json.getString("username"));
+                    allLabels[numOfPic][numOfWorker] = label;
+                    numOfPic++;
+                }
+                numOfWorker++;
+            }
+        }
+
+        //整合所有方框
+        SquareLabel[] resultLabels=new SquareLabel[allLabels.length];
+        for(int i=0;i<allLabels.length;i++){
+            resultLabels[i]=calculateSquarel2(allLabels[i]);
+        }
+
+        //将得到的整合方框以发起者明明，并写回
+        String resultFilePath=temporaryFile+UrlController.user.getUsername()+".txt";
+        File resultFile=new File(resultFilePath);
+        if(!file.exists()){
+            file.createNewFile();
+        }
+        FileWriter fw=new FileWriter(resultFilePath,true);
+        BufferedWriter bw=new BufferedWriter(fw);
+        for(SquareLabel label:resultLabels){
+            String squareLabelStr="{"+
+                    "\"type\":"+label.getType()+","+
+                    "\"startX\":"+label.getStartX()+","+
+                    "\"startY\":"+label.getStartY()+","+
+                    "\"width\":"+"\""+label.getWidth()+"\""+","+
+                    "\"height\""+"\""+label.getHeight()+"\""+","+
+                    "\"comment\""+"\""+label.getComment()+"\""+","+
+                    "\"taskname\""+"\""+label.getTaskname()+"\""+","+
+                    "\"username\""+"\""+label.getUsername()+"\""+
+                    "}"+"\n";
+            bw.write(squareLabelStr);
+        }
+        bw.close();
+        fw.close();
+
+        return "Success";
+    }
+
+    //整合方框2，取中间的80%，分为8组，中央数值加权平均
+    private SquareLabel calculateSquarel2(SquareLabel[] labels){
+        ArrayList<Double> x=new ArrayList<Double>();
+        ArrayList<Double> y=new ArrayList<Double>();
+        ArrayList<Double> width=new ArrayList<Double>();
+        ArrayList<Double> height=new ArrayList<Double>();
+
+        for(SquareLabel label:labels){
+            x.add(Double.parseDouble(label.getStartX()));
+            y.add(Double.parseDouble(label.getStartY()));
+            width.add(Double.parseDouble(label.getWidth()));
+            height.add(Double.parseDouble(label.getHeight()));
+        }
+
+        return new SquareLabel(""+calculateAverage(x),""+calculateAverage(y),""+calculateAverage(width),""+calculateAverage(height),"",UrlController.task.getTaskname(),UrlController.user.getUsername());
+    }
+
+    private double calculateAverage(ArrayList<Double> list){
+        Collections.sort(list);//将list升序排列
+        int[] vote={0,0,0,0,0,0,0,0};
+        int length=list.size();
+        double min=list.get(length/10),//去掉最小的10%
+                max=list.get(length*9/10),//去掉最大的10%
+                gap=(max-min)/8;//将剩下的数据的等分为八个区间
+
+        //遍历去掉最高最低后的list，统计八个区间的频数
+        for(int i=length/10;i<length*9/10;i++){
+            for(int j=1;j<9;j++){
+                if(list.get(i)<min+j*gap){
+                    vote[j-1]++;
+                    break;
+                }
+            }
+        }
+
+        //以频率为概率，计算期望。（加权平均）
+        double sum=0;
+        for(int i=0;i<8;i++){
+            sum+=(min+gap/2+i*gap)*vote[i];
+        }
+        double average=sum/(length*8/10);
+
+        return average;
+    }
 }

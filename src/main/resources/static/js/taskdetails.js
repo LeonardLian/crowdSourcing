@@ -134,7 +134,7 @@ function join() {
         dataType:'text',
         url:'/participateIn',
         success:function (data) {
-            window.location.href="/work";
+            window.location.href="/work/"+taskname;
         },
         error:function (e) {
             alert('error');
