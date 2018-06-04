@@ -25,7 +25,7 @@ $(function () {
         }
     });
 
-    var user=new User(username,'aaa',0,'aaa','aaa','aaa','aaa','aaa');
+    var user=new User(username,'aaa','0','aaa','aaa','aaa','aaa','aaa');
     var userJson=JSON.stringify(user);
 
     $.ajax({
@@ -60,7 +60,7 @@ $(function () {
             if(data=='no') {
                 return;
             }else{
-                $('#newImage').attr('src',data);
+                $('#newImage').attr('src',"data:image/jpeg;base64,"+data);
             }
         },
         error:function(e){
@@ -84,9 +84,24 @@ function saveImageOfUser() {
         return;
     }
 
+
     var fileObj=img_file.files[0];
-    var url=decodeURI(window.location.href);
-    var username=url.split("?")[1];
+
+    var username=null;
+
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getUsername',
+        async:false,
+        success:function(data){
+            username=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
+    alert(username);
     formData.append("classIcon",fileObj);
     formData.append("className",username);
 
@@ -98,7 +113,7 @@ function saveImageOfUser() {
         processData:false,
         contentType:false,
         success:function (data) {
-
+            alert(data);
         },
         error:function (e) {
             alert("error");
