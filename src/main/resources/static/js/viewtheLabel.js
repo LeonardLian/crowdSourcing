@@ -9,17 +9,42 @@ $(function () {
     var taskname="";
     var usernameOfWorker="";
 
-    $.get("http://127.0.0.1:8080/getUsername",function (data) {
-        usernameOfRequestor=data;
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getUsername',
+        async:false,
+        success:function(data){
+            usernameOfRequestor=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
     });
-
-    $.get("http://127.0.0.1:8080/getTaskname",function (data) {
-        taskname=data;
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getTaskname',
+        async:false,
+        success:function(data){
+            taskname=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
     });
-
-    $.get("http://127.0.0.1:8080/getUsernameOfWorker",function(data){
-        usernameOfWorker=data;
-    })
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getUsernameOfWorker',
+        async:false,
+        success:function(data){
+            usernameOfWorker=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
 
     $('#des').hide();
 
@@ -32,7 +57,7 @@ $(function () {
         data:taskJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/checkTaskImg',
+        url:'/checkTaskImg',
         async:false,
         success:function (data) {
             imgBase=data.split(" ");
@@ -49,7 +74,7 @@ $(function () {
         data:taskJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/checkTaskInformation',
+        url:'/checkTaskInformation',
         async:false,
         success:function (data) {
             taskInformation=data.split('#');
@@ -166,7 +191,7 @@ $(function () {
         data:keyJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/loadWorkerFile',
+        url:'/loadWorkerFile',
         async:false,
         success:function(data){
             if(data==null){

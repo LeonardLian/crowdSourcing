@@ -8,18 +8,35 @@ $(function () {
     var username;
     var taskname;
 
-    $.get("http://127.0.0.1:8080/getUsername",function (data) {
-        username=data;
-        new Vue({
-            el:'#user',
-            data:{
-                username:username
-            }
-        });
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getUsername',
+        async:false,
+        success:function(data){
+            username=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
     });
-
-    $.get("http://127.0.0.1:8080/getTaskname",function (data) {
-        taskname=data;
+    new Vue({
+        el:'#user',
+        data:{
+            username:username
+        }
+    });
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getTaskname',
+        async:false,
+        success:function(data){
+            taskname=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
     });
 
     var task=new Task(taskname,'aaa','aaa','aaa','aaa','aaa','aaa','aaa','aaa');
@@ -29,7 +46,7 @@ $(function () {
         data:taskJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/checkTaskInformation',
+        url:'/checkTaskInformation',
         success:function (data) {
             var infoList=data.split("#");
             new Vue({
@@ -61,7 +78,7 @@ $(function () {
         data:taskJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/checkTaskImg',
+        url:'/checkTaskImg',
         success:function (data) {
             var imageList=data.split(" ");
             for(var i in imageList){
@@ -78,21 +95,33 @@ $(function () {
 });
 
 function join() {
+
     var username;
     var taskname;
 
-    $.get("http://127.0.0.1:8080/getUsername",function (data) {
-        username=data;
-        new Vue({
-            el:'#user',
-            data:{
-                username:username
-            }
-        });
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getUsername',
+        async:false,
+        success:function(data){
+            username=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
     });
-
-    $.get("http://127.0.0.1:8080/getTaskname",function (data) {
-        taskname=data;
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getTaskname',
+        async:false,
+        success:function(data){
+            taskname=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
     });
 
     var taskkey=new Taskkey(username,taskname);
@@ -103,7 +132,7 @@ function join() {
         data:taskkeyJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/participateIn',
+        url:'/participateIn',
         success:function (data) {
             window.location.href="/work";
         },

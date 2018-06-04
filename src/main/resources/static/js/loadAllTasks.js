@@ -10,17 +10,26 @@
 $(function () {
     var username;
 
-    $.get("http://127.0.0.1:8080/getUsername",function (data) {
-        username=data;
-        new Vue({
-            el:'#user',
-            data:{
-                username:username
-            }
-        });
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getUsername',
+        async:false,
+        success:function(data){
+            username=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
+    new Vue({
+        el:'#user',
+        data:{
+            username:username
+        }
     });
 
-    $.get("http://127.0.0.1:8080/checkAllTasks",function (data) {
+    $.get("/checkAllTasks",function (data) {
         var tasknum=0;
 
         var arr=data.split('!');
@@ -46,7 +55,7 @@ $(function () {
                     data:taskJson,
                     contentType:'application/json',
                     dataType:'text',
-                    url:'http://127.0.0.1:8080/checkTaskImg',
+                    url:'/checkTaskImg',
                     async:false,
                     success:function (data) {
                         src=data.split(" ")[0];
@@ -65,15 +74,15 @@ $(function () {
                     data:taskkeyJson,
                     contentType:'application/json',
                     dataType:'text',
-                    url:'http://127.0.0.1:8080/judgeRelation',
+                    url:'/judgeRelation',
                     async:false,
                     success:function (data) {
                         if(data=='0'){//旁观者
-                            url='taskdetails'+'/'+taskname;
+                            url='/taskdetails'+'/'+taskname;
                         }else if(data=='2'){//参与者
-                            url='work'+'/'+taskname;
+                            url='/work'+'/'+taskname;
                         }else if(data=='1'){//发布者
-                            url='taskdetails_requestor'+'/'+taskname;
+                            url='/taskdetails_requestor'+'/'+taskname;
                         }
                     },
                     error:function (e) {

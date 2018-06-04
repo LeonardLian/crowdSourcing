@@ -4,21 +4,39 @@
  */
 
 $(function () {
+
     var username;
     var taskname;
 
-    $.get("http://127.0.0.1:8080/getUsername",function (data) {
-        username=data;
-        new Vue({
-            el:'#user',
-            data:{
-                username:username
-            }
-        });
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getUsername',
+        async:false,
+        success:function(data){
+            username=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
     });
-
-    $.get("http://127.0.0.1:8080/getTaskname",function (data) {
-        taskname=data;
+    new Vue({
+        el:'#user',
+        data:{
+            username:username
+        }
+    });
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getTaskname',
+        async:false,
+        success:function(data){
+            taskname=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
     });
 
     //加载任务信息
@@ -29,7 +47,7 @@ $(function () {
         data:taskJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/checkTaskInformation',
+        url:'/checkTaskInformation',
         success:function (data) {
             var infoList=data.split("#");
             new Vue({
@@ -46,7 +64,7 @@ $(function () {
             });
         },
         error:function(e){
-            alert("error");
+            alert("error1");
         }
     });
 
@@ -57,49 +75,73 @@ $(function () {
         data:taskJson,
         contentType:'application/json',
         dataType:'text',
-        url:'http://127.0.0.1:8080/checkTaskImg',
+        url:'/checkTaskImg',
         async:false,
         success:function (data) {
             imageList=data.split(" ");
             $('#cover').attr("src","data:image/jpeg;base64,"+imageList[0]);
         },
         error:function(e){
-            alert("error");
+            alert("error2");
         }
     });
 
     //加载参与者列表
-    $.ajax({
-        type:'POST',
-        data:taskJson,
-        contentType:'application/json',
-        dataType:'text',
-        url:'http://127.0.0.1:8080/',
-        success:function (data) {
-            var workList=data.split('#');
-            if(workList.length==0){
-                $('#description').html('当前没有参与者。');
-                return;
-            }
-            for(var x in workList){
-                var usernameOfWorker=workList[x];
-                var src=imageList[0];
-                var url='/TaskView'+'/'+taskname+'/'+usernameOfWorker;
-
-                $('#workerList').prepend('<li> <a href="'+url+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/200/h/200/q/80"/> <div class="gallery-title">'+usernameOfWorker+'</div> </a> </li>');
-            }
-        },
-        error:function (e) {
-            alert('error');
-        }
-    });
+    // $.ajax({
+    //     type:'POST',
+    //     data:taskJson,
+    //     contentType:'application/json',
+    //     dataType:'text',
+    //     url:'http://127.0.0.1:8080/',//TODO
+    //     success:function (data) {
+    //         var workList=data.split('#');
+    //         if(workList.length==0){
+    //             $('#description').html('当前没有参与者。');
+    //             return;
+    //         }
+    //         for(var x in workList){
+    //             var usernameOfWorker=workList[x];
+    //             var src=imageList[0];
+    //             var url='/TaskView'+'/'+taskname+'/'+usernameOfWorker;
+    //
+    //             $('#workerList').prepend('<li> <a href="'+url+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/200/h/200/q/80"/> <div class="gallery-title">'+usernameOfWorker+'</div> </a> </li>');
+    //         }
+    //     },
+    //     error:function (e) {
+    //         alert('error3');
+    //     }
+    // });
 });
 
 
 function closeTask() {
+
+    var username;
     var taskname;
-    $.get("http://127.0.0.1:8080/getTaskname",function (data) {
-        taskname=data;
+
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getUsername',
+        async:false,
+        success:function(data){
+            username=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'/getTaskname',
+        async:false,
+        success:function(data){
+            taskname=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
     });
 
     var task=new Task(taskname,'aaa','aaa','aaa','aaa','aaa','aaa','aaa','aaa');
@@ -109,9 +151,9 @@ function closeTask() {
         data:taskJson,
         contentType:'application/json',
         dataType:'text',
-        url:'',
+        url:'http://127.0.0.1:8080/closeTask',
         success:function (data) {
-
+            window.location.href='/TaskView/'+taskname+'/'+username;
         },
         error:function(e){
             alert("error");

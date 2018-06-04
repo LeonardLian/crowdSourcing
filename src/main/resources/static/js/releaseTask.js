@@ -9,14 +9,23 @@
 $(function () {
     var username;
 
-    $.get("http://127.0.0.1:8080/getUsername",function (data) {
-        username=data;
-        new Vue({
-            el:'#user',
-            data:{
-                username:username
-            }
-        });
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'http://127.0.0.1:8080/getUsername',
+        async:false,
+        success:function(data){
+            username=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
+    new Vue({
+        el:'#user',
+        data:{
+            username:username
+        }
     });
 
     var date=new Date();
@@ -54,8 +63,6 @@ function saveImagesOfTask() {
     for(var i=0;i<fileList.length;i++) {
         var formData=new FormData();
         var fileObj=img_file.files[0];
-        var url=decodeURI(window.location.href);
-        var username=url.split("?")[1];
         formData.append("taskImg",fileObj);
         formData.append("imgName",i);
 
@@ -78,17 +85,34 @@ function saveImagesOfTask() {
 }
 
 function saveInfoOfTask(){
-    var url=decodeURI(window.location.href);
-    var username=url.split("?")[1];
+    var username;
+    $.ajax({
+        type:'POST',
+        dataType:'text',
+        url:'http://127.0.0.1:8080/getUsername',
+        async:false,
+        success:function(data){
+            username=data;
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
     var taskname=$('#taskname').val();
     var mode=$('#mode').val();
     var numOfNeeded=$('#numofneed').val();
     var point=$('#point').val();
     var deadline=$('#deadline').val();
     var description=$('#description').val();
+    var type=$('#type').val();
+    var labels=$('#labels').val();
 
     if(taskname==""){
         alert('请输入任务名称');
+        return;
+    }
+    if(type==""){
+        alert('请输入任务类型，如：动物类、人物类、军事类');
         return;
     }
     if(taskname.length>20){
@@ -112,7 +136,7 @@ function saveInfoOfTask(){
         return;
     }
 
-    var task=new Task('aaa',username,taskname,description,mode,numOfNeeded,'aaa',point,deadline);
+    var task=new Task('aaa',username,taskname,description,mode,numOfNeeded,'aaa',point,deadline,type,labels);
     var taskJson=JSON.stringify(task);
 
     $.ajax({
@@ -131,7 +155,7 @@ function saveInfoOfTask(){
     });
 }
 
-function Task(taskname,requestor,tasktag,description,mode,numOfNeeded,numOfPart,point,deadline) {
+function Task(taskname,requestor,tasktag,description,mode,numOfNeeded,numOfPart,point,deadline,type,labels) {
     this.taskname=taskname;//任务ID，由后端自主分配
     this.requestor=requestor;//发起者的username
     this.tasktag=tasktag;//任务名称，由发布任务时填写

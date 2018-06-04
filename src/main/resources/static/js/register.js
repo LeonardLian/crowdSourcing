@@ -25,7 +25,7 @@ function register() {
             data:newUserJson,
             contentType:'application/json',
             dataType:'text',
-            url:'http://127.0.0.1:8080/registerr',
+            url:'/registerr',
             success:function (data) {
                 if(data=="注册成功！"){
                     window.location.href="/login";
