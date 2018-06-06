@@ -29,80 +29,92 @@ $(function () {
         }
     });
 
-    $.get("/checkAllTasks",function (data) {
-        var tasknum=0;
+    var user=new User(username,"","","","","","","")
+    var userJson=JSON.stringify(user);
+    $.ajax({
+        type:'POST',
+        data:userJson,
+        contentType:'application/json',
+        dataType:'text',
+        url:'/checkAllTasks',
 
-        var arr=data.split('!');
+        success:function (data) {
+            var tasknum=0;
 
-        if(data.length==0){
-            return;
-        }
-        else{
-            for(var x in arr){
-                var infoList=arr[x].split('#');
-                var taskname=infoList[0];
-                var tasktag=infoList[2];
-                var numOfNeeded=infoList[5];
-                var numOfPart=infoList[6];
-                var deadline=infoList[8];
+            var arr=data.split('!');
 
-                var task=new Task(taskname,'aaa','aaa','aaa','aaa','aaa','aaa','aaa','aaa');
-                var taskJson=JSON.stringify(task);
+            if(data.length==0){
 
-                var src;
-                $.ajax({//获取任务封面图案
-                    type:'POST',
-                    data:taskJson,
-                    contentType:'application/json',
-                    dataType:'text',
-                    url:'/checkTaskImg',
-                    async:false,
-                    success:function (data) {
-                        src=data.split(" ")[0];
-                     },
-                    error:function (e) {
-                        alert('error');
-                    }
-                });
+            }
+            else {
+                for (var x in arr) {
+                    var infoList = arr[x].split('#');
+                    var taskname = infoList[0];
+                    var tasktag = infoList[2];
+                    var numOfNeeded = infoList[5];
+                    var numOfPart = infoList[6];
+                    var deadline = infoList[8];
 
-                var taskkey=new Taskkey(taskname,username);
-                var taskkeyJson=JSON.stringify(taskkey);
+                    var task = new Task(taskname, 'aaa', 'aaa', 'aaa', 'aaa', 'aaa', 'aaa', 'aaa', 'aaa');
+                    var taskJson = JSON.stringify(task);
 
-                var url='#';
-                $.ajax({//判断用户和任务的关系：旁观者、参与者、发布者 TODO
-                    type:'POST',
-                    data:taskkeyJson,
-                    contentType:'application/json',
-                    dataType:'text',
-                    url:'/judgeRelation',
-                    async:false,
-                    success:function (data) {
-                        if(data=='0'){//旁观者
-                            url='/taskdetails'+'/'+taskname;
-                        }else if(data=='2'){//参与者
-                            url='/work'+'/'+taskname;
-                        }else if(data=='1'){//发布者
-                            url='/taskdetails_requestor'+'/'+taskname;
+                    var src;
+                    $.ajax({//获取任务封面图案
+                        type: 'POST',
+                        data: taskJson,
+                        contentType: 'application/json',
+                        dataType: 'text',
+                        url: '/checkTaskImg',
+                        async: false,
+                        success: function (data) {
+                            src = data.split(" ")[0];
+                        },
+                        error: function (e) {
+                            alert('error');
                         }
-                    },
-                    error:function (e) {
-                        alert('error');
-                    }
-                });
+                    });
 
-                $('#taskList').prepend('<li id="app"> <a href="'+url+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt=""/> <div class="gallery-title">'+tasktag+'</div> <div class="gallery-desc">人数：'+numOfPart+'/'+numOfNeeded+'</div> <div class="gallery-desc">截止：'+deadline+'</div> </a> </li>');
+                    var taskkey = new Taskkey(taskname, username);
+                    var taskkeyJson = JSON.stringify(taskkey);
 
-                tasknum=tasknum+1;
+                    var url = '#';
+                    $.ajax({
+                        type: 'POST',
+                        data: taskkeyJson,
+                        contentType: 'application/json',
+                        dataType: 'text',
+                        url: '/judgeRelation',
+                        async: false,
+                        success: function (data) {
+                            if (data == '0') {//旁观者
+                                url = '/taskdetails' + '/' + taskname;
+                            } else if (data == '2') {//参与者
+                                url = '/work' + '/' + taskname;
+                            } else if (data == '1') {//发布者
+                                url = '/taskdetails_requestor' + '/' + taskname;
+                            }
+                        },
+                        error: function (e) {
+                            alert('error');
+                        }
+                    });
+
+                    $('#taskList').append('<li id="app"> <a href="' + url + '"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,' + src + '" alt=""/> <div class="gallery-title">' + tasktag + '</div> <div class="gallery-desc">人数：' + numOfPart + '/' + numOfNeeded + '</div> <div class="gallery-desc">截止：' + deadline + '</div> </a> </li>');
+
+                    tasknum = tasknum + 1;
+                }
             }
+            new Vue({
+               el:'#tasknum',
+               data:{
+                   tasknum:tasknum
+               }
+            });
+        },
+        error:function (e) {
+            alert("error");
         }
-
-        new Vue({
-            el:'#tasknum',
-            data:{
-                tasknum:tasknum
-            }
-        })
-    })
+    });
 });
 
 
@@ -125,4 +137,15 @@ function Task(taskname,requestor,tasktag,description,mode,numOfNeeded,numOfPart,
 function Taskkey(taskname,username) {
     this.taskname=taskname;
     this.username=username;
+}
+
+function User(username,password,point,name,email,phone,description,taskAddress) {
+    this.username=username;
+    this.password=password;
+    this.point=point;
+    this.name=name;
+    this.email=email;
+    this.phone=phone;
+    this.description=description;
+    this.taskAddress=taskAddress;
 }
