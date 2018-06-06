@@ -100,6 +100,12 @@ $(function () {
             var offset_w = (FitWidth - _width)/2;
             var offset_h = (FitHeight - _height)/2;
             ctx.drawImage(img, offset_w, offset_h, _width, _height);
+            // $("#myCanvas").drawImage({
+            //     source:img,
+            //     fromCenter:true,
+            //     x:offset_w,
+            //     y:offset_h
+            // });
         }
         else {
             if (_width / _height >= FitWidth / FitHeight) {
@@ -122,9 +128,15 @@ $(function () {
                     img.height = _height;
                 }
             }
-            // img.width = 750;
-            // img.height = 550;
+            img.width = 750;
+            img.height = 550;
             ctx.drawImage(img, 0, 0, 750, 550);
+            // $("#myCanvas").drawImage({
+            //     source:img,
+            //     fromCenter:true,
+            //     x:0,
+            //     y:0
+            // })
         }
     };
 

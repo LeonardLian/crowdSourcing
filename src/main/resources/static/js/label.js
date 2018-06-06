@@ -42,7 +42,7 @@ CanvasExt={
                 height:1
             });
 
-            $("#myCanvas").drawLayers();
+            //$("#myCanvas").drawLayers();
             $("#myCanvas").saveCanvas();
             canvas.onmousemove=function (e){
                 var width=e.offsetX-startX;
