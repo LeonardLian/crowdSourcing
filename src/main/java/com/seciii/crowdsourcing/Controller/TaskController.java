@@ -585,4 +585,81 @@ public class TaskController {
 
         return average;
     }
+
+    //评估工人对某个任务的标注准确性
+    @RequestMapping(value="/checkCertainLabel", method = RequestMethod.POST)
+    public String checkCertainLabel(@RequestBody Task task, User user) throws IOException{
+        String username = user.getUsername();
+        String taskname = task.getTaskname();
+        String temporaryFile="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+taskname+"/"+username+".txt";
+        File file=new File(temporaryFile);
+        InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
+        BufferedReader br=new BufferedReader(reader);
+
+        String labels = task.getLabels();
+        String label_arr[] = labels.split(",");
+        for(int i=0;i<label_arr.length;i++){
+            //此处调用整合的方法并进行判断(对每个标签)；
+
+        }
+        String label_data = "";
+        int[] isIn = null;
+        String[] arr_label= label_data.split("#");
+        for(int i=0;i<arr_label.length;i++) {
+            String label = arr_label[i];
+            double score = 0.0;
+            //for(int i=0;i<stds.length;i++){
+            //    if(x == x_std && y == y_std){
+            //       score = 1;
+            //         isIn[i] = 1;
+            //    }if(){
+            //
+            // }
+            //}
+
+        }
+
+
+        if(true){
+            return "";
+        }else{
+            return "";
+        }
+
+    }
+
+    //为某个用户推荐任务
+    @RequestMapping(value = "/recommendTasks",method = RequestMethod.POST)
+    public String recommendTasks(@RequestBody User user) throws IOException{
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt";
+        File file=new File(filename);
+        InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
+        BufferedReader br=new BufferedReader(reader);
+        ArrayList<String> strlist=new ArrayList<>();
+        String line=null;
+        while((line=br.readLine())!=null){
+            strlist.add(line);
+        }
+
+        ArrayList<String> tmpList = new ArrayList<>();
+        String types = "";//user.getType();
+        String[] type_arr = types.split(",");
+        for(int i=0;i<type_arr.length;i++){
+            for(int j=0;j<strlist.size();j++){
+                String task = strlist.get(j);
+                String[] task_arr = task.split("#");
+
+                // if(task.type == type_arr[10] ){        //the index of type is 10.
+                //tmpList.add(tmp);
+                //strlist.remove(j);
+                //}
+            }
+        }
+
+        tmpList.addAll(strlist);
+        String list = String.join("!", tmpList);
+
+        return list;
+    }
+
 }
