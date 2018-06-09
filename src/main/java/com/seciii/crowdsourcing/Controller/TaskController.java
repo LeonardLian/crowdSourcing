@@ -597,4 +597,105 @@ public class TaskController {
 
         return average;
     }
+
+    //评估工人对某个任务的标注准确性
+    @RequestMapping(value="/checkCertainLabel", method = RequestMethod.POST)
+    public double checkCertainLabel(@RequestBody Task task, User user) throws IOException{
+        String username = user.getUsername();
+        String taskname = task.getTaskname();
+        String temporaryFile="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+taskname+"/"+username+".txt";
+        File file=new File(temporaryFile);
+        InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
+        BufferedReader br=new BufferedReader(reader);
+
+        //得到一个工人在一个任务中的所有方框的信息
+        SquareLabel[] labels = new SquareLabel[20];
+        int numOfSquares = 0;
+        String line;
+        while((line=br.readLine())!=null){
+            JSONObject json = JSONObject.parseObject(line);
+            SquareLabel label = new SquareLabel(json.getString("startX"), json.getString("startY"), json.getString("width"),
+                    json.getString("height"), json.getString("comment"), json.getString("taskname"), json.getString("username"));
+            labels[numOfSquares] = label;
+            numOfSquares ++;
+        }
+
+        //调用整合的方法得到该任务中每个方框的平均值
+        SquareLabel std_labels = new SquareLabel();
+
+        //对工人的方框和整合的方框作比较并打分
+        int[] isIn = null;
+        double[] scores = null;
+        for(int i=0;i<labels.length;i++){
+            SquareLabel label = labels[i];
+            //for(int j=0;j<std_squares.length;i++){
+            //   SquareLabel l = std_squares[j];
+//                 if(label.getComment() == l.getComment()){
+//                     double gapX = Math.abs(Double.parseDouble(label.getStartX())-Double.parseDouble(l.getStartX()));
+//                     double gapY = Math.abs(Double.parseDouble(label.getStartY())-Double.parseDouble(l.getStartY()));
+//                     double gapW = Math.abs(Double.parseDouble(label.getWidth())-Double.parseDouble(l.getWidth()));
+//                     double gapH = Math.abs(Double.parseDouble(label.getHeight())-Double.parseDouble(l.getHeight()));
+//
+//                     if(gapX == 0 && gapY == 0){
+//                         scores[i] = 1;
+//                         isIn[i] = 1;
+//                     }
+//                     else if(gapX <= 10 && gapY <= 10 && gapW <= 10 && gapH <= 10){
+//                         scores[i] = 1;
+//                         isIn[i] = 1;
+//                     }
+//                     else if(gapX <= 30 && gapY <= 30 && gapW <= 30 && gapH <= 30){
+//                         scores[i] = 0.9;
+//                         isIn[i] = 1;
+//
+//                     }else{
+//                         scores[i] = 0;
+//                         isIn[i] = 0;
+//                     }
+//                 }
+            //}
+        }
+        double sum = 0.0;
+        for(int i=0;i<labels.length;i++){
+            sum += scores[i];
+        }
+        double avg = sum/labels.length;
+
+        return avg;
+    }
+
+    //为某个用户推荐任务
+    @RequestMapping(value = "/recommendTasks",method = RequestMethod.POST)
+    public String recommendTasks(@RequestBody User user) throws IOException{
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt";
+        File file=new File(filename);
+        InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
+        BufferedReader br=new BufferedReader(reader);
+        ArrayList<String> strlist=new ArrayList<>();
+        String line=null;
+        while((line=br.readLine())!=null){
+            strlist.add(line);
+        }
+
+        ArrayList<String> tmpList = new ArrayList<>();
+        String types = "";//user.getType();
+        String[] type_arr = types.split(",");
+        for(int i=0;i<type_arr.length;i++){
+            for(int j=0;j<strlist.size();j++){
+                String task = strlist.get(j);
+                String[] task_arr = task.split("#");
+
+                // if(task.type == type_arr[10] ){        //the index of type is 10.
+                //tmpList.add(tmp);
+                //strlist.remove(j);
+                //}
+            }
+        }
+
+        tmpList.addAll(strlist);
+        String list = String.join("!", tmpList);
+
+        return list;
+    }
+
 }
