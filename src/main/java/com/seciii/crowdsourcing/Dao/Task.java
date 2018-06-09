@@ -18,9 +18,8 @@ public class Task {
     private String numOfPart;
     private String point;
     private String deadline;
-    private String type;//任务类型
-    private String labels;//标签
-    //private String isClose;//任务状态，是否关闭
+    private String kindOfTask;//任务类型
+    private String arrayOfLabel;//标签
 
     public Task(){}
 
@@ -140,28 +139,12 @@ public class Task {
         this.mode = mode;
     }
 
-//    public String getIsClose() {
-//        return isClose;
-//    }
-
-    public String getLabels() {
-        return labels;
+    public String getArrayOfLabel() {
+        return arrayOfLabel;
     }
 
-    public String getType() {
-        return type;
-    }
-
-//    public void setIsClose(String isClose) {
-//        this.isClose = isClose;
-//    }
-
-    public void setLabels(String labels) {
-        this.labels = labels;
-    }
-
-    public void setType(String type) {
-        this.type = type;
+    public String getKindOfTask() {
+        return kindOfTask;
     }
 }
 

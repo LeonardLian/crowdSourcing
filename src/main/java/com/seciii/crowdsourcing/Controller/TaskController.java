@@ -476,7 +476,7 @@ public class TaskController {
         ArrayList<String> workerList=new ArrayList<>();
         for(String file:files){
             //System.out.println(file);
-            if(file.equals("description.txt")||file.equals("accuracy.txt")){
+            if(file.equals("description.txt")){
             }
             else{
                 String id=file.split("\\.")[0];
@@ -543,20 +543,14 @@ public class TaskController {
             }
         }
 
-        //由于相同comment也许对应对个方框，根据参与人数分组
-        ArrayList<ArrayList<SquareLabel>> labelsToBeCalculated=new ArrayList<ArrayList<SquareLabel>>();
-        for(ArrayList<SquareLabel> list:labelList){
-            if(list.size()<=1.5*numOfWorker){//如果方框数量小于等于参与者数量的1.5倍，则假定该comment只对应一个方框
-                labelsToBeCalculated.add(list);
-            }else{//否则假定该comment对应多个方框，计算x，y的方差，并根据方差较大值，分为多个ArrayList TODO
-
-            }
-        }
-
-        //整合所有方框
+        //由于相同comment也许对应对个方框，根据参与人数分组，按不同方法整合
         ArrayList<SquareLabel> resultLabels=new ArrayList<SquareLabel>();
-        for(int i=0;i<labelList.size();i++){
-            resultLabels.add(calculateSquarel2(labelsToBeCalculated.get(i)));
+        for(ArrayList<SquareLabel> list:labelList){
+            if(list.size()<=1.5*numOfWorker){//如果方框数量小于等于参与者数量的1.5倍，则假定该comment只对应一个方框,直接整合这一组方框并加入结果
+                resultLabels.add(calculateSquare2(list));
+            }else{//否则假定该comment对应多个方框，以下两种方法待定：1.计算x，y的方差，并根据方差较大值，分为多个ArrayList 2.聚类 TODO
+                resultLabels.addAll(kMeansClustering(list,Math.round(list.size()/numOfWorker)));
+            }
         }
 
         //将得到的整合方框以发起者明明，并写回
@@ -587,7 +581,7 @@ public class TaskController {
     }
 
     //整合方框2，取中间的80%，分为8组，中央数值加权平均
-    private SquareLabel calculateSquarel2(ArrayList<SquareLabel> labels){
+    private SquareLabel calculateSquare2(ArrayList<SquareLabel> labels){
         ArrayList<Double> x=new ArrayList<Double>();
         ArrayList<Double> y=new ArrayList<Double>();
         ArrayList<Double> width=new ArrayList<Double>();
@@ -631,6 +625,10 @@ public class TaskController {
         return average;
     }
 
+    private ArrayList<SquareLabel> kMeansClustering(ArrayList<SquareLabel> list,int k){
+
+        return null;
+    }
 
     //评估工人对某个任务的标注准确率并保存在accuracy.txt中
     @RequestMapping(value="/checkCertainLabel", method = RequestMethod.POST)
@@ -818,7 +816,7 @@ public class TaskController {
 
             return list;
         }
+
     }
 
-    //
 }
