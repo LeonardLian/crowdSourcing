@@ -443,7 +443,7 @@ public class TaskController {
         ArrayList<String> workerList=new ArrayList<>();
         for(String file:files){
             //System.out.println(file);
-            if(file.equals("description.txt")){
+            if(file.equals("description.txt") || file.equals("accuracy.txt")){
             }
             else{
                 String id=file.split("\\.")[0];
@@ -586,75 +586,154 @@ public class TaskController {
         return average;
     }
 
-    //评估工人对某个任务的标注准确性
+    //评估工人对某个任务的标注准确率并保存在accuracy.txt中
     @RequestMapping(value="/checkCertainLabel", method = RequestMethod.POST)
-    public double checkCertainLabel(@RequestBody Task task, User user) throws IOException{
-        String username = user.getUsername();
-        String taskname = task.getTaskname();
+    public String checkCertainLabel(@RequestBody Taskkey taskkey) throws IOException{
+        String username = taskkey.getUsername();
+        String taskname = taskkey.getTaskname();
         String temporaryFile="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+taskname+"/"+username+".txt";
         File file=new File(temporaryFile);
         InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
         BufferedReader br=new BufferedReader(reader);
 
         //得到一个工人在一个任务中的所有方框的信息
-        SquareLabel[] labels = new SquareLabel[20];
-        int numOfSquares = 0;
+        ArrayList<SquareLabel> labels = new ArrayList<SquareLabel>();
         String line;
         while((line=br.readLine())!=null){
             JSONObject json = JSONObject.parseObject(line);
             SquareLabel label = new SquareLabel(json.getString("startX"), json.getString("startY"), json.getString("width"),
                     json.getString("height"), json.getString("comment"), json.getString("taskname"), json.getString("username"));
-            labels[numOfSquares] = label;
-            numOfSquares ++;
+            labels.add(label);
         }
 
-        //调用整合的方法得到该任务中每个方框的平均值
-        SquareLabel std_labels = new SquareLabel();
+        //得到任务发起者的username
+        String path = "src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskname+"/description.txt";
+        File file1 = new File(path);
+        InputStreamReader isr = new InputStreamReader(new FileInputStream(file1));
+        BufferedReader bf = new BufferedReader(isr);
+        String requestor = bf.readLine().split("#")[1];
+
+        String tempFile="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskname+"/"+requestor+".txt";
+        File f=new File(tempFile);
+        InputStreamReader r=new InputStreamReader(new FileInputStream(f));
+        BufferedReader b=new BufferedReader(r);
+
+        //得到每个任务的整合后的方框信息
+        ArrayList<SquareLabel> std_squares = new ArrayList<SquareLabel>();
+        String l;
+        while((l=br.readLine())!=null){
+            JSONObject json = JSONObject.parseObject(l);
+            SquareLabel label = new SquareLabel(json.getString("startX"), json.getString("startY"), json.getString("width"),
+                    json.getString("height"), json.getString("comment"), json.getString("taskname"), json.getString("username"));
+            std_squares.add(label);
+        }
 
         //对工人的方框和整合的方框作比较并打分
         int[] isIn = null;
         double[] scores = null;
-        for(int i=0;i<labels.length;i++){
-            SquareLabel label = labels[i];
-            //for(int j=0;j<std_squares.length;i++){
-            //   SquareLabel l = std_squares[j];
-//                 if(label.getComment() == l.getComment()){
-//                     double gapX = Math.abs(Double.parseDouble(label.getStartX())-Double.parseDouble(l.getStartX()));
-//                     double gapY = Math.abs(Double.parseDouble(label.getStartY())-Double.parseDouble(l.getStartY()));
-//                     double gapW = Math.abs(Double.parseDouble(label.getWidth())-Double.parseDouble(l.getWidth()));
-//                     double gapH = Math.abs(Double.parseDouble(label.getHeight())-Double.parseDouble(l.getHeight()));
-//
-//                     if(gapX == 0 && gapY == 0){
-//                         scores[i] = 1;
-//                         isIn[i] = 1;
-//                     }
-//                     else if(gapX <= 10 && gapY <= 10 && gapW <= 10 && gapH <= 10){
-//                         scores[i] = 1;
-//                         isIn[i] = 1;
-//                     }
-//                     else if(gapX <= 30 && gapY <= 30 && gapW <= 30 && gapH <= 30){
-//                         scores[i] = 0.9;
-//                         isIn[i] = 1;
-//
-//                     }else{
-//                         scores[i] = 0;
-//                         isIn[i] = 0;
-//                     }
-//                 }
-            //}
+        for(int i=0;i<labels.size();i++){
+            SquareLabel label = labels.get(i);
+            for(int j=0;j<std_squares.size();i++){
+               SquareLabel stdLabel = std_squares.get(j);
+                 if(label.getComment() == stdLabel.getComment()){
+                     double myX = Double.parseDouble(label.getStartX());
+                     double myY = Double.parseDouble(label.getStartY());
+                     double myW = Double.parseDouble(label.getWidth());
+                     double myH = Double.parseDouble(label.getHeight());
+
+                     double stdX = Double.parseDouble(stdLabel.getStartX());
+                     double stdY = Double.parseDouble(stdLabel.getStartY());
+                     double stdW = Double.parseDouble(stdLabel.getWidth());
+                     double stdH = Double.parseDouble(stdLabel.getHeight());
+
+                     double myArea = myH * myW;
+                     double stdArea = stdH * stdW;
+                     double coincide = 0.0;
+
+                     //根据二者位置计算重合面积coincide（用左上角和右下角两个点的位置来判断）
+                     double minX = (myX >= stdX) ? myX : stdX;
+                     double minY = (myY >= stdY) ? myY : stdY;
+                     double maxX = ((myX+myW) <= (stdX+stdW)) ? (myX+myW) : (stdX+stdW);
+                     double maxY = ((myY+myH) <= (stdY+stdH)) ? (myY+myH) : (stdY+stdH);
+
+                     //有重叠面积时计算重叠面积
+                     if(minX <= maxX && minY <= maxY){
+                         coincide = (maxX-minX)*(maxY-minY);
+                     }
+                     //不相交时面积为零
+
+                     if((coincide/myArea >=0.95) && (coincide/stdArea >= 0.95)){
+                         scores[i] = 1;
+                     }
+                     else if((coincide/myArea >=0.9) && (coincide/stdArea >= 0.9)){
+                         scores[i] = 0.9;
+                     }
+                     else if((coincide/myArea >=0.8) && (coincide/stdArea >= 0.8)){
+                         scores[i] = 0.75;
+
+                     }
+                     else if((coincide/myArea >=0.5) && (coincide/stdArea >= 0.5)){
+                         scores[i] = 0.5;
+                     }
+                     else{
+                         scores[i] = 0;
+                         isIn[i] = 0;
+                     }
+                 }
+            }
         }
         double sum = 0.0;
-        for(int i=0;i<labels.length;i++){
+        for(int i=0;i<labels.size();i++){
             sum += scores[i];
         }
-        double avg = sum/labels.length;
+        double avg = sum/labels.size();
 
-        return avg;
+        //保存准确率
+        String resStr = taskname + " " + username + " " + String.valueOf(avg);
+        String resultFilePath="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskname + "/" + "accuracy.txt";
+        File resultFile=new File(resultFilePath);
+        if(!file.exists()){
+            file.createNewFile();
+        }
+        FileWriter fw=new FileWriter(resultFilePath,true);
+        BufferedWriter bw=new BufferedWriter(fw);
+        bw.write(resStr);
+
+        bw.close();
+        fw.close();
+        return "success";
     }
+
+    //显示某个工人对应某个任务的准确率
+    @RequestMapping(value = "showAccuracy",method = RequestMethod.POST)
+    public String showAccuracy(@RequestBody Taskkey taskkey) throws IOException{
+        String taskname = taskkey.getTaskname();
+        String username = taskkey.getUsername();
+        String path = "src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskname + "/" + "accuracy.txt";
+
+        File file1 = new File(path);
+        InputStreamReader isr = new InputStreamReader(new FileInputStream(file1));
+        BufferedReader bf = new BufferedReader(isr);
+        String line;
+        String accuracy = "0";
+        while((line=bf.readLine()) != null){
+            if(username == line.split(" ")[1]){
+                accuracy = line.split(" ")[2];
+            }
+        }
+
+        isr.close();
+        bf.close();
+
+        return accuracy;
+    }
+
+
 
     //为某个用户推荐任务
     @RequestMapping(value = "/recommendTasks",method = RequestMethod.POST)
     public String recommendTasks(@RequestBody User user) throws IOException{
+        String username = user.getUsername();
         String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt";
         File file=new File(filename);
         InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
@@ -665,25 +744,36 @@ public class TaskController {
             strlist.add(line);
         }
 
-        ArrayList<String> tmpList = new ArrayList<>();
-        String types = "";//user.getType();
-        String[] type_arr = types.split(",");
-        for(int i=0;i<type_arr.length;i++){
-            for(int j=0;j<strlist.size();j++){
-                String task = strlist.get(j);
-                String[] task_arr = task.split("#");
-
-                // if(task.type == type_arr[10] ){        //the index of type is 10.
-                //tmpList.add(tmp);
-                //strlist.remove(j);
-                //}
+        ArrayList<String> hobbyList = new ArrayList<String>();
+        ArrayList<String> tmpList = new ArrayList<String>();
+        String path = "src/main/java/com/seciii/crowdsourcing/Data/UserHobby/"+username + ".txt";
+        File f = new File(path);
+        if(!f.exists()){
+            return String.join("!",strlist);
+        }
+        else{
+            InputStreamReader r=new InputStreamReader(new FileInputStream(f));
+            BufferedReader bf=new BufferedReader(r);
+            String hobby = bf.readLine().split("#")[1];
+            String[] hobby_arr = hobby.split(",");
+            for(int i=0;i<hobby_arr.length;i++){
+                for(int j=0;j<strlist.size();j++){
+                    String task = strlist.get(j);
+                    if(hobby_arr[i].equals(task.split("#")[10]) ){        //the index of type is 10.
+                       hobbyList.add(task);
+                    }
+                    else{
+                        tmpList.add(task);
+                    }
+                }
             }
+
+            hobbyList.addAll(tmpList);
+            String list = String.join("!", hobbyList);
+
+            return list;
         }
 
-        tmpList.addAll(strlist);
-        String list = String.join("!", tmpList);
-
-        return list;
     }
 
 }
