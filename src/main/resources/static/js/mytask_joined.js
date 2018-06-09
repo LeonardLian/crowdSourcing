@@ -90,7 +90,7 @@ $(function(){
             });
 
             var url = 'work/'+ username + '/' + taskName;
-            $('#myJoinedTaskList').prepend('<li> <a href="' + url + '"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,' + src + '" alt=""/> <div class="gallery-title">' + tasktag + '</div> <div class="gallery-desc">截止：' + deadline + '</div> </a> </li>');
+            $('#myJoinedTaskList').prepend('<li> <a href="' + url + '"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,' + src + '" alt=""/> <div class="gallery-title">' + taskTag + '</div> <div class="gallery-desc">截止：' + deadline + '</div> </a> </li>');
 
             joined_tasknum = joined_tasknum + 1;
         }
