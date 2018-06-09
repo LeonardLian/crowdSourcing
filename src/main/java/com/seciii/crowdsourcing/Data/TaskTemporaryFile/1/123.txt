@@ -1,0 +1,2 @@
+{"type":1,"startX":186,"startY":142,"width":"156","height":"148","comment":"女","taskname":"1","username":"123"}
+{"type":1,"startX":423,"startY":163,"width":"131","height":"168","comment":"男","taskname":"1","username":"123"}
