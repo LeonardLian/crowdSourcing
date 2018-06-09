@@ -476,42 +476,54 @@ public class TaskController {
         File[] tempList=file.listFiles();
 
         InputStreamReader reader;
-        if(tempList[0].getName().equals("description.txt")){
-            reader=new InputStreamReader(new FileInputStream(tempList[1]));
-        } else{
-            reader=new InputStreamReader(new FileInputStream(tempList[0]));
-        }
-        BufferedReader br=new BufferedReader(reader);
-
+        BufferedReader br;
         String line;
-        int numOfLine=0;
-        while((line=br.readLine())!=null){
-            numOfLine++;
-        }
+        int numOfWorker=tempList.length-1;//参与者人数
 
-        int numOfWorker=0;
-        int numOfPic;
-        SquareLabel[][] allLabels=new SquareLabel[numOfLine][tempList.length-1];
+        ArrayList<ArrayList<SquareLabel>> labelList=new ArrayList<ArrayList<SquareLabel>>();//labelList按照comment分类
         for(File worker:tempList){
             if(worker.getName().equals("description.txt")){}
             else {
                 reader = new InputStreamReader(new FileInputStream(worker));
                 br = new BufferedReader(reader);
-                numOfPic=0;
-                while ((line = br.readLine()) != null) {
+                while ((line = br.readLine()) != null) {//按行读取json，转存为SquareLabel对象，存入labelList中
                     JSONObject json = JSONObject.parseObject(line);
                     SquareLabel label = new SquareLabel(json.getString("startX"), json.getString("startY"), json.getString("width"), json.getString("height"), json.getString("comment"), json.getString("taskname"), json.getString("username"));
-                    allLabels[numOfPic][numOfWorker] = label;
-                    numOfPic++;
+                    if(labelList.size()==0){//若labelList为空，则添加一个ArrayList，并加入label
+                        labelList.add(new ArrayList<SquareLabel>());
+                        labelList.get(0).add(label);
+                    }else {//遍历labelList，检查是否存在相同comment存在，存在则直接添加label，不存在则添加ArrayList后再添加label
+                        boolean exist=false;
+                        for(int i=0;i<labelList.size();i++){
+                            if(label.getComment().equals(labelList.get(i).get(0).getComment())) {
+                                labelList.get(i).add(label);
+                                exist=true;
+                                break;
+                            }
+                        }
+                        if(!exist){
+                            labelList.add(new ArrayList<SquareLabel>());
+                            labelList.get(labelList.size()-1).add(label);
+                        }
+                    }
                 }
-                numOfWorker++;
+            }
+        }
+
+        //由于相同comment也许对应对个方框，根据参与人数分组
+        ArrayList<ArrayList<SquareLabel>> labelsToBeCalculated=new ArrayList<ArrayList<SquareLabel>>();
+        for(ArrayList<SquareLabel> list:labelList){
+            if(list.size()<=1.5*numOfWorker){//如果方框数量小于等于参与者数量的1.5倍，则假定该comment只对应一个方框
+                labelsToBeCalculated.add(list);
+            }else{//否则假定该comment对应多个方框，计算x，y的方差，并根据方差较大值，分为多个ArrayList TODO
+
             }
         }
 
         //整合所有方框
-        SquareLabel[] resultLabels=new SquareLabel[allLabels.length];
-        for(int i=0;i<allLabels.length;i++){
-            resultLabels[i]=calculateSquarel2(allLabels[i]);
+        ArrayList<SquareLabel> resultLabels=new ArrayList<SquareLabel>();
+        for(int i=0;i<labelList.size();i++){
+            resultLabels.add(calculateSquarel2(labelsToBeCalculated.get(i)));
         }
 
         //将得到的整合方框以发起者明明，并写回
@@ -542,7 +554,7 @@ public class TaskController {
     }
 
     //整合方框2，取中间的80%，分为8组，中央数值加权平均
-    private SquareLabel calculateSquarel2(SquareLabel[] labels){
+    private SquareLabel calculateSquarel2(ArrayList<SquareLabel> labels){
         ArrayList<Double> x=new ArrayList<Double>();
         ArrayList<Double> y=new ArrayList<Double>();
         ArrayList<Double> width=new ArrayList<Double>();
@@ -555,7 +567,7 @@ public class TaskController {
             height.add(Double.parseDouble(label.getHeight()));
         }
 
-        return new SquareLabel(""+calculateAverage(x),""+calculateAverage(y),""+calculateAverage(width),""+calculateAverage(height),"",UrlController.task.getTaskname(),UrlController.user.getUsername());
+        return new SquareLabel(""+calculateAverage(x),""+calculateAverage(y),""+calculateAverage(width),""+calculateAverage(height),labels.get(0).getComment(),UrlController.task.getTaskname(),UrlController.user.getUsername());
     }
 
     private double calculateAverage(ArrayList<Double> list){
