@@ -30,14 +30,9 @@ function submittheLabel(){
     });
 
     var formdata=new FormData();
-    var canvas=document.getElementById("myCanvas");
-    var basestr=canvas.toDataURL("image/png");
 
-    formdata.append("label",basestr);
     formdata.append("username",username);
     formdata.append("taskname",taskname);
-
-    savetheLabel();
 
     $.ajax({
         url:"/submittheLabel",

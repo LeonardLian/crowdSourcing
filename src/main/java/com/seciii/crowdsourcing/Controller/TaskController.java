@@ -388,11 +388,33 @@ public class TaskController {
 
     //提交自己的标注
     @RequestMapping(value = "/submittheLabel",method = RequestMethod.POST)
-    public String submitLabel(@RequestParam("label") String label,@RequestParam("username") String username,@RequestParam("taskname") String taskname) throws IOException{
+    public String submitLabel(@RequestParam("username") String username,@RequestParam("taskname") String taskname) throws IOException{
 
-        String file="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskname+"/"+username+".txt";
-        FileWriter fileWriter=new FileWriter(file,false);
-        BufferedWriter writer=new BufferedWriter(fileWriter);
+
+        String targetFileName="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskname+"/"+username+".txt";
+        String sourceFileName="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+taskname+"/"+username+".txt";
+
+        File targetFile=new File(targetFileName);
+        File sourceFile=new File(sourceFileName);
+
+        FileWriter clearWriter=new FileWriter(targetFileName,false);
+        BufferedWriter clear=new BufferedWriter(clearWriter);
+        clear.write("");
+        clear.close();
+
+        InputStreamReader reader=new InputStreamReader(new FileInputStream(sourceFile));
+        BufferedReader br=new BufferedReader(reader);
+        String line;
+        FileWriter writer=new FileWriter(targetFileName,true);
+        BufferedWriter bw=new BufferedWriter(writer);
+        while((line=br.readLine())!=null){
+            bw.write(line+"\n");
+        }
+        bw.close();
+
+        return "Success";
+//        FileWriter fileWriter=new FileWriter(file,false);
+//        BufferedWriter writer=new BufferedWriter(fileWriter);
 
 //        InputStream input=null;
 //        byte[] data=null;
@@ -406,27 +428,38 @@ public class TaskController {
 //
 //        writer.write(code);
 //        writer.close();
-        writer.write(label);
-        writer.close();
-
-        return "Success";
+//        writer.write(label);
+//        writer.close();
+//        return "Success";
     }
 
 
     //查看一个工人的作品
     @RequestMapping(value = "/loadWorkerFile",method = RequestMethod.POST)
     public String checkWorker(@RequestBody Taskkey taskkey) throws IOException {
-        String workerFile="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskkey.getTaskname()+"/"+taskkey.getUsername()+".txt";
-        File file=new File(workerFile);
-        String info="";
+//        String workerFile="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskkey.getTaskname()+"/"+taskkey.getUsername()+".txt";
+//        File file=new File(workerFile);
+//        String info="";
+//
+//        InputStreamReader srreader=new InputStreamReader(new FileInputStream(file));
+//        BufferedReader reader=new BufferedReader(srreader);
+//        String line;
+//        while ((line=reader.readLine())!=null){
+//            info=info+line;
+//        }
+//
+//        return info;
+        String workerFileName="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskkey.getTaskname()+"/"+taskkey.getUsername()+".txt";
+        File file=new File(workerFileName);
+        ArrayList<String> infoList=new ArrayList<>();
 
-        InputStreamReader srreader=new InputStreamReader(new FileInputStream(file));
-        BufferedReader reader=new BufferedReader(srreader);
+        InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
+        BufferedReader br=new BufferedReader(reader);
         String line;
-        while ((line=reader.readLine())!=null){
-            info=info+line;
+        while ((line=br.readLine())!=null){
+            infoList.add(line);
         }
-
+        String info=String.join("#",infoList);
         return info;
     }
 

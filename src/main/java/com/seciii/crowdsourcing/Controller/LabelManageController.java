@@ -2,6 +2,7 @@ package com.seciii.crowdsourcing.Controller;
 
 import com.seciii.crowdsourcing.Dao.CurveLabel;
 import com.seciii.crowdsourcing.Dao.SquareLabel;
+import com.seciii.crowdsourcing.Dao.Taskkey;
 import com.seciii.crowdsourcing.Dao.WholeLabel;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,24 @@ import java.util.ArrayList;
 @RestController
 @CrossOrigin
 public class LabelManageController {
+
+
+    //清空临时文件
+    @RequestMapping(value = "/clearTheLabel",method = RequestMethod.POST)
+    public String clearTheLabel(@RequestBody Taskkey taskkey) throws IOException{
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+
+                taskkey.getTaskname()+"/"+taskkey.getUsername()+".txt";
+
+        File file=new File(filename);
+        if(!file.exists()){
+            file.createNewFile();
+        }
+        FileWriter writer=new FileWriter(filename,false);
+        BufferedWriter bw=new BufferedWriter(writer);
+        bw.write("");
+        bw.close();
+        return "Success";
+    }
 
     //曲线标注
 
