@@ -93,7 +93,7 @@ $(function(){
                 }
             });
 
-            var url = 'taskdetails_requestor/'+ username + '/' + taskName;
+            var url = 'taskdetails_requestor/' + taskName;
             $('#myBuiltTaskList').prepend('<li> <a href="' + url + '"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,' + src + '" alt=""/> <div class="gallery-title">' + taskTag + '</div> <div class="gallery-desc">参与人数：' + numOfPart + '</div> <div class="gallery-desc">截止：' + deadline + '</div> </a> </li>');
 
             built_tasknum = built_tasknum + 1;

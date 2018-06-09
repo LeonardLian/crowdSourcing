@@ -476,7 +476,7 @@ public class TaskController {
         ArrayList<String> workerList=new ArrayList<>();
         for(String file:files){
             //System.out.println(file);
-            if(file.equals("description.txt")){
+            if(file.equals("description.txt")||file.equals("accuracy.txt")){
             }
             else{
                 String id=file.split("\\.")[0];
