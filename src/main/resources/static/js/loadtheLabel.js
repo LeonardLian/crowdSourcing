@@ -99,13 +99,24 @@ $(function () {
         if(_width <= FitWidth && _height <= FitHeight){
             var offset_w = (FitWidth - _width)/2;
             var offset_h = (FitHeight - _height)/2;
-            ctx.drawImage(img, offset_w, offset_h, _width, _height);
+            //ctx.drawImage(img, offset_w, offset_h, _width, _height);
             // $("#myCanvas").drawImage({
             //     source:img,
-            //     fromCenter:true,
+            //     fromCenter:false,
             //     x:offset_w,
             //     y:offset_h
             // });
+            $("#myCanvas").addLayer({
+                type:'image',
+                source:img,
+                name:'img',
+                x:offset_w,
+                y:offset_h,
+                width:_width,
+                height:_height,
+                fromCenter:false,
+                index:0
+            })
         }
         else {
             if (_width / _height >= FitWidth / FitHeight) {
@@ -130,13 +141,24 @@ $(function () {
             }
             img.width = 750;
             img.height = 550;
-            ctx.drawImage(img, 0, 0, 750, 550);
+            //ctx.drawImage(img, 0, 0, 750, 550);
             // $("#myCanvas").drawImage({
             //     source:img,
-            //     fromCenter:true,
+            //     fromCenter:false,
             //     x:0,
             //     y:0
             // })
+            $("#myCanvas").addLayer({
+                type:'image',
+                source:img,
+                name:'img',
+                x:0,
+                y:0,
+                width:750,
+                height:550,
+                fromCenter:false,
+                index:0
+            })
         }
     };
 
@@ -163,6 +185,22 @@ $(function () {
             alert("error!");
         }
     });
+
+    //清除临时文件的标注
+    $.ajax({
+        type:'POST',
+        data:keyJson,
+        contentType:'application/json',
+        dataType:'text',
+        url:'http://127.0.0.1:8080/clearTheLabel',
+        success:function (data) {
+            alert(data);
+        },
+        error:function (e) {
+            alert(data);
+        }
+    })
+
 
     if(labelList==null){
     }

@@ -65,6 +65,11 @@ function savetheLabel(){
             var height=layers[i].height;
 
             //alert(name);
+            //alert("1");
+            //alert(name);
+            if(name=='img'){
+                continue;
+            }
 
             var comment=$('#'+name).val();
 
@@ -119,6 +124,10 @@ function savetheLabel(){
             // var y1=layers[i].y1;
             // var x2=layers[i].x2;
             // var y2=layers[i].y2;
+
+            if(name=='img'){
+                continue;
+            }
 
             if(document.getElementById(name)){
                 var array=new Array();
