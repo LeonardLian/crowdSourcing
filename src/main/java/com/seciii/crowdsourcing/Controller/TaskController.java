@@ -692,6 +692,7 @@ public class TaskController {
             }
         }
 
+
         tmpList.addAll(strlist);
         String list = String.join("!", tmpList);
 
