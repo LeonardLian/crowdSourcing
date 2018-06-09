@@ -118,10 +118,6 @@ function saveInfoOfTask(){
         alert('请输入任务名称');
         return;
     }
-    if(type==""){
-        alert('请输入任务类型，如：动物类、人物类、军事类');
-        return;
-    }
     if(taskname.length>20){
         alert('任务名称过长');
         return;
