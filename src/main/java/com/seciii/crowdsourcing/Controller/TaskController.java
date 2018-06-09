@@ -443,7 +443,7 @@ public class TaskController {
         ArrayList<String> workerList=new ArrayList<>();
         for(String file:files){
             //System.out.println(file);
-            if(file.equals("description.txt") || file.equals("accuracy.txt")){
+            if(file.equals("description.txt")){
             }
             else{
                 String id=file.split("\\.")[0];
@@ -476,42 +476,54 @@ public class TaskController {
         File[] tempList=file.listFiles();
 
         InputStreamReader reader;
-        if(tempList[0].getName().equals("description.txt")){
-            reader=new InputStreamReader(new FileInputStream(tempList[1]));
-        } else{
-            reader=new InputStreamReader(new FileInputStream(tempList[0]));
-        }
-        BufferedReader br=new BufferedReader(reader);
-
+        BufferedReader br;
         String line;
-        int numOfLine=0;
-        while((line=br.readLine())!=null){
-            numOfLine++;
-        }
+        int numOfWorker=tempList.length-1;//参与者人数
 
-        int numOfWorker=0;
-        int numOfPic;
-        SquareLabel[][] allLabels=new SquareLabel[numOfLine][tempList.length-1];
+        ArrayList<ArrayList<SquareLabel>> labelList=new ArrayList<ArrayList<SquareLabel>>();//labelList按照comment分类
         for(File worker:tempList){
             if(worker.getName().equals("description.txt")){}
             else {
                 reader = new InputStreamReader(new FileInputStream(worker));
                 br = new BufferedReader(reader);
-                numOfPic=0;
-                while ((line = br.readLine()) != null) {
+                while ((line = br.readLine()) != null) {//按行读取json，转存为SquareLabel对象，存入labelList中
                     JSONObject json = JSONObject.parseObject(line);
                     SquareLabel label = new SquareLabel(json.getString("startX"), json.getString("startY"), json.getString("width"), json.getString("height"), json.getString("comment"), json.getString("taskname"), json.getString("username"));
-                    allLabels[numOfPic][numOfWorker] = label;
-                    numOfPic++;
+                    if(labelList.size()==0){//若labelList为空，则添加一个ArrayList，并加入label
+                        labelList.add(new ArrayList<SquareLabel>());
+                        labelList.get(0).add(label);
+                    }else {//遍历labelList，检查是否存在相同comment存在，存在则直接添加label，不存在则添加ArrayList后再添加label
+                        boolean exist=false;
+                        for(int i=0;i<labelList.size();i++){
+                            if(label.getComment().equals(labelList.get(i).get(0).getComment())) {
+                                labelList.get(i).add(label);
+                                exist=true;
+                                break;
+                            }
+                        }
+                        if(!exist){
+                            labelList.add(new ArrayList<SquareLabel>());
+                            labelList.get(labelList.size()-1).add(label);
+                        }
+                    }
                 }
-                numOfWorker++;
+            }
+        }
+
+        //由于相同comment也许对应对个方框，根据参与人数分组
+        ArrayList<ArrayList<SquareLabel>> labelsToBeCalculated=new ArrayList<ArrayList<SquareLabel>>();
+        for(ArrayList<SquareLabel> list:labelList){
+            if(list.size()<=1.5*numOfWorker){//如果方框数量小于等于参与者数量的1.5倍，则假定该comment只对应一个方框
+                labelsToBeCalculated.add(list);
+            }else{//否则假定该comment对应多个方框，计算x，y的方差，并根据方差较大值，分为多个ArrayList TODO
+
             }
         }
 
         //整合所有方框
-        SquareLabel[] resultLabels=new SquareLabel[allLabels.length];
-        for(int i=0;i<allLabels.length;i++){
-            resultLabels[i]=calculateSquarel2(allLabels[i]);
+        ArrayList<SquareLabel> resultLabels=new ArrayList<SquareLabel>();
+        for(int i=0;i<labelList.size();i++){
+            resultLabels.add(calculateSquarel2(labelsToBeCalculated.get(i)));
         }
 
         //将得到的整合方框以发起者明明，并写回
@@ -542,7 +554,7 @@ public class TaskController {
     }
 
     //整合方框2，取中间的80%，分为8组，中央数值加权平均
-    private SquareLabel calculateSquarel2(SquareLabel[] labels){
+    private SquareLabel calculateSquarel2(ArrayList<SquareLabel> labels){
         ArrayList<Double> x=new ArrayList<Double>();
         ArrayList<Double> y=new ArrayList<Double>();
         ArrayList<Double> width=new ArrayList<Double>();
@@ -555,7 +567,7 @@ public class TaskController {
             height.add(Double.parseDouble(label.getHeight()));
         }
 
-        return new SquareLabel(""+calculateAverage(x),""+calculateAverage(y),""+calculateAverage(width),""+calculateAverage(height),"",UrlController.task.getTaskname(),UrlController.user.getUsername());
+        return new SquareLabel(""+calculateAverage(x),""+calculateAverage(y),""+calculateAverage(width),""+calculateAverage(height),labels.get(0).getComment(),UrlController.task.getTaskname(),UrlController.user.getUsername());
     }
 
     private double calculateAverage(ArrayList<Double> list){
@@ -629,57 +641,56 @@ public class TaskController {
         }
 
         //对工人的方框和整合的方框作比较并打分
-        int[] isIn = null;
         double[] scores = null;
         for(int i=0;i<labels.size();i++){
             SquareLabel label = labels.get(i);
             for(int j=0;j<std_squares.size();i++){
-               SquareLabel stdLabel = std_squares.get(j);
-                 if(label.getComment() == stdLabel.getComment()){
-                     double myX = Double.parseDouble(label.getStartX());
-                     double myY = Double.parseDouble(label.getStartY());
-                     double myW = Double.parseDouble(label.getWidth());
-                     double myH = Double.parseDouble(label.getHeight());
+                SquareLabel stdLabel = std_squares.get(j);
+                if(label.getComment() == stdLabel.getComment()){
+                    double myX = Double.parseDouble(label.getStartX());
+                    double myY = Double.parseDouble(label.getStartY());
+                    double myW = Double.parseDouble(label.getWidth());
+                    double myH = Double.parseDouble(label.getHeight());
 
-                     double stdX = Double.parseDouble(stdLabel.getStartX());
-                     double stdY = Double.parseDouble(stdLabel.getStartY());
-                     double stdW = Double.parseDouble(stdLabel.getWidth());
-                     double stdH = Double.parseDouble(stdLabel.getHeight());
+                    double stdX = Double.parseDouble(stdLabel.getStartX());
+                    double stdY = Double.parseDouble(stdLabel.getStartY());
+                    double stdW = Double.parseDouble(stdLabel.getWidth());
+                    double stdH = Double.parseDouble(stdLabel.getHeight());
 
-                     double myArea = myH * myW;
-                     double stdArea = stdH * stdW;
-                     double coincide = 0.0;
+                    double myArea = myH * myW;
+                    double stdArea = stdH * stdW;
+                    double coincide = 0.0;
 
-                     //根据二者位置计算重合面积coincide（用左上角和右下角两个点的位置来判断）
-                     double minX = (myX >= stdX) ? myX : stdX;
-                     double minY = (myY >= stdY) ? myY : stdY;
-                     double maxX = ((myX+myW) <= (stdX+stdW)) ? (myX+myW) : (stdX+stdW);
-                     double maxY = ((myY+myH) <= (stdY+stdH)) ? (myY+myH) : (stdY+stdH);
+                    //根据二者位置计算重合面积coincide（用左上角和右下角两个点的位置来判断）
+                    double minX = (myX >= stdX) ? myX : stdX;
+                    double minY = (myY >= stdY) ? myY : stdY;
+                    double maxX = ((myX+myW) <= (stdX+stdW)) ? (myX+myW) : (stdX+stdW);
+                    double maxY = ((myY+myH) <= (stdY+stdH)) ? (myY+myH) : (stdY+stdH);
 
-                     //有重叠面积时计算重叠面积
-                     if(minX <= maxX && minY <= maxY){
-                         coincide = (maxX-minX)*(maxY-minY);
-                     }
-                     //不相交时面积为零
+                    //有重叠面积时计算重叠面积
+                    if(minX <= maxX && minY <= maxY){
+                        coincide = (maxX-minX)*(maxY-minY);
+                    }
+                    //不相交时面积为零
 
-                     if((coincide/myArea >=0.95) && (coincide/stdArea >= 0.95)){
-                         scores[i] = 1;
-                     }
-                     else if((coincide/myArea >=0.9) && (coincide/stdArea >= 0.9)){
-                         scores[i] = 0.9;
-                     }
-                     else if((coincide/myArea >=0.8) && (coincide/stdArea >= 0.8)){
-                         scores[i] = 0.75;
+                    //这个数据有待商榷
+                    if((coincide/myArea >=0.95) && (coincide/stdArea >= 0.95)){
+                        scores[i] = 1;
+                    }
+                    else if((coincide/myArea >=0.9) && (coincide/stdArea >= 0.9)){
+                        scores[i] = 0.9;
+                    }
+                    else if((coincide/myArea >=0.8) && (coincide/stdArea >= 0.8)){
+                        scores[i] = 0.75;
 
-                     }
-                     else if((coincide/myArea >=0.5) && (coincide/stdArea >= 0.5)){
-                         scores[i] = 0.5;
-                     }
-                     else{
-                         scores[i] = 0;
-                         isIn[i] = 0;
-                     }
-                 }
+                    }
+                    else if((coincide/myArea >=0.5) && (coincide/stdArea >= 0.5)){
+                        scores[i] = 0.5;
+                    }
+                    else{
+                        scores[i] = 0;
+                    }
+                }
             }
         }
         double sum = 0.0;
@@ -760,7 +771,7 @@ public class TaskController {
                 for(int j=0;j<strlist.size();j++){
                     String task = strlist.get(j);
                     if(hobby_arr[i].equals(task.split("#")[10]) ){        //the index of type is 10.
-                       hobbyList.add(task);
+                        hobbyList.add(task);
                     }
                     else{
                         tmpList.add(task);
