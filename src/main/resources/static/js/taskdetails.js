@@ -59,6 +59,7 @@ $(function () {
                     numOfPart:infoList[6],
                     point:infoList[7],
                     deadline:infoList[8]
+                    // kindOfTask: TODO
                 }
             });
             new Vue({
