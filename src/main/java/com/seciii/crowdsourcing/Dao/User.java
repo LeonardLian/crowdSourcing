@@ -17,6 +17,8 @@ public class User {
     private String phone;
     private String description;
     private String taskAddress; //任务地址
+    private String favorite;
+    private String goodAt;
 
     public User(){}
     public User(String username,String password){
