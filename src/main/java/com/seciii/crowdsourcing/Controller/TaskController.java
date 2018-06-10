@@ -952,42 +952,53 @@ public class TaskController {
     @RequestMapping(value = "/getThePreference",method = RequestMethod.POST)
     public String getThePreference(@RequestBody User user) throws IOException{
         String username=user.getUsername();
-
-
-        BufferedReader reader = new BufferedReader(new FileReader("src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt"));
-        String line1 = null;
-        ArrayList<String> list = new ArrayList<>();
-        int size=0;
-        while ((line1 = reader.readLine()) != null) {
-            //list.add(line1);
-            size++;
-        }
-
-        String [] type = new String [size];
-        BufferedReader br = new BufferedReader(new FileReader("src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt"));
+        BufferedReader br = new BufferedReader(new FileReader("src/main/java/com/seciii/crowdsourcing/Data/UserTaskIndexList/"+username+".txt"));
         String line = br.readLine();
-        int i=0;//从0开始
-        while(line!=null){
-            String [] numbers = line.split("#");
-
-            type[i]=String.valueOf(numbers[10]);
-            i++;
-            line = br.readLine();
-        }
+        String[] task1 = line.split(" ");
         br.close();
 
+        char firstChar;
+        ArrayList<String> list = new ArrayList<>();
+        for(int i=0;i<task1.length;i++){
+            firstChar=task1[i].charAt(0);
+            if(firstChar =='j'){
+                String joinedtask=task1[i].substring(1);
+                list.add(joinedtask);
+            }
+        }
+
+        ArrayList<String> list1 = new ArrayList<>();
+
+        for(int m=0;m<list.size();m++){
+            String gettype;
+            BufferedReader br2 = new BufferedReader(new FileReader("src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt"));
+            String line2 ;
+            while((line2=br2.readLine())!=null) {
+                String[] numbers = line2.split("#");
+                if (numbers[0].equals(list.get(m))) {
+                    gettype = numbers[10];
+                    list1.add(gettype);
+                }
+            }
+        }
+
         Map<String, Integer> map = new HashMap<>();
-        for (String str: type) {
-            map.put(str, map.getOrDefault(str, 0)+1);
+        for (String str: list1) {
+            if(map.keySet().contains(str)){
+                map.put(str,map.get(str)+1);
+            }else{
+                map.put(str,1);
+            }
+
         }
         String key = "";
         int max = 0;
         for (String entry : map.keySet()) {
-            if (map.get(entry)>=max) {
+            if (map.get(entry)>max) {
                 key = entry;
+                max=map.get(entry);
             }
         }
-
         return key;
     }
 
@@ -1014,7 +1025,7 @@ public class TaskController {
 
         ArrayList<String> mylist=new ArrayList<>();
         for(int n=0;n<list.size();n++){
-            BufferedReader br1 = new BufferedReader(new FileReader("src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+list.get(n)+"accuracy.txt"));
+            BufferedReader br1 = new BufferedReader(new FileReader("src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+list.get(n)+"/accuracy.txt"));
             String accuracyLine=null;
             while((accuracyLine=br1.readLine())!=null) {
                 String []file=accuracyLine.split(" ");
@@ -1031,7 +1042,7 @@ public class TaskController {
             BufferedReader br2 = new BufferedReader(new FileReader("src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt"));
             String line2 ;
             while((line2=br2.readLine())!=null) {
-                String[] numbers = line.split("#");
+                String[] numbers = line2.split("#");
                 if (numbers[0].equals(list.get(m))) {
                     gettype = numbers[10];
                     list1.add(gettype);
@@ -1052,7 +1063,7 @@ public class TaskController {
             }
             else{
                 resultkind.add(singlekind);
-                accuracy.add(accuracy.get(z));
+                accuracy.add(Double.parseDouble(mylist.get(z)));
                 number.add(1);
             }
 
@@ -1070,6 +1081,8 @@ public class TaskController {
         }
         return good;
     }
+
+
 
     //统计用户数,任务数，正在进行任务数，已完成任务数
     @RequestMapping(value="/statistics")
