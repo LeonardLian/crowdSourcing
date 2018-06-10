@@ -869,6 +869,7 @@ public class TaskController {
 
 
 
+
     //为某个用户推荐任务
     @RequestMapping(value = "/recommendTasks",method = RequestMethod.POST)
     public String recommendTasks(@RequestBody User user) throws IOException{
