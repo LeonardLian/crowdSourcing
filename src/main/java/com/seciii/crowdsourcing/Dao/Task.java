@@ -23,7 +23,7 @@ public class Task {
 
     public Task(){}
 
-    public Task(String taskname,String requestor,String tasktag,String description,String mode,String numOfNeeded,String numOfPart,String point,String deadline){
+    public Task(String taskname,String requestor,String tasktag,String description,String mode,String numOfNeeded,String numOfPart,String point,String deadline,String kindOfTask,String arrayOfLabel){
         this.taskname=taskname;
         this.requestor=requestor;
         this.tasktag=tasktag;
@@ -33,6 +33,8 @@ public class Task {
         this.numOfPart=numOfPart;
         this.point=point;
         this.deadline=deadline;
+        this.kindOfTask=kindOfTask;
+        this.arrayOfLabel=arrayOfLabel;
     }
 
 
@@ -145,6 +147,14 @@ public class Task {
 
     public String getKindOfTask() {
         return kindOfTask;
+    }
+
+    public void setKindOfTask(String kindOfTask) {
+        this.kindOfTask = kindOfTask;
+    }
+
+    public void setArrayOfLabel(String arrayOfLabel) {
+        this.arrayOfLabel = arrayOfLabel;
     }
 }
 
