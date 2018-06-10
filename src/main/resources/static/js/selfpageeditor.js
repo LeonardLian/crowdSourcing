@@ -148,18 +148,22 @@ function saveInfoOfUser() {
 
     if(name==""){
         alert('请输入您的名字');
+        $('#name').focus();
         return;
     }
     if(email==""){
         alert('请输入您的邮箱');
+        $('#email').focus();
         return;
     }
     if(phone==""){
         alert('请输入您的电话');
+        $('#telephone').focus();
         return;
     }
     if(description==""){
         alert('描述不能为空');
+        $('#description').focus();
         return;
     }
 

@@ -44,6 +44,9 @@ $(function() {
                 $('#telephone').html(infoList[2]);
                 $('#email').html(infoList[3]);
                 $('#description').html(infoList[4]);
+                // $('#points').html();//TODO
+                // $('#preference').html();
+                // $('#speciality').html();
             }
         },
         error:function(e){

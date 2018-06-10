@@ -59,6 +59,7 @@ $(function () {
                     numOfPart:infoList[6],
                     point:infoList[7],
                     deadline:infoList[8]
+                    // kindOfTask: TODO
                 }
             });
         },
@@ -95,11 +96,12 @@ $(function () {
         dataType:'text',
         url:'/checkAllWorker',
         success:function (data) {
-            var workList=data.split('#');
-            if(workList.length==0){
+            if(data==""){
                 $('#description').html('当前没有参与者。');
                 return;
             }
+
+            var workList=data.split('#');
             for(var x in workList){
                 var usernameOfWorker=workList[x];
                 var src=imageList[0];
