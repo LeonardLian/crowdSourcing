@@ -114,9 +114,9 @@ CanvasExt={
         var sourceY=0;
 
         var layerIndex=layer;
-        var layerName="layer";
+        var layerName;
 
-        bot.onmousedown=function (e) {
+        canvas.onmousedown=function (e) {
             var color="#000000";
             var width=2+'px';
 
@@ -128,7 +128,7 @@ CanvasExt={
             canvas.onmousemove=function(e){
                 layerIndex++;
                 layer++;
-                layerName=layerName+layerIndex;
+                layerName="layer"+layerIndex;
 
                 var moveX=e.offsetX;
                 var moveY=e.offsetY;

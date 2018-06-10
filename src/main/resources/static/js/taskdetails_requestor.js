@@ -68,9 +68,10 @@ $(function () {
         }
     });
 
-    //添加整合框列表
-    var integrationUrl='TaskView/'+taskname+'/'+username;
-    $('#workerList').prepend('<li> <a href="'+integrationUrl+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/200/h/200/q/80"/> <div class="gallery-title">整合结果</div> </a> </li>');
+
+    // //添加整合框列表
+    // var integrationUrl='TaskView/'+taskname+'/'+username;
+    // $('#workerList').prepend('<li> <a href="'+integrationUrl+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/200/h/200/q/80"/> <div class="gallery-title">整合结果</div> </a> </li>');
 
 
     var imageList;
@@ -117,6 +118,11 @@ $(function () {
             alert('error');
         }
     });
+
+    //添加整合框列表
+    var integrationUrl='TaskView/'+taskname+'/'+username;
+    $('#workerList').prepend('<li> <a href="'+integrationUrl+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+imageList[0]+'" alt="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/200/h/200/q/80"/> <div class="gallery-title">整合结果</div> </a> </li>');
+
 });
 
 
