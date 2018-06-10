@@ -31,11 +31,15 @@ public class KMeans {
     }
 
     //获取聚类结果，当newCluster和oldCluster差距足够小时，将newCluster作为结果返回，迭代计算newCluster
-    public Map<SquareLabel, ArrayList<SquareLabel>> getResult() {
+    public ArrayList<SquareLabel> getResult() {
         while(!isCloseEnough()){
             calculateNewCluster();
         }
-        return newCluster;
+        ArrayList<SquareLabel> resultList=new ArrayList<>();
+        for(SquareLabel key:newCluster.keySet()){
+            resultList.addAll(newCluster.get(key));
+        }
+        return resultList;
     }
 
     //获取距离label最近的键
