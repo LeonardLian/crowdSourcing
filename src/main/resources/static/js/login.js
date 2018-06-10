@@ -6,8 +6,9 @@ function login(){
     var username=$('#username').val();
     var password=$('#password').val();
     var user=new User(username,password,'0','aaa');
-    if(username=="administrator"&&password=="administrator"){
+    if(username == "admin"&&password=="admin"){
         window.location.href="/administrator";
+        return;
     }
 
     var userJson=JSON.stringify(user);

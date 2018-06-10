@@ -981,5 +981,58 @@ public class TaskController {
         return good;
     }
 
+    //统计用户数,任务数，正在进行任务数，已完成任务数
+    @RequestMapping(value="/statistics")
+    public String statistics() throws IOException {
+        int numOfUser = 0;
+        int numOfTask = 0;
+        int numOfDoing = 0;
+        int numOfDone = 0;
+
+        String pathOfUser = "src/main/java/com/seciii/crowdsourcing/Data/UserList/UserList.txt";
+        File f = new File(pathOfUser);
+        if(!f.exists()){
+            ;
+        }
+        else {
+            InputStreamReader isr = new InputStreamReader(new FileInputStream(f));
+            BufferedReader br = new BufferedReader(isr);
+            String line;
+            while((line=br.readLine()) != null){
+                numOfUser ++;
+            }
+        }
+        ArrayList<String> allTasks = new ArrayList<>();
+        String pathOfTask = "src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt";
+        File file = new File(pathOfTask);
+        if(!file.exists()){
+            numOfTask = 0;
+            numOfDoing = 0;
+            numOfDone = 0;
+        }
+        else {
+            InputStreamReader isr1 = new InputStreamReader(new FileInputStream(file));
+            BufferedReader br1 = new BufferedReader(isr1);
+            String line1;
+            while((line1=br1.readLine()) != null){
+                allTasks.add(line1);
+                numOfTask ++;
+            }
+        }
+
+        for(int i=0;i<allTasks.size();i++){
+            String[] task = allTasks.get(i).split("#");
+            if(task[5].equals(task[6])){                    //任务需要人数的index为5，参与任务人数index为6
+                numOfDone ++;
+            }
+            else{
+                numOfDoing ++;
+            }
+        }
+
+        String res = String.valueOf(numOfUser) + "#" + String.valueOf(numOfTask) + "#" + String.valueOf(numOfDoing) + "#" + String.valueOf(numOfDone);
+        return res;
+    }
+
 
 }
