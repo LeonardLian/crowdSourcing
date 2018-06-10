@@ -13,6 +13,8 @@ import java.io.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author: pis
@@ -143,22 +145,22 @@ public class TaskController {
     }
 
 
-    //查看所有的任务
-    @RequestMapping(value = "/checkAllTasks")
-    public String checkAllTasks() throws IOException{
-        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt";
-        File file=new File(filename);
-        InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
-        BufferedReader br=new BufferedReader(reader);
-        ArrayList<String> strlist=new ArrayList<>();
-        String line=null;
-        while((line=br.readLine())!=null){
-            strlist.add(line);
-        }
-        String list=String.join("!",strlist);
-
-        return list;
-    }
+//    //查看所有的任务
+//    @RequestMapping(value = "/checkAllTasks")
+//    public String checkAllTasks() throws IOException{
+//        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt";
+//        File file=new File(filename);
+//        InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
+//        BufferedReader br=new BufferedReader(reader);
+//        ArrayList<String> strlist=new ArrayList<>();
+//        String line=null;
+//        while((line=br.readLine())!=null){
+//            strlist.add(line);
+//        }
+//        String list=String.join("!",strlist);
+//
+//        return list;
+//    }
 
 
     //查看任务图片信息
@@ -818,5 +820,157 @@ public class TaskController {
         }
 
     }
+
+    @RequestMapping(value = "/saveThePerferenceAndGood",method = RequestMethod.POST)
+    public String saveThePerference(@RequestBody User user) throws IOException{
+        String key=getThePreference(user);
+        String good=getTheGood(user);
+        String result=user.getUsername()+"#"+key+"#"+good;
+        String path = "src/main/java/com/seciii/crowdsourcing/Data/UserHobby/"+user.getUsername()+ ".txt";
+        FileWriter fw=new FileWriter(path,false);
+        BufferedWriter bw=new BufferedWriter(fw);
+        bw.write(result);
+
+        bw.close();
+
+        return "saveSuccess";
+    }
+
+    @RequestMapping(value = "/showPreferenceAndGood",method = RequestMethod.POST)
+    public String showPreferenceAndGood(@RequestBody User user) throws IOException{
+        String key=getThePreference(user);
+        String good=getTheGood(user);
+        String result=user.getUsername()+"#"+key+"#"+good;
+        String path = "src/main/java/com/seciii/crowdsourcing/Data/UserHobby/"+user.getUsername()+ ".txt";
+        FileWriter fw=new FileWriter(path,false);
+        BufferedWriter bw=new BufferedWriter(fw);
+        bw.write(result);
+        bw.close();
+
+        return result;
+    }
+
+    @RequestMapping(value = "/getThePreference",method = RequestMethod.POST)
+    public String getThePreference(@RequestBody User user) throws IOException{
+        String username=user.getUsername();
+
+
+        BufferedReader reader = new BufferedReader(new FileReader("src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt"));
+        String line1 = null;
+        ArrayList<String> list = new ArrayList<>();
+        int size=0;
+        while ((line1 = reader.readLine()) != null) {
+            //list.add(line1);
+            size++;
+        }
+
+        String [] type = new String [size];
+        BufferedReader br = new BufferedReader(new FileReader("src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt"));
+        String line = br.readLine();
+        int i=0;//从0开始
+        while(line!=null){
+            String [] numbers = line.split("#");
+
+            type[i]=String.valueOf(numbers[10]);
+            i++;
+            line = br.readLine();
+        }
+        br.close();
+
+        Map<String, Integer> map = new HashMap<>();
+        for (String str: type) {
+            map.put(str, map.getOrDefault(str, 0)+1);
+        }
+        String key = "";
+        int max = 0;
+        for (String entry : map.keySet()) {
+            if (map.get(entry)>=max) {
+                key = entry;
+            }
+        }
+
+        return key;
+    }
+
+
+    //评估工人擅长
+    @RequestMapping(value = "/getTheGood",method = RequestMethod.POST)
+    public String getTheGood(@RequestBody User user) throws IOException{
+        String username=user.getUsername();
+        BufferedReader br = new BufferedReader(new FileReader("src/main/java/com/seciii/crowdsourcing/Data/UserTaskIndexList/"+username+".txt"));
+        String line = br.readLine();
+        String[] task = line.split(" ");
+
+        br.close();
+
+        char firstChar;
+        ArrayList<String> list = new ArrayList<>();
+        for(int i=0;i<task.length;i++){
+            firstChar=task[i].charAt(0);
+            if(firstChar =='j'){
+                String joinedtask=task[i].substring(1);
+                list.add(joinedtask);
+            }
+        }
+
+        ArrayList<String> mylist=new ArrayList<>();
+        for(int n=0;n<list.size();n++){
+            BufferedReader br1 = new BufferedReader(new FileReader("src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+list.get(n)+"accuracy.txt"));
+            String accuracyLine=null;
+            while((accuracyLine=br1.readLine())!=null) {
+                String []file=accuracyLine.split(" ");
+                if (file[1].equals(username)) {
+                    mylist.add(file[2]);//file[2]表示具体的准确率
+                    break;
+                }
+            }
+        }
+
+        ArrayList<String> list1 = new ArrayList<>();
+        for(int m=0;m<list.size();m++){
+            String gettype;
+            BufferedReader br2 = new BufferedReader(new FileReader("src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt"));
+            String line2 ;
+            while((line2=br2.readLine())!=null) {
+                String[] numbers = line.split("#");
+                if (numbers[0].equals(list.get(m))) {
+                    gettype = numbers[10];
+                    list1.add(gettype);
+                }
+            }
+        }
+
+        ArrayList<Double> accuracy =new ArrayList<>();
+        ArrayList<Integer>number=new ArrayList<>();
+        ArrayList<String>resultkind=new ArrayList<>();
+        ArrayList<Double>average=new ArrayList<>();
+
+        for(int z=0;z<list.size();z++){
+            String singlekind=list1.get(z);
+            if(resultkind.contains(singlekind)){
+                accuracy.set(accuracy.indexOf(singlekind),accuracy.get(accuracy.indexOf(singlekind))+Double.parseDouble(mylist.get(z)));
+                number.set(number.indexOf(singlekind),number.get(number.indexOf(singlekind))+1);
+            }
+            else{
+                resultkind.add(singlekind);
+                accuracy.add(accuracy.get(z));
+                number.add(1);
+            }
+
+        }
+        for(int z=0;z<list.size();z++) {
+            average.add(accuracy.get(z) / number.get(z));
+        }
+        String good=" ";
+        double max=0;
+        for(int i=0;i<average.size();i++){
+            if(average.get(i)>=max){
+                good=resultkind.get(i);
+                max=average.get(i);
+            }
+        }
+        return good;
+    }
+
 
 }

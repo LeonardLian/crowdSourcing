@@ -67,6 +67,13 @@ $(function () {
     });
 
 
+    //整合标注
+    if(usernameOfWorker==usernameOfRequestor){
+        $('#submit').hide();
+        $('#comment').hide();
+    }
+
+
     var taskInformation=null;
     $.ajax({
         type:'POST',

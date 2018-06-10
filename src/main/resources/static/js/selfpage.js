@@ -44,9 +44,26 @@ $(function() {
                 $('#telephone').html(infoList[2]);
                 $('#email').html(infoList[3]);
                 $('#description').html(infoList[4]);
-                // $('#points').html();//TODO
-                // $('#preference').html();
-                // $('#speciality').html();
+            }
+        },
+        error:function(e){
+            alert("error");
+        }
+    });
+
+    $.ajax({
+        type:'POST',
+        data:userJson,
+        contentType:'application/json',
+        dataType:'text',
+        url:'/showPreferenceAndGood',
+        success:function (data) {
+            if(data=='no'){
+                return;
+            }else{
+                var infoList=data.split('#');
+                $('#preference').html(infoList[1]);
+                $('#speciality').html(infoList[2]);
             }
         },
         error:function(e){
