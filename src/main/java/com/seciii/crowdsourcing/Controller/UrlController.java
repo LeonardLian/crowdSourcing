@@ -156,4 +156,10 @@ public class UrlController {
         user=new User();
         return "login";
     }
+
+    //系统管理员
+    @RequestMapping(value="/administrator")
+    public String administrator(){
+        return "administrator";
+    }
 }

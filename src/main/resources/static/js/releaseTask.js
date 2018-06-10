@@ -169,4 +169,6 @@ function Task(taskname,requestor,tasktag,description,mode,numOfNeeded,numOfPart,
     this.numOfPart=numOfPart;//参与人数，由后端统计修改
     this.point=point;//积分
     this.deadline=deadline;//截止日期
+    this.type=type;
+    this.labels=labels;
 }
