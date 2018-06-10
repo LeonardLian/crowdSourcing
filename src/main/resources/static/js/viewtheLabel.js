@@ -9,6 +9,7 @@ $(function () {
     var usernameOfRequestor=null;
     var taskname=null;
     var usernameOfWorker=null;
+
     $.ajax({
         type:'POST',
         dataType:'text',
