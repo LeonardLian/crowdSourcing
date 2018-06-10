@@ -501,6 +501,7 @@ public class TaskController {
         return UrlController.task.getTaskname();
     }
 
+
     //整合标注
     public void integration() throws IOException{
 
@@ -641,12 +642,14 @@ public class TaskController {
         return kMeans.getResult();
     }
 
+
+
     //评估工人对某个任务的标注准确率并保存在accuracy.txt中
     @RequestMapping(value="/checkCertainLabel", method = RequestMethod.POST)
     public String checkCertainLabel(@RequestBody Taskkey taskkey) throws IOException{
         String username = taskkey.getUsername();
         String taskname = taskkey.getTaskname();
-        String temporaryFile="src/main/java/com/seciii/crowdsourcing/Data/TaskTemporaryFile/"+taskname+"/"+username+".txt";
+        String temporaryFile="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskname+"/"+username+".txt";
         File file=new File(temporaryFile);
         InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
         BufferedReader br=new BufferedReader(reader);
@@ -755,7 +758,7 @@ public class TaskController {
 
         bw.close();
         fw.close();
-        return "success";
+        return String.valueOf(avg);
     }
 
     //显示某个工人对应某个任务的准确率
@@ -830,6 +833,7 @@ public class TaskController {
 
     }
 
+    //保存工人偏好与擅长
     @RequestMapping(value = "/saveThePerferenceAndGood",method = RequestMethod.POST)
     public String saveThePerference(@RequestBody User user) throws IOException{
         String key=getThePreference(user);
@@ -845,6 +849,7 @@ public class TaskController {
         return "saveSuccess";
     }
 
+    //显示工人偏好与擅长
     @RequestMapping(value = "/showPreferenceAndGood",method = RequestMethod.POST)
     public String showPreferenceAndGood(@RequestBody User user) throws IOException{
         String key=getThePreference(user);
@@ -859,6 +864,8 @@ public class TaskController {
         return result;
     }
 
+
+    //评估工人偏好
     @RequestMapping(value = "/getThePreference",method = RequestMethod.POST)
     public String getThePreference(@RequestBody User user) throws IOException{
         String username=user.getUsername();

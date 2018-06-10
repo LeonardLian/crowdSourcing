@@ -74,6 +74,7 @@ $(function () {
     }
 
 
+
     var taskInformation=null;
     $.ajax({
         type:'POST',
@@ -174,10 +175,27 @@ $(function () {
         }
     };
 
-    //显示之前保存的标注
+
     var labelList=null;
     var tKey=new Taskkey(taskname,usernameOfWorker);
     var keyJson=JSON.stringify(tKey);
+
+    $.ajax({
+        type:'POST',
+        data:keyJson,
+        contentType:'application/json',
+        dataType:'text',
+        async:false,
+        url:'http://127.0.0.1:8080/checkCertainLabel',
+        success:function (data) {
+            var result="准确率："+data;
+            $('#accuracy').html(result);
+        },
+        error:function (e) {
+            alert("error!");
+        }
+    });
+
     $.ajax({
         type:'POST',
         data:keyJson,
@@ -197,6 +215,7 @@ $(function () {
             alert("error!");
         }
     });
+
 
     if(labelList==null){
     }
