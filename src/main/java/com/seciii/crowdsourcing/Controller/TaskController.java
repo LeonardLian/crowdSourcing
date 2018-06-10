@@ -13,6 +13,8 @@ import java.io.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author: pis
@@ -143,22 +145,22 @@ public class TaskController {
     }
 
 
-    //查看所有的任务
-    @RequestMapping(value = "/checkAllTasks")
-    public String checkAllTasks() throws IOException{
-        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt";
-        File file=new File(filename);
-        InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
-        BufferedReader br=new BufferedReader(reader);
-        ArrayList<String> strlist=new ArrayList<>();
-        String line=null;
-        while((line=br.readLine())!=null){
-            strlist.add(line);
-        }
-        String list=String.join("!",strlist);
-
-        return list;
-    }
+//    //查看所有的任务
+//    @RequestMapping(value = "/checkAllTasks")
+//    public String checkAllTasks() throws IOException{
+//        String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt";
+//        File file=new File(filename);
+//        InputStreamReader reader=new InputStreamReader(new FileInputStream(file));
+//        BufferedReader br=new BufferedReader(reader);
+//        ArrayList<String> strlist=new ArrayList<>();
+//        String line=null;
+//        while((line=br.readLine())!=null){
+//            strlist.add(line);
+//        }
+//        String list=String.join("!",strlist);
+//
+//        return list;
+//    }
 
 
     //查看任务图片信息
@@ -500,11 +502,10 @@ public class TaskController {
     }
 
     //整合标注
-    @RequestMapping(value = "/closeTask",method = RequestMethod.POST)
-    public String closeTask(@RequestBody Task task) throws IOException{
+    public void integration() throws IOException{
 
         //读取所有参与者的标注信息
-        String temporaryFile="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+task.getTaskname()+"/";
+        String temporaryFile="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+UrlController.task.getTaskname()+"/";
         File file=new File(temporaryFile);
         File[] tempList=file.listFiles();
 
@@ -521,7 +522,19 @@ public class TaskController {
                 br = new BufferedReader(reader);
                 while ((line = br.readLine()) != null) {//按行读取json，转存为SquareLabel对象，存入labelList中
                     JSONObject json = JSONObject.parseObject(line);
-                    SquareLabel label = new SquareLabel(json.getString("startX"), json.getString("startY"), json.getString("width"), json.getString("height"), json.getString("comment"), json.getString("taskname"), json.getString("username"));
+                    double startX=Double.parseDouble(json.getString("startX"));
+                    double startY=Double.parseDouble(json.getString("startY"));
+                    double width=Double.parseDouble(json.getString("width"));
+                    double height=Double.parseDouble(json.getString("height"));
+                    if(width<0){
+                        startX+=width;
+                        width=(-width);
+                    }
+                    if(height<0){
+                        startY+=height;
+                        height=(-height);
+                    }
+                    SquareLabel label = new SquareLabel(""+startX,""+startY,""+width,""+height, json.getString("comment"), json.getString("taskname"), json.getString("username"));
                     if(labelList.size()==0){//若labelList为空，则添加一个ArrayList，并加入label
                         labelList.add(new ArrayList<SquareLabel>());
                         labelList.get(0).add(label);
@@ -576,8 +589,6 @@ public class TaskController {
         }
         bw.close();
         fw.close();
-
-        return "Success";
     }
 
     //整合方框2，取中间的80%，分为8组，中央数值加权平均
@@ -819,56 +830,156 @@ public class TaskController {
 
     }
 
-    //统计用户数,任务数，正在进行任务数，已完成任务数
-    @RequestMapping(value="/statistics")
-    public String statistics() throws IOException {
-        int numOfUser = 0;
-        int numOfTask = 0;
-        int numOfDoing = 0;
-        int numOfDone = 0;
+    @RequestMapping(value = "/saveThePerferenceAndGood",method = RequestMethod.POST)
+    public String saveThePerference(@RequestBody User user) throws IOException{
+        String key=getThePreference(user);
+        String good=getTheGood(user);
+        String result=user.getUsername()+"#"+key+"#"+good;
+        String path = "src/main/java/com/seciii/crowdsourcing/Data/UserHobby/"+user.getUsername()+ ".txt";
+        FileWriter fw=new FileWriter(path,false);
+        BufferedWriter bw=new BufferedWriter(fw);
+        bw.write(result);
 
-        String pathOfUser = "src/main/java/com/seciii/crowdsourcing/Data/UserInformation/UserInformation.txt";
-        File f = new File(pathOfUser);
-        if(!f.exists()){
-            ;
+        bw.close();
+
+        return "saveSuccess";
+    }
+
+    @RequestMapping(value = "/showPreferenceAndGood",method = RequestMethod.POST)
+    public String showPreferenceAndGood(@RequestBody User user) throws IOException{
+        String key=getThePreference(user);
+        String good=getTheGood(user);
+        String result=user.getUsername()+"#"+key+"#"+good;
+        String path = "src/main/java/com/seciii/crowdsourcing/Data/UserHobby/"+user.getUsername()+ ".txt";
+        FileWriter fw=new FileWriter(path,false);
+        BufferedWriter bw=new BufferedWriter(fw);
+        bw.write(result);
+        bw.close();
+
+        return result;
+    }
+
+    @RequestMapping(value = "/getThePreference",method = RequestMethod.POST)
+    public String getThePreference(@RequestBody User user) throws IOException{
+        String username=user.getUsername();
+
+
+        BufferedReader reader = new BufferedReader(new FileReader("src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt"));
+        String line1 = null;
+        ArrayList<String> list = new ArrayList<>();
+        int size=0;
+        while ((line1 = reader.readLine()) != null) {
+            //list.add(line1);
+            size++;
         }
-        else {
-            InputStreamReader isr = new InputStreamReader(new FileInputStream(f));
-            BufferedReader br = new BufferedReader(isr);
-            String line;
-            while((line=br.readLine()) != null){
-                numOfUser ++;
+
+        String [] type = new String [size];
+        BufferedReader br = new BufferedReader(new FileReader("src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt"));
+        String line = br.readLine();
+        int i=0;//从0开始
+        while(line!=null){
+            String [] numbers = line.split("#");
+
+            type[i]=String.valueOf(numbers[10]);
+            i++;
+            line = br.readLine();
+        }
+        br.close();
+
+        Map<String, Integer> map = new HashMap<>();
+        for (String str: type) {
+            map.put(str, map.getOrDefault(str, 0)+1);
+        }
+        String key = "";
+        int max = 0;
+        for (String entry : map.keySet()) {
+            if (map.get(entry)>=max) {
+                key = entry;
             }
         }
-        ArrayList<String> allTasks = new ArrayList<>();
-        String pathOfTask = "src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt";
-        File file = new File(pathOfTask);
-        if(!file.exists()){
-            numOfTask = 0;
-            numOfDoing = 0;
-            numOfDone = 0;
-        }
-        else {
-            InputStreamReader isr1 = new InputStreamReader(new FileInputStream(file));
-            BufferedReader br1 = new BufferedReader(isr1);
-            String line1;
-            while((line1=br1.readLine()) != null){
-                allTasks.add(line1);
-                numOfTask ++;
+
+        return key;
+    }
+
+
+    //评估工人擅长
+    @RequestMapping(value = "/getTheGood",method = RequestMethod.POST)
+    public String getTheGood(@RequestBody User user) throws IOException{
+        String username=user.getUsername();
+        BufferedReader br = new BufferedReader(new FileReader("src/main/java/com/seciii/crowdsourcing/Data/UserTaskIndexList/"+username+".txt"));
+        String line = br.readLine();
+        String[] task = line.split(" ");
+
+        br.close();
+
+        char firstChar;
+        ArrayList<String> list = new ArrayList<>();
+        for(int i=0;i<task.length;i++){
+            firstChar=task[i].charAt(0);
+            if(firstChar =='j'){
+                String joinedtask=task[i].substring(1);
+                list.add(joinedtask);
             }
         }
 
-        for(int i=0;i<allTasks.size();i++){
-            String[] task = allTasks.get(i).split("#");
-            if(task[5].equals(task[6])){                    //任务需要人数的index为5，参与任务人数index为6
-                numOfDone ++;
+        ArrayList<String> mylist=new ArrayList<>();
+        for(int n=0;n<list.size();n++){
+            BufferedReader br1 = new BufferedReader(new FileReader("src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+list.get(n)+"accuracy.txt"));
+            String accuracyLine=null;
+            while((accuracyLine=br1.readLine())!=null) {
+                String []file=accuracyLine.split(" ");
+                if (file[1].equals(username)) {
+                    mylist.add(file[2]);//file[2]表示具体的准确率
+                    break;
+                }
+            }
+        }
+
+        ArrayList<String> list1 = new ArrayList<>();
+        for(int m=0;m<list.size();m++){
+            String gettype;
+            BufferedReader br2 = new BufferedReader(new FileReader("src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt"));
+            String line2 ;
+            while((line2=br2.readLine())!=null) {
+                String[] numbers = line.split("#");
+                if (numbers[0].equals(list.get(m))) {
+                    gettype = numbers[10];
+                    list1.add(gettype);
+                }
+            }
+        }
+
+        ArrayList<Double> accuracy =new ArrayList<>();
+        ArrayList<Integer>number=new ArrayList<>();
+        ArrayList<String>resultkind=new ArrayList<>();
+        ArrayList<Double>average=new ArrayList<>();
+
+        for(int z=0;z<list.size();z++){
+            String singlekind=list1.get(z);
+            if(resultkind.contains(singlekind)){
+                accuracy.set(accuracy.indexOf(singlekind),accuracy.get(accuracy.indexOf(singlekind))+Double.parseDouble(mylist.get(z)));
+                number.set(number.indexOf(singlekind),number.get(number.indexOf(singlekind))+1);
             }
             else{
-                numOfDoing ++;
+                resultkind.add(singlekind);
+                accuracy.add(accuracy.get(z));
+                number.add(1);
+            }
+
+        }
+        for(int z=0;z<list.size();z++) {
+            average.add(accuracy.get(z) / number.get(z));
+        }
+        String good=" ";
+        double max=0;
+        for(int i=0;i<average.size();i++){
+            if(average.get(i)>=max){
+                good=resultkind.get(i);
+                max=average.get(i);
             }
         }
-
-        String res = String.valueOf(numOfUser) + "#" + String.valueOf(numOfTask) + "#" + String.valueOf(numOfDoing) + "#" + String.valueOf(numOfDone);
-        return res;
+        return good;
     }
+
+
 }

@@ -6,6 +6,9 @@ function login(){
     var username=$('#username').val();
     var password=$('#password').val();
     var user=new User(username,password,'0','aaa');
+    if(username=="administrator"&&password=="administrator"){
+        window.location.href="/administrator";
+    }
 
     var userJson=JSON.stringify(user);
     $.ajax({

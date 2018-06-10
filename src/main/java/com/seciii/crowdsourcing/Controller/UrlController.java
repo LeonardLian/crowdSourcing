@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.io.IOException;
+
 /**
  * @author: pis
  * @description: good good study
@@ -124,6 +126,14 @@ public class UrlController {
         if(haveLoggedIn()){
             task.setTaskname(taskname);
             worker.setUsername(usernameOfWorker);
+            if(user.getUsername().equals(worker.getUsername())){
+                TaskController tc=new TaskController();
+                try{
+                    tc.integration();
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
             return "TaskView";
         }
         return "login";
@@ -145,5 +155,11 @@ public class UrlController {
     public String logout(){
         user=new User();
         return "login";
+    }
+
+    //系统管理员
+    @RequestMapping(value="/administrator")
+    public String administrator(){
+        return "administrator";
     }
 }
