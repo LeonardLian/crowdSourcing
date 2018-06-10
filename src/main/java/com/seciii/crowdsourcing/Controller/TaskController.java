@@ -502,11 +502,10 @@ public class TaskController {
     }
 
     //整合标注
-    @RequestMapping(value = "/closeTask",method = RequestMethod.POST)
-    public String closeTask(@RequestBody Task task) throws IOException{
+    public void integration() throws IOException{
 
         //读取所有参与者的标注信息
-        String temporaryFile="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+task.getTaskname()+"/";
+        String temporaryFile="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+UrlController.task.getTaskname()+"/";
         File file=new File(temporaryFile);
         File[] tempList=file.listFiles();
 
@@ -523,7 +522,19 @@ public class TaskController {
                 br = new BufferedReader(reader);
                 while ((line = br.readLine()) != null) {//按行读取json，转存为SquareLabel对象，存入labelList中
                     JSONObject json = JSONObject.parseObject(line);
-                    SquareLabel label = new SquareLabel(json.getString("startX"), json.getString("startY"), json.getString("width"), json.getString("height"), json.getString("comment"), json.getString("taskname"), json.getString("username"));
+                    double startX=Double.parseDouble(json.getString("startX"));
+                    double startY=Double.parseDouble(json.getString("startY"));
+                    double width=Double.parseDouble(json.getString("width"));
+                    double height=Double.parseDouble(json.getString("height"));
+                    if(width<0){
+                        startX+=width;
+                        width=(-width);
+                    }
+                    if(height<0){
+                        startY+=height;
+                        height=(-height);
+                    }
+                    SquareLabel label = new SquareLabel(""+startX,""+startY,""+width,""+height, json.getString("comment"), json.getString("taskname"), json.getString("username"));
                     if(labelList.size()==0){//若labelList为空，则添加一个ArrayList，并加入label
                         labelList.add(new ArrayList<SquareLabel>());
                         labelList.get(0).add(label);
@@ -578,8 +589,6 @@ public class TaskController {
         }
         bw.close();
         fw.close();
-
-        return "Success";
     }
 
     //整合方框2，取中间的80%，分为8组，中央数值加权平均
