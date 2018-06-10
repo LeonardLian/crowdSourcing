@@ -626,8 +626,8 @@ public class TaskController {
     }
 
     private ArrayList<SquareLabel> kMeansClustering(ArrayList<SquareLabel> list,int k){
-
-        return null;
+        KMeans kMeans=new KMeans(list,k);
+        return kMeans.getResult();
     }
 
     //评估工人对某个任务的标注准确率并保存在accuracy.txt中
