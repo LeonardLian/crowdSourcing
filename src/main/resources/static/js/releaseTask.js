@@ -116,26 +116,27 @@ function saveInfoOfTask(){
 
     if(taskname==""){
         alert('请输入任务名称');
-        return;
-    }
-    if(taskname.length>20){
-        alert('任务名称过长');
+        $('#taskname').focus();
         return;
     }
     if(numOfNeeded==""){
         alert('请输入需要人数');
+        $('#numofneed').focus();
         return;
     }
     if(point==""){
         alert('请输入奖励分数');
+        $('#point').focus();
         return;
     }
     if(deadline==""){
         alert('请输入截止日期');
+        $('#deadline').focus();
         return;
     }
     if(description==""){
         alert('描述不能为空');
+        $('#description').focus();
         return;
     }
 
