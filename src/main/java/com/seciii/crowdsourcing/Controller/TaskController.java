@@ -3,6 +3,7 @@ package com.seciii.crowdsourcing.Controller;
 import com.alibaba.fastjson.JSONObject;
 import com.seciii.crowdsourcing.Dao.*;
 import com.seciii.crowdsourcing.Dao.User;
+import com.seciii.crowdsourcing.Dao.SquareLabel;
 
 import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.web.bind.annotation.*;
@@ -686,59 +687,37 @@ public class TaskController {
             std_squares.add(label);
         }
 
-        //对工人的方框和整合的方框作比较并打分
         double[] scores = null;
-        for(int i=0;i<labels.size();i++){
-            SquareLabel label = labels.get(i);
-            for(int j=0;j<std_squares.size();i++){
-                SquareLabel stdLabel = std_squares.get(j);
-                if(label.getComment() == stdLabel.getComment()){
-                    double myX = Double.parseDouble(label.getStartX());
-                    double myY = Double.parseDouble(label.getStartY());
-                    double myW = Double.parseDouble(label.getWidth());
-                    double myH = Double.parseDouble(label.getHeight());
-
-                    double stdX = Double.parseDouble(stdLabel.getStartX());
-                    double stdY = Double.parseDouble(stdLabel.getStartY());
-                    double stdW = Double.parseDouble(stdLabel.getWidth());
-                    double stdH = Double.parseDouble(stdLabel.getHeight());
-
-                    double myArea = myH * myW;
-                    double stdArea = stdH * stdW;
-                    double coincide = 0.0;
-
-                    //根据二者位置计算重合面积coincide（用左上角和右下角两个点的位置来判断）
-                    double minX = (myX >= stdX) ? myX : stdX;
-                    double minY = (myY >= stdY) ? myY : stdY;
-                    double maxX = ((myX+myW) <= (stdX+stdW)) ? (myX+myW) : (stdX+stdW);
-                    double maxY = ((myY+myH) <= (stdY+stdH)) ? (myY+myH) : (stdY+stdH);
-
-                    //有重叠面积时计算重叠面积
-                    if(minX <= maxX && minY <= maxY){
-                        coincide = (maxX-minX)*(maxY-minY);
-                    }
-                    //不相交时面积为零
-
-                    //这个数据有待商榷
-                    if((coincide/myArea >=0.95) && (coincide/stdArea >= 0.95)){
-                        scores[i] = 1;
-                    }
-                    else if((coincide/myArea >=0.9) && (coincide/stdArea >= 0.9)){
-                        scores[i] = 0.9;
-                    }
-                    else if((coincide/myArea >=0.8) && (coincide/stdArea >= 0.8)){
-                        scores[i] = 0.75;
-
-                    }
-                    else if((coincide/myArea >=0.5) && (coincide/stdArea >= 0.5)){
-                        scores[i] = 0.5;
-                    }
-                    else{
-                        scores[i] = 0;
+        //先判断有无多个注释相同的方框
+        int isSameComment = 0;
+        for(int i=0;i<std_squares.size();i++){
+            for(int j = i+1;j<std_squares.size();j++){
+                if(std_squares.get(i).getComment().equals(std_squares.get(j).getComment())){
+                    isSameComment ++;
+                }
+            }
+        }
+        //无多个相同注释的方框
+        if(isSameComment == 0){
+            for(int i=0;i<std_squares.size();i++){
+                SquareLabel stdLabel = std_squares.get(i);
+                for(int j=0;j<labels.size();j++){
+                    SquareLabel label = labels.get(j);
+                    if(label.getComment() == stdLabel.getComment()){
+                        scores[i] = getScore(label, stdLabel);
                     }
                 }
             }
         }
+        //有多个相同注释的方框，先找最近的方框再评估准确性
+        else{
+            for(int i=0;i<std_squares.size();i++){
+                SquareLabel stdLabel = std_squares.get(i);
+                SquareLabel label = getTheClosestSquare(stdLabel, labels);
+                scores[i] = getScore(label, stdLabel);
+            }
+        }
+
         double sum = 0.0;
         for(int i=0;i<labels.size();i++){
             sum += scores[i];
@@ -759,6 +738,109 @@ public class TaskController {
         bw.close();
         fw.close();
         return String.valueOf(avg);
+    }
+
+    //获取labelList中与label注释相同且距离方框label最近的方框
+    private SquareLabel getTheClosestSquare(SquareLabel label,ArrayList<SquareLabel> labelList){
+        int resIndex = 0;
+        ArrayList<SquareLabel> list = new ArrayList<SquareLabel>();
+        for(int i=0;i<labelList.size();i++){
+            if(label.getComment().equals(labelList.get(i).getComment())){
+                list.add(labelList.get(i));
+            }
+        }
+
+        //用于判断方框是否已经被对应
+//        int[] isIn = new int[list.size()];
+//        for(int i=0;i<isIn.length;i++){
+//            isIn[i] = 0;
+//        }
+        double[] distance = new double[list.size()];
+        double X = Double.parseDouble(label.getStartX());
+        double Y = Double.parseDouble(label.getStartY());
+        for(int i=0;i<list.size();i++){
+            SquareLabel myLabel = list.get(i);
+            double myX = Double.parseDouble(myLabel.getStartX());
+            double myY = Double.parseDouble(myLabel.getStartY());
+            distance[i] = Math.sqrt((X-myX)*(X-myX)+(Y-myY)*(Y-myY));
+        }
+        double minDistance = distance[0];
+        for(int i=1;i<distance.length;i++){
+            if(distance[i] < minDistance){
+                minDistance = distance[i];
+                resIndex = i;
+                //isIn[i] = 1;
+            }
+        }
+        return list.get(resIndex);
+    }
+
+    //对工人的方框和整合的方框作比较并打分
+    private double getScore(SquareLabel label, SquareLabel stdLabel){
+        double score = 0.0;
+        double myX = Double.parseDouble(label.getStartX());
+        double myY = Double.parseDouble(label.getStartY());
+        double myW = Double.parseDouble(label.getWidth());
+        double myH = Double.parseDouble(label.getHeight());
+
+        //判断画方框的方向
+        if(myW<0){
+            myX += myW;
+            myW = (-myW);
+        }
+        if(myH < 0){
+            myY += myH;
+            myH = (-myH);
+        }
+
+        double stdX = Double.parseDouble(stdLabel.getStartX());
+        double stdY = Double.parseDouble(stdLabel.getStartY());
+        double stdW = Double.parseDouble(stdLabel.getWidth());
+        double stdH = Double.parseDouble(stdLabel.getHeight());
+
+        if(stdW<0){
+            stdX += stdW;
+            stdW = (-stdW);
+        }
+        if(stdH < 0){
+            stdY += stdH;
+            stdH = (-stdH);
+        }
+
+        double myArea = myH * myW;
+        double stdArea = stdH * stdW;
+        double coincide = 0.0;
+
+        //根据二者位置计算重合面积coincide（用左上角和右下角两个点的位置来判断）
+        double minX = (myX >= stdX) ? myX : stdX;
+        double minY = (myY >= stdY) ? myY : stdY;
+        double maxX = ((myX+myW) <= (stdX+stdW)) ? (myX+myW) : (stdX+stdW);
+        double maxY = ((myY+myH) <= (stdY+stdH)) ? (myY+myH) : (stdY+stdH);
+
+        //有重叠面积时计算重叠面积
+        if(minX <= maxX && minY <= maxY){
+            coincide = (maxX-minX)*(maxY-minY);
+        }
+        //不相交时面积为零
+
+        //这个数据有待商榷
+        if((coincide/myArea >=0.95) && (coincide/stdArea >= 0.95)){
+            score = 1;
+        }
+        else if((coincide/myArea >=0.9) && (coincide/stdArea >= 0.9)){
+            score = 0.9;
+        }
+        else if((coincide/myArea >=0.8) && (coincide/stdArea >= 0.8)){
+            score = 0.75;
+
+        }
+        else if((coincide/myArea >=0.5) && (coincide/stdArea >= 0.5)){
+            score = 0.5;
+        }
+        else{
+            score = 0;
+        }
+        return score;
     }
 
     //显示某个工人对应某个任务的准确率
