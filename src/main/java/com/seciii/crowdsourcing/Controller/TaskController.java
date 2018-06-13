@@ -693,6 +693,9 @@ public class TaskController {
         }
 
         double[] scores = null;
+        for(int i = 0;i<std_squares.size();i++){
+            scores[i] = 0.0;
+        }
         //先判断有无多个注释相同的方框
         int isSameComment = 0;
         for(int i=0;i<std_squares.size();i++){
@@ -702,6 +705,7 @@ public class TaskController {
                 }
             }
         }
+
         //无多个相同注释的方框
         if(isSameComment == 0){
             for(int i=0;i<std_squares.size();i++){
