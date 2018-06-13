@@ -1,3 +1,3 @@
-{"type":1,"startX":98,"startY":84,"width":"186","height":"139","comment":"f","taskname":"1","username":"123"}
-{"type":1,"startX":405,"startY":119,"width":"234","height":"143","comment":"f","taskname":"1","username":"123"}
-{"type":1,"startX":329,"startY":334,"width":"152","height":"93","comment":"h","taskname":"1","username":"123"}
+{"type":1,"startX":250,"startY":189,"width":"98","height":"151","comment":"1","taskname":"1","username":"123"}
+{"type":1,"startX":356,"startY":241,"width":"45","height":"98","comment":"2","taskname":"1","username":"123"}
+{"type":1,"startX":408,"startY":201,"width":"120","height":"175","comment":"3","taskname":"1","username":"123"}
