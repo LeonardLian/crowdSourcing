@@ -53,6 +53,12 @@ $(function () {
     var arr=taskdata.split('!');
 
     if(taskdata.length==0){
+        new Vue({
+            el:'#tasknum',
+            data:{
+                tasknum:0
+            }
+        });
         return;
     }
     else{
