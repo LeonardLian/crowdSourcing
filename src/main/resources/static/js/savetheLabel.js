@@ -133,11 +133,14 @@ function savetheLabel(){
                 var array=new Array();
                 var comment=$('#'+name).val();
 
-                for(var j=index;j<i;j++){
+                for(var j=index+1;j<i;j++){
                     var x1=layers[j].x1;
                     var y1=layers[j].y1;
                     var dot=x1+','+y1;
                     array.push(dot);
+                    // alert(name);
+                    // alert(x1);
+                    // alert(y1);
                 }
                 var xi=layers[i].x1;
                 var yi=layers[i].y1;
@@ -170,7 +173,7 @@ function savetheLabel(){
                 });
             }
             else{
-                alert("!!!!");
+                //alert("!!!!");
             }
         }
     }

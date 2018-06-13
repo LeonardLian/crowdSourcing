@@ -37,9 +37,11 @@ public class TaskController {
         String numofNeeded=task.getNumOfNeeded();
         String point=task.getPoint();
         String deadline=task.getDeadline();
+        String type=task.getType();
+        String labels=task.getLabels();
 
 
-        Task task1=new Task(requestor,tasktag,description,mode,numofNeeded,point,deadline);
+        Task task1=new Task(requestor,tasktag,description,mode,numofNeeded,point,deadline,type,labels);
         String taskname=task1.getTaskname();
 
         String foldername="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskname;
@@ -67,7 +69,10 @@ public class TaskController {
                 task1.getNumOfNeeded()+"#"+
                 task1.getNumOfPart()+"#"+
                 task1.getPoint()+"#"+
-                task1.getDeadline()+"\n";
+                task1.getDeadline()+"#"+
+                task1.getType()+"#"+
+                task1.getLabels()+
+                        "\n";
 
 
         File file=new File(taskInformationFile);
