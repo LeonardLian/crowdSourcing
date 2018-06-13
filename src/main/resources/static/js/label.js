@@ -114,9 +114,9 @@ CanvasExt={
         var sourceY=0;
 
         var layerIndex=layer;
-        var layerName="layer";
+        var layerName;
 
-        bot.onmousedown=function (e) {
+        canvas.onmousedown=function (e) {
             var color="#000000";
             var width=2+'px';
 
@@ -125,10 +125,20 @@ CanvasExt={
             sourceX=e.offsetX;
             sourceY=e.offsetY;
 
+            // layerName="layer"+layerIndex;
+            // $("#myCanvas").drawLine({
+            //     layer:true,
+            //     name:layerName,
+            //     strokeStyle:color,
+            //     strokeWidth:width,
+            //     x1:sourceX,y1:sourceY,
+            //     x2:sourceX,y2:sourceY
+            // });
+
             canvas.onmousemove=function(e){
                 layerIndex++;
                 layer++;
-                layerName=layerName+layerIndex;
+                layerName="layer"+layerIndex;
 
                 var moveX=e.offsetX;
                 var moveY=e.offsetY;

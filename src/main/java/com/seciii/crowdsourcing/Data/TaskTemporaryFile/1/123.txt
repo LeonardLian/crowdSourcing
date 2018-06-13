@@ -1,0 +1,3 @@
+{"type":1,"startX":52,"startY":38,"width":"322","height":"252","comment":"a","taskname":"1","username":"123"}
+{"type":1,"startX":375,"startY":290,"width":"261","height":"227","comment":"b","taskname":"1","username":"123"}
+{"type":1,"startX":424,"startY":146,"width":"80","height":"70","comment":"c","taskname":"1","username":"123"}
