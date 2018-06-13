@@ -18,8 +18,8 @@ public class Task {
     private String numOfPart;
     private String point;
     private String deadline;
-    private String kindOfTask;//任务类型
-    private String arrayOfLabel;//标签
+    private String type;//任务类型
+    private String labels;//标签
 
     public Task(){}
 
@@ -33,12 +33,12 @@ public class Task {
         this.numOfPart=numOfPart;
         this.point=point;
         this.deadline=deadline;
-        this.kindOfTask=kindOfTask;
-        this.arrayOfLabel=arrayOfLabel;
+        this.type=kindOfTask;
+        this.labels=arrayOfLabel;
     }
 
 
-    public Task(String requestor,String tasktag,String description,String mode,String numOfNeeded,String point,String deadline){
+    public Task(String requestor,String tasktag,String description,String mode,String numOfNeeded,String point,String deadline,String type,String labels){
         String taskname="";
         try {
             String filename="src/main/java/com/seciii/crowdsourcing/Data/TaskId/TaskId.txt";
@@ -67,6 +67,8 @@ public class Task {
         this.numOfNeeded=numOfNeeded;
         this.numOfPart="0";
         this.deadline=deadline;
+        this.type=type;
+        this.labels=labels;
     }
 
     public String getDescription() {
@@ -141,20 +143,20 @@ public class Task {
         this.mode = mode;
     }
 
-    public String getArrayOfLabel() {
-        return arrayOfLabel;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getKindOfTask() {
-        return kindOfTask;
+    public String getType() {
+        return type;
     }
 
-    public void setKindOfTask(String kindOfTask) {
-        this.kindOfTask = kindOfTask;
+    public String getLabels() {
+        return labels;
     }
 
-    public void setArrayOfLabel(String arrayOfLabel) {
-        this.arrayOfLabel = arrayOfLabel;
+    public void setLabels(String labels) {
+        this.labels = labels;
     }
 }
 

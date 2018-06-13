@@ -125,6 +125,16 @@ CanvasExt={
             sourceX=e.offsetX;
             sourceY=e.offsetY;
 
+            // layerName="layer"+layerIndex;
+            // $("#myCanvas").drawLine({
+            //     layer:true,
+            //     name:layerName,
+            //     strokeStyle:color,
+            //     strokeWidth:width,
+            //     x1:sourceX,y1:sourceY,
+            //     x2:sourceX,y2:sourceY
+            // });
+
             canvas.onmousemove=function(e){
                 layerIndex++;
                 layer++;
