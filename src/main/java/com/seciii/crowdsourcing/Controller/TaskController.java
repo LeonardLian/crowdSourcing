@@ -523,7 +523,7 @@ public class TaskController {
 
         ArrayList<ArrayList<SquareLabel>> labelList=new ArrayList<ArrayList<SquareLabel>>();//labelList按照comment分类
         for(File worker:tempList){
-            if(worker.getName().equals("description.txt")){}
+            if(worker.getName().equals("description.txt")||worker.getName().equals(UrlController.user.getUsername()+".txt")){}
             else {
                 reader = new InputStreamReader(new FileInputStream(worker));
                 br = new BufferedReader(reader);
@@ -944,6 +944,10 @@ public class TaskController {
         String good=getTheGood(user);
         String result=user.getUsername()+"#"+key+"#"+good;
         String path = "src/main/java/com/seciii/crowdsourcing/Data/UserHobby/"+user.getUsername()+ ".txt";
+        File file=new File(path);
+        if(!file.exists()){
+            file.createNewFile();
+        }
         FileWriter fw=new FileWriter(path,false);
         BufferedWriter bw=new BufferedWriter(fw);
         bw.write(result);
@@ -959,6 +963,9 @@ public class TaskController {
         String username=user.getUsername();
         BufferedReader br = new BufferedReader(new FileReader("src/main/java/com/seciii/crowdsourcing/Data/UserTaskIndexList/"+username+".txt"));
         String line = br.readLine();
+        if(line==null){
+            return "暂无";
+        }
         String[] task1 = line.split(" ");
         br.close();
 
@@ -970,6 +977,10 @@ public class TaskController {
                 String joinedtask=task1[i].substring(1);
                 list.add(joinedtask);
             }
+        }
+
+        if(list.size()==0){
+            return "暂无";
         }
 
         ArrayList<String> list1 = new ArrayList<>();
@@ -996,7 +1007,7 @@ public class TaskController {
             }
 
         }
-        String key = "";
+        String key = "暂无";
         int max = 0;
         for (String entry : map.keySet()) {
             if (map.get(entry)>max) {
@@ -1014,6 +1025,9 @@ public class TaskController {
         String username=user.getUsername();
         BufferedReader br = new BufferedReader(new FileReader("src/main/java/com/seciii/crowdsourcing/Data/UserTaskIndexList/"+username+".txt"));
         String line = br.readLine();
+        if(line==null){
+            return "暂无";
+        }
         String[] task = line.split(" ");
 
         br.close();
@@ -1026,6 +1040,10 @@ public class TaskController {
                 String joinedtask=task[i].substring(1);
                 list.add(joinedtask);
             }
+        }
+
+        if(list.size()==0){
+            return "暂无";
         }
 
         ArrayList<String> mylist=new ArrayList<>();
@@ -1076,7 +1094,7 @@ public class TaskController {
         for(int z=0;z<list.size();z++) {
             average.add(accuracy.get(z) / number.get(z));
         }
-        String good=" ";
+        String good="暂无";
         double max=0;
         for(int i=0;i<average.size();i++){
             if(average.get(i)>=max){
