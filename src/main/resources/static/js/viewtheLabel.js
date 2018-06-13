@@ -181,6 +181,7 @@ $(function () {
     var tKey=new Taskkey(taskname,usernameOfWorker);
     var keyJson=JSON.stringify(tKey);
 
+
     $.ajax({
         type:'POST',
         data:keyJson,
@@ -270,8 +271,8 @@ $(function () {
                         type:'line',
                         layer:true,
                         name:layer,
-                        strokeStyle:color,
-                        strokeWidth:width,
+                        strokeStyle:'black',
+                        strokeWidth:1,
                         x1:x1,y1:y1,
                         x2:x2,y2:y2
                     });

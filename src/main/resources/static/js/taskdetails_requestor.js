@@ -123,6 +123,9 @@ $(function () {
     });
 
 
+
+
+
 });
 
 
@@ -156,6 +159,8 @@ function closeTask() {
             alert("error");
         }
     });
+
+
 }
 
 function Task(taskname,requestor,tasktag,description,mode,numOfNeeded,numOfPart,point,deadline) {

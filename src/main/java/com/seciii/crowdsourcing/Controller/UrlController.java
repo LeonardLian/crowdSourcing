@@ -114,7 +114,16 @@ public class UrlController {
     @RequestMapping(value="/taskdetails_requestor/{taskname}")
     public String taskdetails_requestor(@PathVariable("taskname") String taskname){
         if(haveLoggedIn()){
+
             task.setTaskname(taskname);
+
+            TaskController tc=new TaskController();
+            try{
+                tc.integration();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+
             return "taskdetails_requestor";
         }
         return "login";
@@ -126,14 +135,14 @@ public class UrlController {
         if(haveLoggedIn()){
             task.setTaskname(taskname);
             worker.setUsername(usernameOfWorker);
-            if(user.getUsername().equals(worker.getUsername())){
-                TaskController tc=new TaskController();
-                try{
-                    tc.integration();
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
-            }
+//            if(user.getUsername().equals(worker.getUsername())){
+//                TaskController tc=new TaskController();
+//                try{
+//                    tc.integration();
+//                }catch (IOException e){
+//                    e.printStackTrace();
+//                }
+//            }
             return "TaskView";
         }
         return "login";
