@@ -587,10 +587,10 @@ public class TaskController {
                     "\"startX\":"+label.getStartX()+","+
                     "\"startY\":"+label.getStartY()+","+
                     "\"width\":"+"\""+label.getWidth()+"\""+","+
-                    "\"height\""+"\""+label.getHeight()+"\""+","+
-                    "\"comment\""+"\""+label.getComment()+"\""+","+
-                    "\"taskname\""+"\""+label.getTaskname()+"\""+","+
-                    "\"username\""+"\""+label.getUsername()+"\""+
+                    "\"height\":"+"\""+label.getHeight()+"\""+","+
+                    "\"comment\":"+"\""+label.getComment()+"\""+","+
+                    "\"taskname\":"+"\""+label.getTaskname()+"\""+","+
+                    "\"username\":"+"\""+label.getUsername()+"\""+
                     "}"+"\n";
             bw.write(squareLabelStr);
         }
