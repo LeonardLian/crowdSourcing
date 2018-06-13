@@ -58,8 +58,8 @@ $(function () {
                     numOfNeeded:infoList[5],
                     numOfPart:infoList[6],
                     point:infoList[7],
-                    deadline:infoList[8]
-                    // kindOfTask: TODO
+                    deadline:infoList[8],
+                    kindOfTask:infoList[9]
                 }
             });
         },
@@ -104,6 +104,9 @@ $(function () {
                 $('#description').html('当前没有参与者。');
                 return;
             }
+            //添加整合框列表
+            var integrationUrl='TaskView/'+taskname+'/'+username;
+            $('#workerList').prepend('<li> <a href="'+integrationUrl+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+imageList[0]+'" alt="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/200/h/200/q/80"/> <div class="gallery-title">整合结果</div> </a> </li>');
 
             var workList=data.split('#');
             for(var x in workList){
@@ -119,9 +122,6 @@ $(function () {
         }
     });
 
-    //添加整合框列表
-    var integrationUrl='TaskView/'+taskname+'/'+username;
-    $('#workerList').prepend('<li> <a href="'+integrationUrl+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+imageList[0]+'" alt="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/200/h/200/q/80"/> <div class="gallery-title">整合结果</div> </a> </li>');
 
 
 

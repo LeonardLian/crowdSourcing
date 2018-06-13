@@ -58,8 +58,8 @@ $(function () {
                     numOfNeeded:infoList[5],
                     numOfPart:infoList[6],
                     point:infoList[7],
-                    deadline:infoList[8]
-                    // kindOfTask: TODO
+                    deadline:infoList[8],
+                    kindOfTask:infoList[9]
                 }
             });
             new Vue({
