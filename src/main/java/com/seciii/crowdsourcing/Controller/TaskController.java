@@ -519,11 +519,13 @@ public class TaskController {
         InputStreamReader reader;
         BufferedReader br;
         String line;
-        int numOfWorker=tempList.length-1;//参与者人数
+        int numOfWorker=tempList.length;//参与者人数
 
         ArrayList<ArrayList<SquareLabel>> labelList=new ArrayList<ArrayList<SquareLabel>>();//labelList按照comment分类
         for(File worker:tempList){
-            if(worker.getName().equals("description.txt")||worker.getName().equals(UrlController.user.getUsername()+".txt")){}
+            if(worker.getName().equals("description.txt")||worker.getName().equals(UrlController.user.getUsername()+".txt")){
+                numOfWorker--;
+            }
             else {
                 reader = new InputStreamReader(new FileInputStream(worker));
                 br = new BufferedReader(reader);
@@ -569,7 +571,7 @@ public class TaskController {
             if(list.size()<=1.5*numOfWorker){//如果方框数量小于等于参与者数量的1.5倍，则假定该comment只对应一个方框,直接整合这一组方框并加入结果
                 resultLabels.add(calculateSquare2(list));
             }else{//否则假定该comment对应多个方框，以下两种方法待定：1.计算x，y的方差，并根据方差较大值，分为多个ArrayList 2.聚类 TODO
-                resultLabels.addAll(kMeansClustering(list,Math.round(list.size()/numOfWorker)));
+                resultLabels.addAll(kMeansClustering(list,(int)Math.round(1.0*list.size()/numOfWorker)));
             }
         }
 
@@ -579,7 +581,7 @@ public class TaskController {
         if(!file.exists()){
             file.createNewFile();
         }
-        FileWriter fw=new FileWriter(resultFilePath,true);
+        FileWriter fw=new FileWriter(resultFilePath);
         BufferedWriter bw=new BufferedWriter(fw);
         for(SquareLabel label:resultLabels){
             String squareLabelStr="{"+
@@ -626,7 +628,7 @@ public class TaskController {
         //遍历去掉最高最低后的list，统计八个区间的频数
         for(int i=length/10;i<length*9/10;i++){
             for(int j=1;j<9;j++){
-                if(list.get(i)<min+j*gap){
+                if(list.get(i)<=min+j*gap){
                     vote[j-1]++;
                     break;
                 }
