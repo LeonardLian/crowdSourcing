@@ -484,7 +484,7 @@ public class TaskController {
         ArrayList<String> workerList=new ArrayList<>();
         for(String file:files){
             //System.out.println(file);
-            if(file.equals("description.txt")||file.equals("accuracy.txt")){
+            if(file.equals("description.txt")||file.equals("accuracy.txt")||file.equals(UrlController.user.getUsername()+".txt")){
             }
             else{
                 String id=file.split("\\.")[0];
@@ -523,7 +523,7 @@ public class TaskController {
 
         ArrayList<ArrayList<SquareLabel>> labelList=new ArrayList<ArrayList<SquareLabel>>();//labelList按照comment分类
         for(File worker:tempList){
-            if(worker.getName().equals("description.txt")||worker.getName().equals(UrlController.user.getUsername()+".txt")){
+            if(worker.getName().equals("description.txt")||worker.getName().equals(UrlController.user.getUsername()+".txt")||worker.getName().equals("accuracy.txt")){
                 numOfWorker--;
             }
             else {
