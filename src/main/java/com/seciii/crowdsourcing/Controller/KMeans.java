@@ -44,7 +44,10 @@ public class KMeans {
 
     //获取距离label最近的键
     private SquareLabel getTheMostCloseSquareLabel(SquareLabel label){
-        ArrayList<SquareLabel> oldKeyList=(ArrayList<SquareLabel>)oldCluster.keySet();
+        ArrayList<SquareLabel> oldKeyList=new ArrayList<>();
+        for(SquareLabel key:oldCluster.keySet()){
+            oldKeyList.add(key);
+        }
         double newX=Double.parseDouble(label.getStartX());
         double newY=Double.parseDouble(label.getStartY());
         SquareLabel result=oldKeyList.get(0);
@@ -85,8 +88,14 @@ public class KMeans {
     }
 
     private boolean isCloseEnough(){
-        ArrayList<SquareLabel> oldKey=(ArrayList<SquareLabel>)oldCluster.keySet();
-        ArrayList<SquareLabel> newKey=(ArrayList<SquareLabel>)newCluster.keySet();
+        ArrayList<SquareLabel> oldKey=new ArrayList<>();
+        for(SquareLabel key:oldCluster.keySet()){
+            oldKey.add(key);
+        }
+        ArrayList<SquareLabel> newKey=new ArrayList<>();
+        for(SquareLabel key:newCluster.keySet()){
+            newKey.add(key);
+        }
 
         for(int i=0;i<oldKey.size();i++){
             double oldX=Double.parseDouble(oldKey.get(i).getStartX());
