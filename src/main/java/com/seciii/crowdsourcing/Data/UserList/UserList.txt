@@ -1,2 +1,2 @@
-412385348 wzq980615 0 src/main/java/com/seciii/crowdsourcing/Data/UserTaskIndexList/412385348.txt
-wzq wzq 0 src/main/java/com/seciii/crowdsourcing/Data/UserTaskIndexList/wzq.txt
+lian lian 0 src/main/java/com/seciii/crowdsourcing/Data/UserTaskIndexList/lian.txt
+worker1 work 0 src/main/java/com/seciii/crowdsourcing/Data/UserTaskIndexList/worker1.txt
