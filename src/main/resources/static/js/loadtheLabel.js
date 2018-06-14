@@ -93,6 +93,7 @@ $(function () {
     var FitWidth = 750;
     var FitHeight = 550;
 
+
     img.onload = function() {
         var _width = img.width;
         var _height = img.height;
@@ -197,7 +198,7 @@ $(function () {
             alert(data);
         },
         error:function (e) {
-            alert(data);
+            alert("clearTheLabel");
         }
     })
 
@@ -243,8 +244,12 @@ $(function () {
 
             }
             else if(mode=='2'){
+                var color="#000000";
+                var width=2+'px';
+
                 var layer;
                 var bot=document.getElementById("bottom");
+                alert(jsonLabel.dotlist);
                 var dotList=(jsonLabel.dotlist).split('!');
                 for(var j=0;j<dotList.length-1;j++){
                     var x1=dotList[j].split(',')[0];
@@ -264,10 +269,11 @@ $(function () {
                     layername++;
                 }
 
-                var text=bot.createElement("textarea");
+                var text=document.createElement("textarea");
+                bot.appendChild(text);
                 text.id=layer;
-                text.left=dotList[0].split(',')[0];
-                text.top=dotList[0].split(',')[1];
+                text.left=jsonLabel.startX;
+                text.top=jsonLabel.startY;
                 text.innerHTML=jsonLabel.comment;
                 //text.style.background='transparent';
                 text.height=2;

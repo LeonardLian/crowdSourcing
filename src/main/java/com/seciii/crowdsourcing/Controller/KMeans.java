@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class KMeans {
     private int k;
-    private ArrayList<SquareLabel> dataSet;
+    private ArrayList<SquareLabel> dataSet=new ArrayList<SquareLabel>();
     private Map<SquareLabel,ArrayList<SquareLabel>> oldCluster=new HashMap<>();
     private Map<SquareLabel,ArrayList<SquareLabel>> newCluster=new HashMap<>();
 
@@ -17,14 +17,16 @@ public class KMeans {
     //构造函数，用dataSet的前k个label作为键，初始化oldCluster，newCluster
     public KMeans(ArrayList<SquareLabel> dataSet,int k){
         this.k=k;
-        this.dataSet=dataSet;
+        for(SquareLabel label:dataSet){
+            this.dataSet.add(new SquareLabel(label.getType(),label.getStartX(),label.getStartY(),label.getWidth(),label.getHeight(),label.getComment(),UrlController.task.getTaskname(),UrlController.user.getUsername()));
+        }
 
         for(int i=0;i<k;i++){
-            oldCluster.put(dataSet.get(i),new ArrayList<SquareLabel>());
+            oldCluster.put(this.dataSet.get(i),new ArrayList<SquareLabel>());
         }
-        for(int i=0;i<dataSet.size();i++){
-            SquareLabel close=getTheMostCloseSquareLabel(dataSet.get(i));
-            oldCluster.get(close).add(dataSet.get(i));
+        for(int i=0;i<this.dataSet.size();i++){
+            SquareLabel close=getTheMostCloseSquareLabel(this.dataSet.get(i));
+            oldCluster.get(close).add(this.dataSet.get(i));
         }
 
         newCluster=oldCluster;
@@ -37,7 +39,7 @@ public class KMeans {
         }
         ArrayList<SquareLabel> resultList=new ArrayList<>();
         for(SquareLabel key:newCluster.keySet()){
-            resultList.addAll(newCluster.get(key));
+            resultList.add(key);
         }
         return resultList;
     }
@@ -51,13 +53,14 @@ public class KMeans {
         double newX=Double.parseDouble(label.getStartX());
         double newY=Double.parseDouble(label.getStartY());
         SquareLabel result=oldKeyList.get(0);
-        double oldDistance=0;
+        double oldDistance=1000000;
         for(SquareLabel key:oldKeyList){
             double oldX=Double.parseDouble(key.getStartX());
             double oldY=Double.parseDouble(key.getStartY());
             double newDistance=Math.sqrt((oldX-newX)*(oldX-newX)+(oldY-newY)*(oldY-newY));
             if(newDistance<oldDistance){
                 result=key;
+                oldDistance=newDistance;
             }
         }
         return result;
@@ -103,7 +106,7 @@ public class KMeans {
             double newX=Double.parseDouble(newKey.get(i).getStartX());
             double newY=Double.parseDouble(newKey.get(i).getStartY());
             double distance=Math.sqrt((oldX-newX)*(oldX-newX)+(oldY-newY)*(oldY-newY));
-            if(distance>1){
+            if(distance>0.1){
                 return false;
             }
         }
