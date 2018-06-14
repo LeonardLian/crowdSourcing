@@ -10,11 +10,7 @@ public class LabelApplication {
 
 	public static void main(String[] args) {
 
-//		SpringApplication.run(LabelApplication.class, args);
-		UrlController.task.setTaskname("0");
-		UrlController.user.setUsername("123");
-		TaskController tc=new TaskController();
-		try{ tc.integration(); }catch (IOException e){}
+		SpringApplication.run(LabelApplication.class, args);
 
 	}
 }
