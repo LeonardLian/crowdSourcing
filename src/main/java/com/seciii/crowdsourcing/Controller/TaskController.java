@@ -71,7 +71,7 @@ public class TaskController {
                 task1.getPoint()+"#"+
                 task1.getDeadline()+"#"+
                 task1.getType()+"#"+
-                task1.getLabels()+ "\n";
+                task1.getLabels()+"\n";
 
 
         File file=new File(taskInformationFile);
