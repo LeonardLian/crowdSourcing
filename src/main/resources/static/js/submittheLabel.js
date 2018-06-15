@@ -3,7 +3,6 @@
  */
 function submittheLabel(){
 
-
     savetheLabel();
 
     var username;
