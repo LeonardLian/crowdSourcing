@@ -54,6 +54,22 @@ function savetheLabel(){
 
     var taskmode=taskInformation[4];
 
+
+    //清除临时文件的标注
+    $.ajax({
+        type:'POST',
+        data:keyJson,
+        contentType:'application/json',
+        dataType:'text',
+        url:'http://127.0.0.1:8080/clearTheLabel',
+        success:function (data) {
+            alert(data);
+        },
+        error:function (e) {
+            alert("clearTheLabel");
+        }
+    })
+
     //alert(taskmode)
     if(taskmode=='方框标注'){
         var layers=$('#myCanvas').getLayers();

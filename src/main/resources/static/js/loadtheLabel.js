@@ -187,20 +187,20 @@ $(function () {
         }
     });
 
-    //清除临时文件的标注
-    $.ajax({
-        type:'POST',
-        data:keyJson,
-        contentType:'application/json',
-        dataType:'text',
-        url:'http://127.0.0.1:8080/clearTheLabel',
-        success:function (data) {
-            alert(data);
-        },
-        error:function (e) {
-            alert("clearTheLabel");
-        }
-    })
+    // //清除临时文件的标注
+    // $.ajax({
+    //     type:'POST',
+    //     data:keyJson,
+    //     contentType:'application/json',
+    //     dataType:'text',
+    //     url:'http://127.0.0.1:8080/clearTheLabel',
+    //     success:function (data) {
+    //         alert(data);
+    //     },
+    //     error:function (e) {
+    //         alert("clearTheLabel");
+    //     }
+    // })
 
 
     if(labelList==null){

@@ -2,6 +2,10 @@
  * Created by Leonarda on 2018/5/26.
  */
 function submittheLabel(){
+
+
+    savetheLabel();
+
     var username;
     $.ajax({
         type:'POST',
