@@ -694,6 +694,14 @@ public class TaskController {
         }
 
         double[] scores = new double[std_squares.size()+labels.size()];
+        double sum = 0.0;
+        String item = "";
+
+        //若工人画的方框数少于整合的方框数，直接扣分；
+        if(labels.size() < std_squares.size()){
+            sum -= (std_squares.size() - labels.size());
+        }
+
         //先判断有无多个注释相同的方框
         int isSameComment = 0;
         for(int i=0;i<std_squares.size();i++){
@@ -711,6 +719,7 @@ public class TaskController {
                     SquareLabel label = labels.get(j);
                     if((label.getComment()).equals(stdLabel.getComment())){
                         scores[i] = getScore(label, stdLabel);
+                        item += labels.get(i).getComment() + " : " + String.valueOf(scores[i]);
                     }
                 }
             }
@@ -724,11 +733,11 @@ public class TaskController {
             }
         }
 
-        double sum = 0.0;
-        for(int i=0;i<labels.size();i++){
+        for(int i=0;i<std_squares.size();i++){
             sum += scores[i];
+            item += labels.get(i).getComment() + " : " + String.valueOf(scores[i]);
         }
-        double avg = sum/labels.size();
+        double avg = sum/std_squares.size();
 
         //保存准确率
         String resStr = taskname + " " + username + " " + String.valueOf(avg);
@@ -744,6 +753,7 @@ public class TaskController {
         bw.close();
         fw.close();
 
+        //每个框的的得分：在item里(是string)
         return String.valueOf(avg);
     }
 
@@ -831,22 +841,33 @@ public class TaskController {
         //不相交时面积为零
 
         //这个数据有待商榷
-        if((coincide/myArea >=0.95) && (coincide/stdArea >= 0.95)){
+        double low = (coincide/myArea <= coincide/stdArea)?coincide/myArea : coincide/stdArea;
+        if(low >= 0.95){
             score = 1;
         }
-        else if((coincide/myArea >=0.9) && (coincide/stdArea >= 0.9)){
-            score = 0.9;
+        else if((low < 0.95) && (low > 0.5)){
+            score = 1 - (0.95 - low);
         }
-        else if((coincide/myArea >=0.8) && (coincide/stdArea >= 0.8)){
-            score = 0.75;
-
-        }
-        else if((coincide/myArea >=0.5) && (coincide/stdArea >= 0.5)){
-            score = 0.5;
+        else if((low <= 0.5) && (low >= 0.3)){
+            score = low;
         }
         else{
-            score = 0;
+            score = 0.0;
         }
+
+//        else if((coincide/myArea >=0.9) && (coincide/stdArea >= 0.9)){
+//            score = 0.9;
+//        }
+//        else if((coincide/myArea >=0.8) && (coincide/stdArea >= 0.8)){
+//            score = 0.75;
+//
+//        }
+//        else if((coincide/myArea >=0.5) && (coincide/stdArea >= 0.5)){
+//            score = 0.5;
+//        }
+//        else{
+//            score = 0;
+//        }
         return score;
     }
 
