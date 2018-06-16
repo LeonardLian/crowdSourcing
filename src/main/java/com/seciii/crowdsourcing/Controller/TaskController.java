@@ -570,7 +570,7 @@ public class TaskController {
         for(ArrayList<SquareLabel> list:labelList){
             if(list.size()<=1.5*numOfWorker){//如果方框数量小于等于参与者数量的1.5倍，则假定该comment只对应一个方框,直接整合这一组方框并加入结果
                 resultLabels.add(calculateSquare2(list));
-            }else{//否则假定该comment对应多个方框，以下两种方法待定：1.计算x，y的方差，并根据方差较大值，分为多个ArrayList 2.聚类 TODO
+            }else{//否则假定该comment对应多个方框，聚类
                 resultLabels.addAll(kMeansClustering(list,(int)Math.round(1.0*list.size()/numOfWorker)));
             }
         }
