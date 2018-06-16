@@ -107,7 +107,7 @@ $(function () {
             var taskkeyJson=JSON.stringify(taskkey);
 
             var url='#';
-            $.ajax({//判断用户和任务的关系：旁观者、参与者、发布者 TODO
+            $.ajax({//判断用户和任务的关系：旁观者、参与者、发布者
                 type:'POST',
                 data:taskkeyJson,
                 contentType:'application/json',
