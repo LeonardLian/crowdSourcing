@@ -736,18 +736,20 @@ public class TaskController {
         double avg = sum/labels.size();
 
         //保存准确率
-        String resStr = taskname + " " + username + " " + String.valueOf(avg) + "\n";
-        String resultFilePath="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskname + "/" + "accuracy.txt";
-        File resultFile=new File(resultFilePath);
-        if(!file.exists()){
-            file.createNewFile();
-        }
-        FileWriter fw=new FileWriter(resultFilePath,true);
-        BufferedWriter bw=new BufferedWriter(fw);
-        bw.write(resStr);
+        if(!username.equals(requestor)){
+            String resStr = taskname + " " + username + " " + String.valueOf(avg) + "\n";
+            String resultFilePath="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskname + "/" + "accuracy.txt";
+            File resultFile=new File(resultFilePath);
+            if(!file.exists()){
+                file.createNewFile();
+            }
+            FileWriter fw=new FileWriter(resultFilePath,true);
+            BufferedWriter bw=new BufferedWriter(fw);
+            bw.write(resStr);
 
-        bw.close();
-        fw.close();
+            bw.close();
+            fw.close();
+        }
         return String.valueOf(avg);
     }
 
@@ -853,7 +855,7 @@ public class TaskController {
         else{
             score = 0.3;
         }
-        System.out.println(score);
+
         return score;
     }
 
