@@ -79,6 +79,7 @@ function givethePoint() {
         error:function (e) {
             alert("error");
         }
+
     });
 }
 
