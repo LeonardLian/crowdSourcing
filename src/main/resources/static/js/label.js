@@ -174,7 +174,7 @@ CanvasExt={
     },
 
     drawWholeLabel:function (){
-        $('#bottom').prepend('<textarea class="input_des" id="description"  placeholder=" 整体描述：" ></textarea>');
+        $('#bottom').append('<textarea class="input_des" id="description"  placeholder=" 整体描述：" ></textarea>');
     }
 };
 

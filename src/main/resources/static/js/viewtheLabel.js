@@ -6,6 +6,8 @@
  */
 $(function () {
 
+    $('#lab').hide();
+
     var usernameOfRequestor=null;
     var taskname=null;
     var usernameOfWorker=null;
@@ -229,8 +231,8 @@ $(function () {
             var mode=jsonLabel.type;
 
             if(mode=='0'){
-                $('#des').show();
-                $('#description').html(jsonLabel.comment);
+                $('#lab').show();
+                $('#whole').html(jsonLabel.comment);
             }
             else if(mode=='1'){
 

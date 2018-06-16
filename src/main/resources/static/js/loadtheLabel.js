@@ -187,20 +187,20 @@ $(function () {
         }
     });
 
-    //清除临时文件的标注
-    $.ajax({
-        type:'POST',
-        data:keyJson,
-        contentType:'application/json',
-        dataType:'text',
-        url:'http://127.0.0.1:8080/clearTheLabel',
-        success:function (data) {
-            alert(data);
-        },
-        error:function (e) {
-            alert("clearTheLabel");
-        }
-    })
+    // //清除临时文件的标注
+    // $.ajax({
+    //     type:'POST',
+    //     data:keyJson,
+    //     contentType:'application/json',
+    //     dataType:'text',
+    //     url:'http://127.0.0.1:8080/clearTheLabel',
+    //     success:function (data) {
+    //         alert(data);
+    //     },
+    //     error:function (e) {
+    //         alert("clearTheLabel");
+    //     }
+    // })
 
 
     if(labelList==null){
@@ -286,6 +286,7 @@ $(function () {
 
     //工作界面敲定
     if(taskmode=="整体标注"){
+        CanvasExt.drawWholeLabel();
     }
     else if(taskmode=="方框标注"){
         if(labelList==null){

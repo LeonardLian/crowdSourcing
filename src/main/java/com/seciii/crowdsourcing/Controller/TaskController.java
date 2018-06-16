@@ -71,7 +71,7 @@ public class TaskController {
                 task1.getPoint()+"#"+
                 task1.getDeadline()+"#"+
                 task1.getType()+"#"+
-                task1.getLabels()+ "\n";
+                task1.getLabels()+"\n";
 
 
         File file=new File(taskInformationFile);
@@ -651,7 +651,6 @@ public class TaskController {
     }
 
 
-
     //评估工人对某个任务的标注准确率并保存在accuracy.txt中
     @RequestMapping(value="/checkCertainLabel", method = RequestMethod.POST)
     public String checkCertainLabel(@RequestBody Taskkey taskkey) throws IOException{
@@ -687,14 +686,14 @@ public class TaskController {
         //得到每个任务的整合后的方框信息
         ArrayList<SquareLabel> std_squares = new ArrayList<SquareLabel>();
         String l;
-        while((l=br.readLine())!=null){
+        while((l=b.readLine())!=null){
             JSONObject json = JSONObject.parseObject(l);
             SquareLabel label = new SquareLabel(json.getString("startX"), json.getString("startY"), json.getString("width"),
                     json.getString("height"), json.getString("comment"), json.getString("taskname"), json.getString("username"));
             std_squares.add(label);
         }
 
-        double[] scores = null;
+        double[] scores = new double[std_squares.size()+labels.size()];
         //先判断有无多个注释相同的方框
         int isSameComment = 0;
         for(int i=0;i<std_squares.size();i++){
@@ -710,7 +709,7 @@ public class TaskController {
                 SquareLabel stdLabel = std_squares.get(i);
                 for(int j=0;j<labels.size();j++){
                     SquareLabel label = labels.get(j);
-                    if(label.getComment() == stdLabel.getComment()){
+                    if((label.getComment()).equals(stdLabel.getComment())){
                         scores[i] = getScore(label, stdLabel);
                     }
                 }
@@ -744,6 +743,7 @@ public class TaskController {
 
         bw.close();
         fw.close();
+
         return String.valueOf(avg);
     }
 

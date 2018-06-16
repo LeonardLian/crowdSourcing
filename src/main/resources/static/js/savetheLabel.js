@@ -54,6 +54,25 @@ function savetheLabel(){
 
     var taskmode=taskInformation[4];
 
+
+
+    var tKey=new Taskkey(taskname,username);
+    var keyJson=JSON.stringify(tKey);
+    //清除临时文件的标注
+    $.ajax({
+        type:'POST',
+        data:keyJson,
+        contentType:'application/json',
+        dataType:'text',
+        url:'http://127.0.0.1:8080/clearTheLabel',
+        success:function (data) {
+            alert(data);
+        },
+        error:function (e) {
+            alert("clearTheLabel");
+        }
+    })
+
     //alert(taskmode)
     if(taskmode=='方框标注'){
         var layers=$('#myCanvas').getLayers();
@@ -202,6 +221,11 @@ function CurveLabel(type,comment,dotlist,taskname,username) {
     this.type=type;
     this.comment=comment;
     this.dotlist=dotlist;
+    this.taskname=taskname;
+    this.username=username;
+}
+
+function Taskkey(taskname,username) {
     this.taskname=taskname;
     this.username=username;
 }
