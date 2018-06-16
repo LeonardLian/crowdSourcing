@@ -32,6 +32,20 @@ $(function () {
     var user=new User(username,'aaa','0','aaa','aaa','aaa','aaa','aaa');
     var userJson=JSON.stringify(user);
 
+    $.ajax({
+        type:'POST',
+        data:userJson,
+        dataType:'text',
+        contentType:'application/json',
+        url:'/saveThePerferenceAndGood',
+        success:function(data){
+            alert(data);
+        },
+        false:function (e) {
+            alert('error');
+        }
+    });
+
     var taskdata=null;
     $.ajax({
         type:'POST',
