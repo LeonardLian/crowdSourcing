@@ -696,6 +696,12 @@ public class TaskController {
         double[] scores = new double[std_squares.size()+labels.size()];
         double sum = 0.0;
         String item = "";
+
+        //若工人画的方框数少于整合的方框数，直接扣分；
+        if(labels.size() < std_squares.size()){
+            sum -= (std_squares.size() - labels.size());
+        }
+
         //先判断有无多个注释相同的方框
         int isSameComment = 0;
         for(int i=0;i<std_squares.size();i++){
@@ -727,10 +733,6 @@ public class TaskController {
             }
         }
 
-        //若工人画的方框数少于整合的方框数，直接扣分；
-        if(labels.size() < std_squares.size()){
-            sum -= (std_squares.size() - labels.size());
-        }
         for(int i=0;i<std_squares.size();i++){
             sum += scores[i];
             item += labels.get(i).getComment() + " : " + String.valueOf(scores[i]);
