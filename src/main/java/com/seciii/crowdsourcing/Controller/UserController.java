@@ -285,7 +285,42 @@ public class UserController {
         }
     }
 
-    //前端获取登录用户名
+    //积分增加
+    @RequestMapping(value = "/giveThePoint",method = RequestMethod.POST)
+    @ResponseBody public String giveThePoint(@RequestParam("username") String username, @RequestParam("point") String point) throws IOException{
+
+        ArrayList<String> oldone=new ArrayList<>();
+
+        String filename="src/main/java/com/seciii/crowdsourcing/Data/UserList/UserList.txt";
+        File file=new File(filename);
+        InputStreamReader srreader=new InputStreamReader(new FileInputStream(file));
+        BufferedReader reader=new BufferedReader(srreader);
+        String line=null;
+        while((line=reader.readLine())!=null){
+            String usern=line.split(" ")[0];
+            if(usern.equals(username)){
+                String nowPoint=line.split(" ")[2];
+                String newpoint=String.valueOf(Integer.parseInt(nowPoint)+Integer.parseInt(point));
+                String newuser=line.split(" ")[0]+" "+line.split(" ")[1]+" "+newpoint+" "+line.split(" ")[3];
+                oldone.add(newuser);
+            }else{
+                oldone.add(line);
+            }
+        }
+
+        FileWriter writer=new FileWriter("src/main/java/com/seciii/crowdsourcing/Data/UserList/UserList.txt",false);
+        BufferedWriter bw=new BufferedWriter(writer);
+        for(String str:oldone){
+            bw.write(str+"\n");
+        }
+        bw.close();
+
+        return "修改成功";
+    }
+
+
+
+        //前端获取登录用户名
     @RequestMapping(value="/getUsername")
     public String getUsernameForHTML() throws IOException{
         return UrlController.user.getUsername();

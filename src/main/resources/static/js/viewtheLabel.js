@@ -326,8 +326,3 @@ function User(username, password, point, name, email, phone, description, taskAd
     this.description = description;
     this.taskAddress = taskAddress;
 }
-
-
-function rewardClick() {
-
-}
