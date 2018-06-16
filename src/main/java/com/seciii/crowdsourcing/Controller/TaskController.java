@@ -651,7 +651,6 @@ public class TaskController {
     }
 
 
-
     //评估工人对某个任务的标注准确率并保存在accuracy.txt中
     @RequestMapping(value="/checkCertainLabel", method = RequestMethod.POST)
     public String checkCertainLabel(@RequestBody Taskkey taskkey) throws IOException{
@@ -687,17 +686,14 @@ public class TaskController {
         //得到每个任务的整合后的方框信息
         ArrayList<SquareLabel> std_squares = new ArrayList<SquareLabel>();
         String l;
-        while((l=br.readLine())!=null){
+        while((l=b.readLine())!=null){
             JSONObject json = JSONObject.parseObject(l);
             SquareLabel label = new SquareLabel(json.getString("startX"), json.getString("startY"), json.getString("width"),
                     json.getString("height"), json.getString("comment"), json.getString("taskname"), json.getString("username"));
             std_squares.add(label);
         }
 
-        double[] scores = new double[labels.size()+std_squares.size()];
-        for(int i = 0;i<labels.size()+std_squares.size();i++){
-            scores[i] = 0.0;
-        }
+        double[] scores = new double[std_squares.size()+labels.size()];
         //先判断有无多个注释相同的方框
         int isSameComment = 0;
         for(int i=0;i<std_squares.size();i++){
@@ -707,14 +703,13 @@ public class TaskController {
                 }
             }
         }
-
         //无多个相同注释的方框
         if(isSameComment == 0){
             for(int i=0;i<std_squares.size();i++){
                 SquareLabel stdLabel = std_squares.get(i);
                 for(int j=0;j<labels.size();j++){
                     SquareLabel label = labels.get(j);
-                    if(label.getComment().equals(stdLabel.getComment())){
+                    if((label.getComment()).equals(stdLabel.getComment())){
                         scores[i] = getScore(label, stdLabel);
                     }
                 }
@@ -731,25 +726,24 @@ public class TaskController {
 
         double sum = 0.0;
         for(int i=0;i<labels.size();i++){
-            sum = sum + scores[i];
+            sum += scores[i];
         }
         double avg = sum/labels.size();
 
         //保存准确率
-        if(!username.equals(requestor)){
-            String resStr = taskname + " " + username + " " + String.valueOf(avg) + "\n";
-            String resultFilePath="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskname + "/" + "accuracy.txt";
-            File resultFile=new File(resultFilePath);
-            if(!file.exists()){
-                file.createNewFile();
-            }
-            FileWriter fw=new FileWriter(resultFilePath,true);
-            BufferedWriter bw=new BufferedWriter(fw);
-            bw.write(resStr);
-
-            bw.close();
-            fw.close();
+        String resStr = taskname + " " + username + " " + String.valueOf(avg);
+        String resultFilePath="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskname + "/" + "accuracy.txt";
+        File resultFile=new File(resultFilePath);
+        if(!file.exists()){
+            file.createNewFile();
         }
+        FileWriter fw=new FileWriter(resultFilePath,true);
+        BufferedWriter bw=new BufferedWriter(fw);
+        bw.write(resStr);
+
+        bw.close();
+        fw.close();
+
         return String.valueOf(avg);
     }
 
@@ -823,8 +817,6 @@ public class TaskController {
         double myArea = myH * myW;
         double stdArea = stdH * stdW;
         double coincide = 0.0;
-        System.out.println(myArea);
-        System.out.println(stdArea);
 
         //根据二者位置计算重合面积coincide（用左上角和右下角两个点的位置来判断）
         double minX = (myX >= stdX) ? myX : stdX;
@@ -853,9 +845,8 @@ public class TaskController {
             score = 0.5;
         }
         else{
-            score = 0.3;
+            score = 0;
         }
-
         return score;
     }
 

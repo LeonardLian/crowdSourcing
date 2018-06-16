@@ -55,6 +55,9 @@ function savetheLabel(){
     var taskmode=taskInformation[4];
 
 
+
+    var tKey=new Taskkey(taskname,username);
+    var keyJson=JSON.stringify(tKey);
     //清除临时文件的标注
     $.ajax({
         type:'POST',
@@ -218,6 +221,11 @@ function CurveLabel(type,comment,dotlist,taskname,username) {
     this.type=type;
     this.comment=comment;
     this.dotlist=dotlist;
+    this.taskname=taskname;
+    this.username=username;
+}
+
+function Taskkey(taskname,username) {
     this.taskname=taskname;
     this.username=username;
 }
