@@ -44,7 +44,7 @@ function savetheLabel(){
         url:'/checkTaskInformation',
         async:false,
         success:function (data) {
-            alert("success");
+            //alert("success");
             taskInformation=data.split('#');
         },
         error:function (e) {
@@ -66,7 +66,7 @@ function savetheLabel(){
         dataType:'text',
         url:'http://127.0.0.1:8080/clearTheLabel',
         success:function (data) {
-            alert(data);
+            //alert(data);
         },
         error:function (e) {
             alert("clearTheLabel");
@@ -104,7 +104,7 @@ function savetheLabel(){
                 dataType:'text',
                 url:'/saveSquareLabel',
                 success:function(data){
-                    alert(data);
+                    //alert(data);
                 },
                 error:function (e) {
                     alert("error!????");
@@ -125,7 +125,7 @@ function savetheLabel(){
             dataType:'text',
             async:false,
             success:function(data){
-                alert(data);
+                //alert(data);
             },
             error:function (e) {
                 alert("error!!!!!");
@@ -184,7 +184,7 @@ function savetheLabel(){
                     dataType:'text',
                     async:false,
                     success:function(data){
-                        alert(data);
+                        //alert(data);
                     },
                     error:function (e) {
                         alert("error!");

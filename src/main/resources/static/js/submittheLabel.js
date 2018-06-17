@@ -45,7 +45,7 @@ function submittheLabel(){
         processData:false,
         contentType:false,
         success:function (data) {
-            alert("success");
+            //alert("success");
         },
         error:function (e) {
             alert("error");

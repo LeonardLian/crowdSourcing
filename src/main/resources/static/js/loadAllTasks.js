@@ -39,7 +39,7 @@ $(function () {
         contentType:'application/json',
         url:'/saveThePerferenceAndGood',
         success:function(data){
-            alert(data);
+            //alert(data);
         },
         false:function (e) {
             alert('error');

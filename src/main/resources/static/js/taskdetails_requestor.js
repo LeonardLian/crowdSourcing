@@ -149,7 +149,7 @@ function closeTask() {
         dataType:'text',
         url:'/closeTask',
         success:function (data) {
-            alert(data);
+            //alert(data);
         },
         error:function(e){
             alert("error");

@@ -113,7 +113,7 @@ function saveImageOfUser() {
         processData:false,
         contentType:false,
         success:function (data) {
-            alert(data);
+            //alert(data);
         },
         error:function (e) {
             alert("error");
