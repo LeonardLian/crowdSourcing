@@ -1077,7 +1077,7 @@ public class TaskController {
         for(int n=0;n<list.size();n++){
             File accfile=new File("src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+list.get(n)+"/accuracy.txt");
             if(!accfile.exists()){
-                return "暂无";
+                continue;
             }
             BufferedReader br1 = new BufferedReader(new FileReader("src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+list.get(n)+"/accuracy.txt"));
             String accuracyLine=null;
@@ -1091,7 +1091,7 @@ public class TaskController {
         }
 
         ArrayList<String> list1 = new ArrayList<>();
-        for(int m=0;m<list.size();m++){
+        for(int m=0;m<mylist.size();m++){
             String gettype;
             BufferedReader br2 = new BufferedReader(new FileReader("src/main/java/com/seciii/crowdsourcing/Data/TaskInformation/TaskInformation.txt"));
             String line2 ;
@@ -1109,7 +1109,7 @@ public class TaskController {
         ArrayList<String>resultkind=new ArrayList<>();
         ArrayList<Double>average=new ArrayList<>();
 
-        for(int z=0;z<list.size();z++){
+        for(int z=0;z<mylist.size();z++){
             String singlekind=list1.get(z);
             if(resultkind.contains(singlekind)){
                 accuracy.set(accuracy.indexOf(singlekind),accuracy.get(accuracy.indexOf(singlekind))+Double.parseDouble(mylist.get(z)));
@@ -1122,7 +1122,7 @@ public class TaskController {
             }
 
         }
-        for(int z=0;z<list.size();z++) {
+        for(int z=0;z<mylist.size();z++) {
             average.add(accuracy.get(z) / number.get(z));
         }
         String good="暂无";
