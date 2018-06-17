@@ -61,6 +61,7 @@ $(function () {
             alert('error');
         }
     });
+
     var tasknum=0;
 
     var arr=taskdata.split('!');
@@ -101,6 +102,7 @@ $(function () {
                     alert('error');
                 }
             });
+
             var taskkey=new Taskkey(taskname,username);
             var taskkeyJson=JSON.stringify(taskkey);
 
@@ -125,7 +127,8 @@ $(function () {
                     alert('error');
                 }
             });
-            $('#taskList').append('<li id="app"> <a href="'+url+'"> <img class="am-img-thumbnaill am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt=""/> <div class="gallery-title">'+tasktag+'</div> <div class="gallery-desc">人数：'+numOfPart+'/'+numOfNeeded+'</div> <div class="gallery-desc">截止：'+deadline+'</div> </a> </li>');
+
+            $('#taskList').append('<li id="app"> <a href="'+url+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+src+'" alt=""/> <div class="gallery-title">'+tasktag+'</div> <div class="gallery-desc">人数：'+numOfPart+'/'+numOfNeeded+'</div> <div class="gallery-desc">截止：'+deadline+'</div> </a> </li>');
 
             tasknum=tasknum+1;
         }
