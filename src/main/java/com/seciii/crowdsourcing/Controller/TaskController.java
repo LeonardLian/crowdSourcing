@@ -740,7 +740,7 @@ public class TaskController {
         double avg = sum/std_squares.size();
 
         //保存准确率
-        String resStr = taskname + " " + username + " " + String.valueOf(avg);
+        String resStr = taskname + " " + username + " " + String.valueOf(avg)+"\n";
         String resultFilePath="src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+taskname + "/" + "accuracy.txt";
         File resultFile=new File(resultFilePath);
         if(!file.exists()){
@@ -951,6 +951,10 @@ public class TaskController {
         String good=getTheGood(user);
         String result=user.getUsername()+"#"+key+"#"+good;
         String path = "src/main/java/com/seciii/crowdsourcing/Data/UserHobby/"+user.getUsername()+ ".txt";
+        File file=new File(path);
+        if(!file.exists()){
+            file.createNewFile();
+        }
         FileWriter fw=new FileWriter(path,false);
         BufferedWriter bw=new BufferedWriter(fw);
         bw.write(result);
@@ -965,7 +969,7 @@ public class TaskController {
     public String showPreferenceAndGood(@RequestBody User user) throws IOException{
         String key=getThePreference(user);
         String good=getTheGood(user);
-        String result=user.getUsername()+"#"+key+"#"+good;
+        String result=user.getUsername()+"#"+key+"#"+good+"\n";
         String path = "src/main/java/com/seciii/crowdsourcing/Data/UserHobby/"+user.getUsername()+ ".txt";
         File file=new File(path);
         if(!file.exists()){
@@ -1015,7 +1019,7 @@ public class TaskController {
             while((line2=br2.readLine())!=null) {
                 String[] numbers = line2.split("#");
                 if (numbers[0].equals(list.get(m))) {
-                    gettype = numbers[10];
+                    gettype = numbers[9];
                     list1.add(gettype);
                 }
             }
@@ -1071,6 +1075,10 @@ public class TaskController {
 
         ArrayList<String> mylist=new ArrayList<>();
         for(int n=0;n<list.size();n++){
+            File accfile=new File("src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+list.get(n)+"/accuracy.txt");
+            if(!accfile.exists()){
+                return "暂无";
+            }
             BufferedReader br1 = new BufferedReader(new FileReader("src/main/java/com/seciii/crowdsourcing/Data/TaskList/"+list.get(n)+"/accuracy.txt"));
             String accuracyLine=null;
             while((accuracyLine=br1.readLine())!=null) {
@@ -1090,7 +1098,7 @@ public class TaskController {
             while((line2=br2.readLine())!=null) {
                 String[] numbers = line2.split("#");
                 if (numbers[0].equals(list.get(m))) {
-                    gettype = numbers[10];
+                    gettype = numbers[9];
                     list1.add(gettype);
                 }
             }
