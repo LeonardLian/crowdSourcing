@@ -927,7 +927,7 @@ public class TaskController {
             for(int i=0;i<hobby_arr.length;i++){
                 for(int j=0;j<strlist.size();j++){
                     String task = strlist.get(j);
-                    if(hobby_arr[i].equals(task.split("#")[10]) ){        //the index of type is 10.
+                    if(hobby_arr[i].equals(task.split("#")[9]) ){        //the index of type is 10.
                         hobbyList.add(task);
                     }
                     else{
