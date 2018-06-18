@@ -695,7 +695,7 @@ public class TaskController {
 
         double[] scores = new double[std_squares.size()+labels.size()];
         double sum = 0.0;
-        String item = "";
+        //String item = "";
 
         //若工人画的方框数少于整合的方框数，直接扣分；
         if(labels.size() < std_squares.size()){
@@ -719,7 +719,7 @@ public class TaskController {
                     SquareLabel label = labels.get(j);
                     if((label.getComment()).equals(stdLabel.getComment())){
                         scores[i] = getScore(label, stdLabel);
-                        item += labels.get(i).getComment() + " : " + String.valueOf(scores[i]);
+                        //item += labels.get(i).getComment() + " : " + String.valueOf(scores[i]);
                     }
                 }
             }
@@ -735,7 +735,7 @@ public class TaskController {
 
         for(int i=0;i<std_squares.size();i++){
             sum += scores[i];
-            item += labels.get(i).getComment() + " : " + String.valueOf(scores[i]);
+            //item += labels.get(i).getComment() + " : " + String.valueOf(scores[i]);
         }
         double avg = sum/std_squares.size();
 
