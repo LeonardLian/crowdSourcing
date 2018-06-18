@@ -41,14 +41,16 @@ $(function () {
     //加载任务信息
     var task=new Task(taskname,'aaa','aaa','aaa','aaa','aaa','aaa','aaa','aaa');
     var taskJson=JSON.stringify(task);
+    var infoList;
     $.ajax({
         type:'POST',
         data:taskJson,
         contentType:'application/json',
         dataType:'text',
         url:'/checkTaskInformation',
+        async:false,
         success:function (data) {
-            var infoList=data.split("#");
+            infoList=data.split("#");
             new Vue({
                 el:"#info",
                 data:{
@@ -68,6 +70,8 @@ $(function () {
         }
     });
 
+
+    var mode=infoList[4];
 
     // //添加整合框列表
     // var integrationUrl='TaskView/'+taskname+'/'+username;
@@ -104,9 +108,15 @@ $(function () {
                 $('#description').html('当前没有参与者。');
                 return;
             }
+
+            if(mode=='方框标注'){
+                var integrationUrl='/TaskView/'+taskname+'/'+username;
+                $('#workerList').prepend('<li> <a href="'+integrationUrl+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+imageList[0]+'" alt="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/200/h/200/q/80"/> <div class="gallery-title">整合结果</div> </a> </li>');
+
+            }
             //添加整合框列表
-            var integrationUrl='/TaskView/'+taskname+'/'+username;
-            $('#workerList').prepend('<li> <a href="'+integrationUrl+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+imageList[0]+'" alt="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/200/h/200/q/80"/> <div class="gallery-title">整合结果</div> </a> </li>');
+            // var integrationUrl='/TaskView/'+taskname+'/'+username;
+            // $('#workerList').prepend('<li> <a href="'+integrationUrl+'"> <img class="am-img-thumbnail am-img-bdrs" src="data:image/jpeg;base64,'+imageList[0]+'" alt="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/200/h/200/q/80"/> <div class="gallery-title">整合结果</div> </a> </li>');
 
             var workList=data.split('#');
             for(var x in workList){

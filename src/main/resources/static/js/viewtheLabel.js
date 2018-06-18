@@ -184,21 +184,23 @@ $(function () {
     var keyJson=JSON.stringify(tKey);
 
 
-    $.ajax({
-        type:'POST',
-        data:keyJson,
-        contentType:'application/json',
-        dataType:'text',
-        async:false,
-        url:'http://127.0.0.1:8080/checkCertainLabel',
-        success:function (data) {
-            var result="准确率："+data;
-            $('#accuracy').html(result);
-        },
-        error:function (e) {
-            alert("error!");
-        }
-    });
+    if(taskmode=='方框标注') {
+        $.ajax({
+            type: 'POST',
+            data: keyJson,
+            contentType: 'application/json',
+            dataType: 'text',
+            async: false,
+            url: 'http://127.0.0.1:8080/checkCertainLabel',
+            success: function (data) {
+                var result = "准确率：" + data;
+                $('#accuracy').html(result);
+            },
+            error: function (e) {
+                alert("error!");
+            }
+        });
+    }
 
     $.ajax({
         type:'POST',
@@ -231,8 +233,18 @@ $(function () {
             var mode=jsonLabel.type;
 
             if(mode=='0'){
-                $('#lab').show();
-                $('#whole').html(jsonLabel.comment);
+                // $('#lab').show();
+                // $('#whole').html(jsonLabel.comment);
+                $("#myCanvas").addLayer({
+                    type:'text',
+                    text:jsonLabel.comment,
+                    fontSize:20,
+                    x:40,
+                    y:40,
+                    fillStyle:'black',
+                    strokeStyle:'black',
+                    strokeWidth:1
+                });
             }
             else if(mode=='1'){
 

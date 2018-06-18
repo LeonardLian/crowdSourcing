@@ -113,7 +113,8 @@ function savetheLabel(){
         }
     }
     else if(taskmode=='整体标注'){
-        var text=$('#description').html();
+        var text=$('#description').val();
+        alert(text);
 
         var wholeLabel=new WholeLabel('0',text,taskname,username);
         var wholeLabelJson=JSON.stringify(wholeLabel);

@@ -286,7 +286,7 @@ $(function () {
 
     //工作界面敲定
     if(taskmode=="整体标注"){
-        CanvasExt.drawWholeLabel();
+        //CanvasExt.drawWholeLabel();
     }
     else if(taskmode=="方框标注"){
         if(labelList==null){

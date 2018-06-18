@@ -112,14 +112,18 @@ public class UrlController {
 
     //以发起者的身份查看“任务详细信息”
     @RequestMapping(value="/taskdetails_requestor/{taskname}")
-    public String taskdetails_requestor(@PathVariable("taskname") String taskname){
+    public String taskdetails_requestor(@PathVariable("taskname") String taskname) throws IOException{
         if(haveLoggedIn()){
             task.setTaskname(taskname);
             TaskController tc=new TaskController();
-            try{
-                tc.integration();
-            }catch (IOException e){
-                e.printStackTrace();
+            Task task=new Task(taskname,"0","0","0","0","0","0","0","0","0","0");
+            String info=tc.checkTaskInformationAsLooker(task);
+            if(info.split("#")[4].equals("方框标注")) {
+                try {
+                    tc.integration();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             return "taskdetails_requestor";
         }
