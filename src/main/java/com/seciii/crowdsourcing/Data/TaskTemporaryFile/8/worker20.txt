@@ -1,0 +1,2 @@
+{"type":1,"startX":378,"startY":148,"width":"165","height":"143","comment":"爪子","taskname":"8","username":"worker20"}
+{"type":1,"startX":183,"startY":114,"width":"167","height":"138","comment":"身体","taskname":"8","username":"worker20"}

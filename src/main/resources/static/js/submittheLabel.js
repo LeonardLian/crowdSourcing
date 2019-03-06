@@ -5,6 +5,8 @@ function submittheLabel(){
 
     savetheLabel();
 
+
+
     var username;
     $.ajax({
         type:'POST',

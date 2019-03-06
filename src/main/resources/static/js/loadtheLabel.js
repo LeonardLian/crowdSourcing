@@ -70,6 +70,7 @@ $(function () {
     var taskdescription=taskInformation[3];
     var taskmode=taskInformation[4];
     var deadline=taskInformation[8];
+    var tag=taskInformation[10];
 
     new Vue({
         el:'#taskInfo',
@@ -294,7 +295,7 @@ $(function () {
         }else{
             setLayers(labelList.length);
         }
-        CanvasExt.drawSquareLabel();
+        CanvasExt.drawSquareLabel(tag);
     }
     else if(taskmode=="局部标注"){
         if(labelList==null){

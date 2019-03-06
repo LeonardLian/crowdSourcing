@@ -642,6 +642,8 @@ public class TaskController {
         }
         double average=sum/(length*8/10);
 
+        
+
         return average;
     }
 
@@ -1149,7 +1151,7 @@ public class TaskController {
         String pathOfUser = "src/main/java/com/seciii/crowdsourcing/Data/UserList/UserList.txt";
         File f = new File(pathOfUser);
         if(!f.exists()){
-            ;
+
         }
         else {
             InputStreamReader isr = new InputStreamReader(new FileInputStream(f));
@@ -1190,6 +1192,18 @@ public class TaskController {
         String res = String.valueOf(numOfUser) + "#" + String.valueOf(numOfTask) + "#" + String.valueOf(numOfDoing) + "#" + String.valueOf(numOfDone);
         return res;
     }
+
+
+    @RequestMapping(value = "/guessyoulike",method = RequestMethod.POST)
+    public String guessyoulike(@RequestBody User user,@RequestBody Task task) throws IOException{
+        String username=user.getUsername();
+        String taskname=task.getTaskname();
+        Taskkey key=new Taskkey(username,taskname);
+        String passnum="src/main/com/seciii/crowdsouring/Data/UserTaskIndexList/"+username+".txt";
+        
+        return null;
+    }
+
 
 
 }

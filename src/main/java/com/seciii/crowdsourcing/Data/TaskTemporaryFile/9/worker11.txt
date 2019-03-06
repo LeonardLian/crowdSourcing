@@ -1,0 +1,4 @@
+{"type":1,"startX":359,"startY":111,"width":"221","height":"188","comment":"云彩","taskname":"9","username":"worker11"}
+{"type":1,"startX":551,"startY":46,"width":"153","height":"85","comment":"null","taskname":"9","username":"worker11"}
+{"type":1,"startX":704,"startY":131,"width":"0","height":"0","comment":"云彩","taskname":"9","username":"worker11"}
+{"type":1,"startX":346,"startY":384,"width":"200","height":"108","comment":"云彩","taskname":"9","username":"worker11"}

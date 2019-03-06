@@ -8,7 +8,7 @@ function setLayers(la) {
 }
 
 CanvasExt={
-    drawSquareLabel:function () {
+    drawSquareLabel:function (tag) {
         var startX, startY;
         var deX,deY;
 
@@ -82,10 +82,11 @@ CanvasExt={
                 height:height
             });
 
+
             $("#myCanvas").drawLayers();
             $("#myCanvas").saveCanvas();
 
-            var text=document.createElement("textarea");
+            var text=document.createElement("select");
 
             //text.style.position='absolute';
             text.id=layerName;
@@ -95,6 +96,10 @@ CanvasExt={
             text.style.height=2;
             text.style.width=10;
 
+            var taglist=tag.split(' ');
+            for(var i=0;i<taglist.length;i++){
+                text.add(new Option(taglist[i],taglist[i]));
+            }
             //alert(text.style.top);
             //alert(text.style.left);
             bot.appendChild(text);

@@ -1,0 +1,2 @@
+{"type":1,"startX":345,"startY":164,"width":"127","height":"140","comment":"头","taskname":"17","username":"worker19"}
+{"type":1,"startX":222,"startY":300,"width":"138","height":"89","comment":"身体","taskname":"17","username":"worker19"}
