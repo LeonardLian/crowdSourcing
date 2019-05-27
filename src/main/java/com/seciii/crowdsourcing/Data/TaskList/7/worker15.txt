@@ -1,0 +1,3 @@
+{"type":1,"startX":265,"startY":187,"width":"117","height":"108","comment":"叶子","taskname":"7","username":"worker15"}
+{"type":1,"startX":322,"startY":313,"width":"163","height":"99","comment":"叶子","taskname":"7","username":"worker15"}
+{"type":1,"startX":455,"startY":185,"width":"120","height":"147","comment":"叶子","taskname":"7","username":"worker15"}

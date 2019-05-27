@@ -1,0 +1,5 @@
+{"type":1,"startX":544.0,"startY":306.0,"width":"86.0","height":"75.0","comment":"叶子","taskname":"7","username":"lian"}
+{"type":1,"startX":333.0,"startY":224.0,"width":"72.0","height":"55.0","comment":"叶子","taskname":"7","username":"lian"}
+{"type":1,"startX":459.0,"startY":167.0,"width":"95.0","height":"128.0","comment":"叶子","taskname":"7","username":"lian"}
+{"type":1,"startX":227.0,"startY":199.0,"width":"72.0","height":"90.0","comment":"叶子","taskname":"7","username":"lian"}
+{"type":1,"startX":337.0,"startY":287.0,"width":"96.0","height":"84.0","comment":"叶子","taskname":"7","username":"lian"}

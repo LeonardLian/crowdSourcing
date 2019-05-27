@@ -1,0 +1,2 @@
+{"type":1,"startX":NaN,"startY":NaN,"width":"NaN","height":"NaN","comment":"头","taskname":"17","username":"lian"}
+{"type":1,"startX":NaN,"startY":NaN,"width":"NaN","height":"NaN","comment":"身体","taskname":"17","username":"lian"}
